@@ -37,8 +37,14 @@ export function StatusBadge({ status }: StatusBadgeProps) {
 }
 
 interface Toast {
-  id: number;
+  id: string;
   message: string;
+}
+
+function makeToastId() {
+  return typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `toast-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
 export default function OrganizationSetupScreen() {
@@ -49,11 +55,7 @@ export default function OrganizationSetupScreen() {
 
   // Trigger toast notifications
   const showToast = (message: string) => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message }]);
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3000);
+    const id = makeToastId();
   };
 
   // Helper to extract initials from a full name

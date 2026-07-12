@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+<<<<<<< HEAD
 import { LogIn, Mail, Lock, User, EyeOff, Eye } from "lucide-react";
+=======
+import { LogIn, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+>>>>>>> 1b75fc5f8719443f4da8700dac4f5567a7166ea5
 import StarfieldBackground from "@/components/StarfieldBackground";
 import { apiRequest } from "../../lib/api";
 
 export default function LoginScreen() {
   const [isLogin, setIsLogin] = useState(true);
+<<<<<<< HEAD
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -91,6 +96,9 @@ export default function LoginScreen() {
       }
     }
   };
+=======
+  const [showPassword, setShowPassword] = useState(false);
+>>>>>>> 1b75fc5f8719443f4da8700dac4f5567a7166ea5
 
   return (
     <>
@@ -192,9 +200,16 @@ export default function LoginScreen() {
                   className="w-full bg-white/5 border border-white/10 focus:border-odoo-400 focus:ring-4 focus:ring-odoo-400/20 pl-12 pr-12 py-3 rounded-xl text-sm font-medium text-white placeholder:text-slate-400 transition-all outline-none"
                   required
                 />
+<<<<<<< HEAD
                 <button 
                   type="button" 
                   onClick={() => setShowPassword(!showPassword)}
+=======
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+>>>>>>> 1b75fc5f8719443f4da8700dac4f5567a7166ea5
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
                 >
                   {showPassword ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}

@@ -15,10 +15,17 @@ import {
   Activity,
   PackageCheck,
   AlertCircle,
+<<<<<<< HEAD
   Lock,
+=======
+  Sparkles,
+  X,
+  Printer
+>>>>>>> 1b75fc5f8719443f4da8700dac4f5567a7166ea5
 } from "lucide-react";
 import Sidebar from "../Sidebar";
 import { apiRequest } from "../../../lib/api";
+import ReactMarkdown from "react-markdown";
 
 // ─── Data (front-end mock, mirrors the rest of the app) ───────────────────────
 
@@ -129,6 +136,49 @@ export default function ReportsScreen() {
   const [idleAssets, setIdleAssets] = useState(IDLE);
   const [attentionAssets, setAttentionAssets] = useState(ATTENTION);
   const [mostUsedAssets] = useState(MOST_USED);
+
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [isGeneratingAi, setIsGeneratingAi] = useState(false);
+  const [aiReportContent, setAiReportContent] = useState("");
+
+  const handleGenerateAiReport = async () => {
+    setShowAiModal(true);
+    setIsGeneratingAi(true);
+    setAiReportContent("");
+
+    try {
+      const response = await fetch("/api/reports/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          stats: {
+            period,
+            kpis,
+            utilization,
+            idleAssets,
+            maintenanceTrend: MAINTENANCE,
+            topAttention: attentionAssets
+          }
+        })
+      });
+      const data = await response.json();
+      if (data.report) {
+        setAiReportContent(data.report);
+      } else {
+        setAiReportContent("Failed to generate report. Please try again.");
+      }
+    } catch (error) {
+      setAiReportContent("Error generating AI report.");
+    } finally {
+      setIsGeneratingAi(false);
+    }
+  };
+
+  const handlePrintPdf = () => {
+    // A simple window.print() that prints the current page.
+    // We can use CSS media queries (@media print) to hide everything except the modal content.
+    window.print();
+  };
 
   const fetchReportData = async () => {
     try {
@@ -305,18 +355,25 @@ export default function ReportsScreen() {
               <select
                 value={period}
                 onChange={(e) => setPeriod(e.target.value)}
-                className="bg-white border border-slate-200 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-odoo-500 card-shadow cursor-pointer"
+                className="bg-white border border-slate-200 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-odoo-500 card-shadow cursor-pointer print:hidden"
               >
                 {PERIODS.map((p) => (
                   <option key={p} value={p}>{p}</option>
                 ))}
               </select>
               <button
+                onClick={handleGenerateAiReport}
+                className="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-all shadow-md shadow-indigo-600/20 flex items-center gap-2 print:hidden"
+              >
+                <Sparkles className="w-4 h-4" />
+                Generate AI Report
+              </button>
+              <button
                 onClick={exportCSV}
-                className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center gap-2"
+                className="bg-white border border-slate-200 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-all shadow-sm flex items-center gap-2 print:hidden"
               >
                 <Download className="w-4 h-4" />
-                Export Report
+                Export CSV
               </button>
             </div>
           </header>
@@ -530,12 +587,77 @@ export default function ReportsScreen() {
             </div>
           </Panel>
 
-          <p className="text-center text-sm font-medium text-slate-400">
+          <p className="text-center text-sm font-medium text-slate-400 print:hidden">
             Analytics reflect {period.toLowerCase()} · Export downloads a CSV snapshot.
           </p>
 
         </div>
       </main>
+
+      {/* AI Report Modal & Printable Area */}
+      {showAiModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm print:bg-white print:static print:block print:z-0">
+          <div className="bg-white w-full max-w-3xl max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden print:max-h-none print:shadow-none print:rounded-none">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 print:hidden">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900">AI Executive Summary</h3>
+                  <p className="text-xs text-slate-500 font-medium">Generated by Tara AI</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button onClick={handlePrintPdf} disabled={isGeneratingAi} className="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg text-sm font-bold shadow-sm hover:bg-slate-50 disabled:opacity-50 flex items-center gap-2">
+                  <Printer className="w-4 h-4" /> Download PDF
+                </button>
+                <button onClick={() => setShowAiModal(false)} className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-200 transition-colors">
+                  <X className="w-5 h-5 text-slate-500" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body / Print Area */}
+            <div className="p-8 overflow-y-auto print:overflow-visible">
+              {/* Print Only Header */}
+              <div className="hidden print:block mb-8 border-b border-slate-200 pb-4">
+                <h1 className="text-3xl font-bold text-slate-900">AssetFlow Executive Report</h1>
+                <p className="text-slate-500 font-medium mt-1">Generated dynamically on {new Date().toLocaleDateString()}</p>
+              </div>
+
+              {isGeneratingAi ? (
+                <div className="flex flex-col items-center justify-center py-20 text-slate-500 print:hidden">
+                  <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4" />
+                  <p className="font-bold text-slate-700">Analyzing operational data...</p>
+                  <p className="text-sm mt-1">Tara is writing your report.</p>
+                </div>
+              ) : (
+                <div className="prose prose-slate max-w-none">
+                  <ReactMarkdown
+                    components={{
+                      h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4 pb-2 border-b border-slate-100" {...props} />,
+                      h3: ({node, ...props}) => <h3 className="text-lg font-bold text-slate-800 mt-6 mb-3" {...props} />,
+                      p: ({node, ...props}) => <p className="text-slate-600 mb-4 leading-relaxed" {...props} />,
+                      ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-6 text-slate-600 space-y-2" {...props} />,
+                      li: ({node, ...props}) => <li className="" {...props} />,
+                      strong: ({node, ...props}) => <strong className="font-bold text-slate-900 bg-slate-50 px-1 rounded" {...props} />,
+                    }}
+                  >
+                    {aiReportContent}
+                  </ReactMarkdown>
+                </div>
+              )}
+              
+              {/* Print Only Footer */}
+              <div className="hidden print:block mt-12 pt-4 border-t border-slate-200 text-center text-xs text-slate-400">
+                End of Report · Powered by AssetFlow Intelligence
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
