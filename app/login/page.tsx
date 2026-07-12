@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogIn, Mail, Lock, User, EyeOff } from "lucide-react";
+import { LogIn, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import StarfieldBackground from "@/components/StarfieldBackground";
 
 export default function LoginScreen() {
   const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <>
@@ -88,13 +89,18 @@ export default function LoginScreen() {
                   <Lock className="w-5 h-5 text-slate-400" />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   className="w-full bg-white/5 border border-white/10 focus:border-odoo-400 focus:ring-4 focus:ring-odoo-400/20 pl-12 pr-12 py-3 rounded-xl text-sm font-medium text-white placeholder:text-slate-400 transition-all outline-none"
                   required
                 />
-                <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors">
-                  <EyeOff className="w-5 h-5" />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
+                >
+                  {showPassword ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
                 </button>
               </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { 
   Plus, 
   Info, 
@@ -45,10 +45,11 @@ export default function OrganizationSetupScreen() {
   
   // Toasts state for showing success messages
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const toastIdRef = useRef(0);
 
   // Trigger toast notifications
   const showToast = (message: string) => {
-    const id = Date.now();
+    const id = ++toastIdRef.current;
     setToasts((prev) => [...prev, { id, message }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
