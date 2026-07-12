@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useIsClient } from './use-is-client';
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -43,12 +44,10 @@ export function Modal({
   hideClose = false,
   disableClose = false,
 }: ModalProps) {
-  const [mounted, setMounted] = useState(false);
+  const isClient = useIsClient();
   const panelRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
   const reduceMotion = useReducedMotion();
-
-  useEffect(() => setMounted(true), []);
 
   const requestClose = useCallback(() => {
     if (!disableClose) onClose();
@@ -95,7 +94,7 @@ export function Modal({
     }
   };
 
-  if (!mounted) return null;
+  if (!isClient) return null;
 
   return createPortal(
     <AnimatePresence>

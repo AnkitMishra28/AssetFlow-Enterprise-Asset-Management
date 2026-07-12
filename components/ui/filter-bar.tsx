@@ -117,19 +117,31 @@ export function SearchInput({
   className,
 }: SearchInputProps) {
   const [local, setLocal] = useState(value);
-  const valueRef = useRef(value);
-  valueRef.current = value;
-  const onChangeRef = useRef(onChange);
-  onChangeRef.current = onChange;
+  const [prevValue, setPrevValue] = useState(value);
 
-  // Sync down when the external value changes (e.g. reset/clear).
-  useEffect(() => {
+  // Sync to the external value during render (React's recommended pattern for
+  // adjusting state on prop change - no effect, no setState-in-effect).
+  if (value !== prevValue) {
+    setPrevValue(value);
     setLocal(value);
+  }
+
+  const onChangeRef = useRef(onChange);
+  const lastEmitted = useRef(value);
+
+  // Ref writes happen in effects, never during render.
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+  useEffect(() => {
+    lastEmitted.current = value;
   }, [value]);
 
   useEffect(() => {
+    if (local === lastEmitted.current) return;
     const timer = window.setTimeout(() => {
-      if (local !== valueRef.current) onChangeRef.current(local);
+      lastEmitted.current = local;
+      onChangeRef.current(local);
     }, debounceMs);
     return () => window.clearTimeout(timer);
   }, [local, debounceMs]);
