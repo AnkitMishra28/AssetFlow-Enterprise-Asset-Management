@@ -101,6 +101,7 @@ export default function ResourceBookingScreen() {
   const [bookings, setBookings] = useState<Booking[]>(INITIAL_BOOKINGS);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [focusedBookingId, setFocusedBookingId] = useState<string | null>(null);
 
   // Form states
   const [formTitle, setFormTitle] = useState("");
@@ -122,6 +123,80 @@ export default function ResourceBookingScreen() {
     const [h, m] = timeStr.split(":").map(Number);
     return (h - 9) * 60 + m;
   };
+
+  const bookingPositions = useMemo(() => {
+    const positions: { [key: string]: { left: string; width: string; zIndex: number; isOverlapping: boolean } } = {};
+    const activeAndNotCancelled = activeBookings.filter(b => b.status !== "Cancelled");
+    
+    // Find all overlaps for each booking
+    const overlapsMap: { [key: string]: string[] } = {};
+    activeAndNotCancelled.forEach(b1 => {
+      overlapsMap[b1.id] = [];
+      const b1Start = parseTimeToMinutes(b1.startTime);
+      const b1End = parseTimeToMinutes(b1.endTime);
+      
+      activeAndNotCancelled.forEach(b2 => {
+        if (b1.id === b2.id) return;
+        const b2Start = parseTimeToMinutes(b2.startTime);
+        const b2End = parseTimeToMinutes(b2.endTime);
+        
+        // Check if they overlap
+        if (b1Start < b2End && b1End > b2Start) {
+          overlapsMap[b1.id].push(b2.id);
+        }
+      });
+    });
+
+    // Assign columns for side-by-side rendering
+    const columns: { [key: string]: number } = {};
+    const maxColumnsInGroup: { [key: string]: number } = {};
+    
+    activeAndNotCancelled.forEach(b => {
+      if (columns[b.id] === undefined) {
+        const neighbors = overlapsMap[b.id];
+        const usedCols = neighbors
+          .map(nid => columns[nid])
+          .filter(col => col !== undefined);
+        
+        let col = 0;
+        while (usedCols.includes(col)) {
+          col++;
+        }
+        columns[b.id] = col;
+      }
+    });
+
+    activeAndNotCancelled.forEach(b => {
+      const neighbors = overlapsMap[b.id];
+      let maxCol = columns[b.id];
+      neighbors.forEach(nid => {
+        if (columns[nid] > maxCol) {
+          maxCol = columns[nid];
+        }
+      });
+      const groupSize = neighbors.length > 0 ? maxCol + 1 : 1;
+      maxColumnsInGroup[b.id] = groupSize;
+    });
+
+    activeAndNotCancelled.forEach(b => {
+      const colIndex = columns[b.id] || 0;
+      const groupSize = maxColumnsInGroup[b.id] || 1;
+      const hasOverlap = overlapsMap[b.id].length > 0;
+      
+      const widthPercent = hasOverlap ? 90 / groupSize : 96;
+      const leftPercent = hasOverlap ? 2 + colIndex * (94 / groupSize) : 2;
+      
+      positions[b.id] = {
+        width: `${widthPercent}%`,
+        left: `${leftPercent}%`,
+        zIndex: 10 + colIndex,
+        isOverlapping: hasOverlap
+      };
+    });
+
+    return { positions, overlapsMap };
+  }, [activeBookings]);
+
 
   const getPositionStyles = (startTime: string, endTime: string) => {
     const startMins = parseTimeToMinutes(startTime);
@@ -350,14 +425,30 @@ export default function ResourceBookingScreen() {
                 </div>
 
                 {/* Absolute Bookings Wrapper */}
-                <div className="absolute inset-y-2 left-4 sm:left-8 right-0 pointer-events-none">
+                <div 
+                  className="absolute inset-y-2 left-4 sm:left-8 right-0 pointer-events-none"
+                  onClick={() => setFocusedBookingId(null)}
+                >
                   <AnimatePresence>
                     {activeBookings.map((b) => {
                       if (b.status === "Cancelled") return null;
 
                       const isConflict = b.status === "Conflict";
                       const isOngoing = b.status === "Ongoing";
-                      const styles = getPositionStyles(b.startTime, b.endTime);
+                      const baseStyles = getPositionStyles(b.startTime, b.endTime);
+                      
+                      const layout = bookingPositions.positions[b.id] || { left: "2%", width: "96%", zIndex: 10, isOverlapping: false };
+                      const isThisFocused = focusedBookingId === b.id;
+                      const isAnotherOverlappingFocused = focusedBookingId !== null && 
+                                                          focusedBookingId !== b.id && 
+                                                          (bookingPositions.overlapsMap[focusedBookingId]?.includes(b.id) || false);
+
+                      const mergedStyles = {
+                        ...baseStyles,
+                        left: layout.left,
+                        width: layout.width,
+                        zIndex: isThisFocused ? 40 : (isAnotherOverlappingFocused ? 5 : layout.zIndex),
+                      };
 
                       return (
                         <motion.div
@@ -365,10 +456,22 @@ export default function ResourceBookingScreen() {
                           initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0 }}
-                          style={styles}
-                          className={`absolute left-2 right-4 pointer-events-auto rounded-xl p-3 border transition-all flex flex-col justify-between ${
+                          style={mergedStyles}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setFocusedBookingId(b.id);
+                          }}
+                          className={`absolute pointer-events-auto rounded-xl p-3 border transition-all duration-300 flex flex-col justify-between cursor-pointer select-none ${
+                            isThisFocused 
+                              ? (isConflict ? "ring-2 ring-red-500 scale-[1.02] shadow-lg shadow-red-500/20" : "ring-2 ring-emerald-500 scale-[1.02] shadow-lg shadow-emerald-500/20") 
+                              : ""
+                          } ${
+                            isAnotherOverlappingFocused 
+                              ? "blur-[1.5px] opacity-40 scale-[0.98] saturate-50" 
+                              : ""
+                          } ${
                             isConflict
-                              ? "bg-red-50/90 border-2 border-dashed border-red-400 text-red-900 shadow-sm"
+                              ? "bg-red-50/95 border-2 border-dashed border-red-400 text-red-900 shadow-sm"
                               : isOngoing
                               ? "bg-amber-50 border-amber-300 text-amber-900 border-l-4 border-l-amber-500"
                               : "bg-blue-50/95 border-blue-200 text-blue-900 border-l-4 border-l-blue-600"
@@ -387,7 +490,10 @@ export default function ResourceBookingScreen() {
                             {/* Close/Action buttons */}
                             {isConflict ? (
                               <button
-                                onClick={() => handleRemoveConflict(b.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleRemoveConflict(b.id);
+                                }}
                                 className="p-1 hover:bg-red-100 rounded text-red-500 pointer-events-auto transition-colors shrink-0 cursor-pointer"
                                 title="Dismiss Conflict View"
                               >
@@ -395,7 +501,10 @@ export default function ResourceBookingScreen() {
                               </button>
                             ) : (
                               <button
-                                onClick={() => handleCancelBooking(b.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleCancelBooking(b.id);
+                                }}
                                 className="p-1 hover:bg-slate-200/50 rounded text-slate-400 hover:text-slate-600 pointer-events-auto transition-colors shrink-0 cursor-pointer"
                                 title="Cancel Booking"
                               >

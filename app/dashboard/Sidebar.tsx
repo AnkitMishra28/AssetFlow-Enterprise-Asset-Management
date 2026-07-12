@@ -16,11 +16,11 @@ import Link from "next/link";
 const SIDEBAR_ITEMS = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
   { icon: Settings, label: "Organization Setup", href: "/dashboard/organization-setup" },
-  { icon: Box, label: "Assets", href: "#" },
-  { icon: ArrowRightLeft, label: "Allocation & Transfer", href: "#" },
+  { icon: Box, label: "Assets", href: "/dashboard/assets" },
+  { icon: ArrowRightLeft, label: "Allocation & Transfer", href: "/dashboard/allocation-transfer" },
   { icon: CalendarClock, label: "Resource Booking", href: "/dashboard/resource-booking" },
   { icon: Wrench, label: "Maintenance", href: "/dashboard/maintenance" },
-  { icon: ShieldCheck, label: "Audit", href: "#" },
+  { icon: ShieldCheck, label: "Audit", href: "/dashboard/audit" },
   { icon: BarChart3, label: "Reports", href: "/dashboard/reports" },
   { icon: Bell, label: "Notifications", href: "/dashboard/notifications" },
 ];
