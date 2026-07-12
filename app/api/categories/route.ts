@@ -11,6 +11,7 @@ export async function GET() {
       data: categories
     }, { status: 200 });
   } catch (error: unknown) {
+    console.error("Categories API Error:", error);
     const err = error as { message?: string };
     return NextResponse.json({
       success: false,
@@ -63,6 +64,7 @@ export async function POST(req: Request) {
       data: newCat
     }, { status: 201 });
   } catch (error: unknown) {
+    console.error("Categories API Error:", error);
     const err = error as { code?: number; name?: string; message?: string; errors?: Record<string, unknown> };
     if (err.code === 11000) {
       return NextResponse.json({
