@@ -112,12 +112,22 @@ export default function MaintenanceScreen() {
   const [uploadedPhotoUrl, setUploadedPhotoUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Repair compliance checklist states
+  const [safetyCheck, setSafetyCheck] = useState(false);
+  const [functionalCheck, setFunctionalCheck] = useState(false);
+
   // Load and save localStorage
   useEffect(() => {
     const stored = localStorage.getItem("assetflow_maintenance_requests");
     if (stored) {
       try {
-        setRequests(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setRequests(parsed);
+        } else {
+          setRequests(INITIAL_REQUESTS);
+          localStorage.setItem("assetflow_maintenance_requests", JSON.stringify(INITIAL_REQUESTS));
+        }
       } catch (e) {
         setRequests(INITIAL_REQUESTS);
       }
@@ -276,12 +286,16 @@ export default function MaintenanceScreen() {
           ...req, 
           status: "Resolved" as const, 
           resolvedDate: formattedDate,
-          resolutionNotes: resolutionNotes
+          resolutionNotes: `[Safety: OK | Functional: OK] ${resolutionNotes}`
         };
       }
       return req;
     });
     saveRequests(updated);
+    setIsResolveModalOpen(false);
+    setSelectedReqId(null);
+    setSafetyCheck(false);
+    setFunctionalCheck(false);
 
     // Revert status of asset back to Available in assets localStorage
     try {
@@ -794,6 +808,29 @@ export default function MaintenanceScreen() {
               </div>
 
               <div className="p-6 space-y-4">
+                {/* Compliance checklist */}
+                <div className="bg-slate-50 border border-slate-100 rounded-xl p-3 space-y-2">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Technician Quality Checklist</p>
+                  <label className="flex items-center gap-2 text-xs font-semibold text-slate-600 cursor-pointer select-none">
+                    <input 
+                      type="checkbox"
+                      checked={safetyCheck}
+                      onChange={(e) => setSafetyCheck(e.target.checked)}
+                      className="rounded text-odoo-600 border-slate-350 focus:ring-odoo-500"
+                    />
+                    Safety isolation verified
+                  </label>
+                  <label className="flex items-center gap-2 text-xs font-semibold text-slate-600 cursor-pointer select-none">
+                    <input 
+                      type="checkbox"
+                      checked={functionalCheck}
+                      onChange={(e) => setFunctionalCheck(e.target.checked)}
+                      className="rounded text-odoo-600 border-slate-350 focus:ring-odoo-500"
+                    />
+                    Functional post-repair test passed
+                  </label>
+                </div>
+
                 <div className="space-y-1.5">
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
                     Resolution Notes
@@ -812,14 +849,15 @@ export default function MaintenanceScreen() {
                 <button
                   type="button"
                   onClick={() => setIsResolveModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-650 hover:bg-slate-200 cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-655 hover:bg-slate-200 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleResolve}
-                  className="px-4.5 py-2 rounded-xl text-xs font-bold bg-odoo-600 hover:bg-odoo-700 text-white cursor-pointer"
+                  disabled={!safetyCheck || !functionalCheck || resolutionNotes.trim() === ""}
+                  className="px-4.5 py-2 rounded-xl text-xs font-bold bg-odoo-600 hover:bg-odoo-700 text-white cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Confirm Resolved
                 </button>

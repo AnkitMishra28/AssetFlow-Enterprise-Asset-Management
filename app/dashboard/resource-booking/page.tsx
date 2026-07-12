@@ -154,7 +154,13 @@ export default function ResourceBookingScreen() {
     const stored = localStorage.getItem("assetflow_bookings");
     if (stored) {
       try {
-        setBookings(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setBookings(parsed);
+        } else {
+          setBookings(INITIAL_BOOKINGS);
+          localStorage.setItem("assetflow_bookings", JSON.stringify(INITIAL_BOOKINGS));
+        }
       } catch (e) {
         setBookings(INITIAL_BOOKINGS);
       }
@@ -588,25 +594,27 @@ export default function ResourceBookingScreen() {
               </div>
 
               {/* Hourly Timeline Container */}
-              <div className="relative border-l border-slate-100 pl-4 sm:pl-8 py-2">
+              <div className="relative border-l border-slate-100 pl-4 sm:pl-8 py-2" style={{ height: `${HOURS.length * 80}px` }}>
                 
                 {/* Background Grid Lines */}
-                <div className="space-y-[80px]">
+                <div className="absolute inset-0 left-4 sm:left-8 right-0 pointer-events-none">
                   {HOURS.map((hr, idx) => (
-                    <div key={idx} className="relative flex items-center h-0" style={{ height: "80px" }}>
+                    <div 
+                      key={idx} 
+                      className="absolute left-0 right-0 border-t border-slate-100 flex items-start" 
+                      style={{ top: `${idx * 80}px`, height: "80px" }}
+                    >
                       {/* Hour Label */}
-                      <span className="absolute -left-16 sm:-left-20 text-[11px] font-bold text-slate-400 w-12 text-right">
+                      <span className="absolute -left-16 sm:-left-20 text-[11px] font-bold text-slate-400 w-12 text-right -mt-2">
                         {hr.label}
                       </span>
-                      {/* Grid Line */}
-                      <div className="flex-1 border-t border-slate-100 w-full" />
                     </div>
                   ))}
                 </div>
 
                 {/* Absolute Bookings Wrapper */}
                 <div 
-                  className="absolute inset-y-2 left-4 sm:left-8 right-0 pointer-events-none"
+                  className="absolute inset-0 left-4 sm:left-8 right-0 pointer-events-none"
                   onClick={() => setFocusedBookingId(null)}
                 >
                   <AnimatePresence>
@@ -726,6 +734,101 @@ export default function ResourceBookingScreen() {
                   </p>
                 </div>
               )}
+
+              {/* Selected Booking Receipt/Pass */}
+              {focusedBookingId && (() => {
+                const b = bookings.find(x => x.id === focusedBookingId);
+                if (!b || b.status === "Cancelled") return null;
+                const resourceObj = dynamicResources.find(r => r.id === b.resourceId);
+                
+                return (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-slate-900 text-white rounded-2xl p-5 card-shadow space-y-4 border border-slate-800 relative overflow-hidden"
+                  >
+                    {/* Decorative barcode overlay */}
+                    <div className="absolute right-4 bottom-4 opacity-10 font-mono text-[9px] select-none text-right">
+                      ||||||||||||||||||||||||||||||<br/>
+                      {b.id.toUpperCase()}
+                    </div>
+                    
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <span className="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 bg-slate-850 border border-slate-700 px-2.5 py-0.5 rounded-full">
+                          Booking Access Pass
+                        </span>
+                        <h4 className="text-sm font-extrabold mt-2 text-white">{b.title}</h4>
+                      </div>
+                      <button 
+                        onClick={() => setFocusedBookingId(null)}
+                        className="p-1 hover:bg-slate-800 rounded text-slate-400 cursor-pointer"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="space-y-2.5 text-xs text-slate-300 font-semibold border-t border-slate-800 pt-3">
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Resource:</span>
+                        <span className="text-white">{resourceObj?.name || "Shared Resource"}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Scheduled:</span>
+                        <span className="text-white">{b.startTime} - {b.endTime}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Date:</span>
+                        <span className="text-white">{b.date}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Holder:</span>
+                        <span className="text-white">{b.requestedBy} ({b.department})</span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        const printWindow = window.open("", "_blank");
+                        if (printWindow) {
+                          printWindow.document.write(`
+                            <html>
+                              <head>
+                                <title>Booking Pass - ${b.title}</title>
+                                <style>
+                                  body { font-family: monospace; padding: 40px; color: #333; text-align: center; }
+                                  .pass-box { border: 2px dashed #333; padding: 30px; display: inline-block; text-align: left; }
+                                  h2 { margin-top: 0; }
+                                  .barcode { font-size: 24px; letter-spacing: 2px; margin-top: 20px; font-weight: bold; text-align: center; }
+                                </style>
+                              </head>
+                              <body>
+                                <div class="pass-box">
+                                  <h2>ASSETFLOW BOOKING PASS</h2>
+                                  <hr />
+                                  <p><strong>Title:</strong> ${b.title}</p>
+                                  <p><strong>Resource:</strong> ${resourceObj?.name || "Shared Resource"} (${resourceObj?.type})</p>
+                                  <p><strong>Scheduled Slot:</strong> ${b.startTime} - ${b.endTime} (${b.date})</p>
+                                  <p><strong>Holder:</strong> ${b.requestedBy} (${b.department})</p>
+                                  <p><strong>Status:</strong> ${b.status}</p>
+                                  <hr />
+                                  <div class="barcode">|||| ||||| |||| |||||</div>
+                                  <div style="text-align:center;font-size:9px;margin-top:5px;">SECURE-TOKEN: ${b.id}</div>
+                                </div>
+                                <script>window.print();</script>
+                              </body>
+                            </html>
+                          `);
+                          printWindow.document.close();
+                        }
+                      }}
+                      className="w-full bg-white hover:bg-slate-100 text-slate-900 py-2 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
+                    >
+                      Print Booking Pass
+                    </button>
+                  </motion.div>
+                );
+              })()}
 
               {/* Active list card */}
               <div className="bg-white border border-slate-200 rounded-2xl p-5 card-shadow space-y-4">

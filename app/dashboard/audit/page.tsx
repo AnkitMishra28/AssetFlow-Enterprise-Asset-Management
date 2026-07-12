@@ -131,6 +131,57 @@ const DEFAULT_ASSETS: Asset[] = [
     ],
     allocatedTo: "Rahul Sharma",
     allocatedToDept: "Engineering"
+  },
+  {
+    tag: "AF-0078",
+    name: "Toyota Forklift",
+    category: "Vehicles",
+    serialNumber: "TY-FL-78",
+    acquisitionDate: "2022-11-04",
+    acquisitionCost: 850000,
+    condition: "Fair",
+    location: "Main Warehouse",
+    status: "Allocated",
+    isSharedBookable: false,
+    history: [
+      { type: "Registration", date: "2022-11-04", details: "Registered heavy vehicle", actor: "Raj Verma" }
+    ],
+    allocatedTo: "Logistics Team",
+    allocatedToDept: "Logistics"
+  },
+  {
+    tag: "AF-0873",
+    name: "Ergonomic Office Chair",
+    category: "Furniture",
+    serialNumber: "CH-ERG-873",
+    acquisitionDate: "2025-05-18",
+    acquisitionCost: 15000,
+    condition: "Good",
+    location: "Desk S4",
+    status: "Allocated",
+    isSharedBookable: false,
+    history: [
+      { type: "Registration", date: "2025-05-18", details: "Registered furniture chair", actor: "Raj Verma" }
+    ],
+    allocatedTo: "Karan Johar",
+    allocatedToDept: "Sales"
+  },
+  {
+    tag: "AF-0897",
+    name: "HP LaserJet Printer",
+    category: "Electronics",
+    serialNumber: "HP-LJ-897",
+    acquisitionDate: "2025-06-22",
+    acquisitionCost: 22000,
+    condition: "Good",
+    location: "Procurement Office Closet",
+    status: "Available",
+    isSharedBookable: true,
+    history: [
+      { type: "Registration", date: "2025-06-22", details: "Registered office printer", actor: "Raj Verma" }
+    ],
+    allocatedTo: "Procurement Desk",
+    allocatedToDept: "Procurement"
   }
 ];
 
@@ -146,6 +197,10 @@ export default function AuditScreen() {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [scanTagInput, setScanTagInput] = useState("");
   const [scanSuccessMessage, setScanSuccessMessage] = useState<string | null>(null);
+  
+  // Compliance Authorization states
+  const [isComplianceChecked, setIsComplianceChecked] = useState(false);
+  const [auditorSignature, setAuditorSignature] = useState("");
   
   // Create Cycle Modal Form state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -426,7 +481,7 @@ export default function AuditScreen() {
         type: "Audit",
         date: new Date().toISOString().split("T")[0],
         details: `${detailsText} (${activeCycle.name})`,
-        actor: activeCycle.auditors.join(", ")
+        actor: `${activeCycle.auditors.join(", ")} (Compliance Sealed by: ${auditorSignature})`
       };
 
       return {
@@ -448,6 +503,8 @@ export default function AuditScreen() {
     const updatedAudits = audits.map(a => a.id === activeCycle.id ? closedCycle : a);
     saveAudits(updatedAudits);
     setActiveCycle(null);
+    setIsComplianceChecked(false);
+    setAuditorSignature("");
   };
 
   // Stats for the active cycle
@@ -523,14 +580,37 @@ export default function AuditScreen() {
                   </div>
                 </div>
 
-                <div className="text-right">
+                <div className="text-right space-y-3">
+                  {activeStats.pending === 0 ? (
+                    <div className="text-left bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+                      <label className="flex items-start gap-2 cursor-pointer select-none">
+                        <input 
+                          type="checkbox"
+                          checked={isComplianceChecked}
+                          onChange={(e) => setIsComplianceChecked(e.target.checked)}
+                          className="mt-0.5 rounded text-odoo-600 border-slate-350 focus:ring-odoo-500"
+                        />
+                        <span className="text-[10px] font-semibold text-slate-650 leading-normal">
+                          I certify that all assets in this scope have been verified.
+                        </span>
+                      </label>
+                      <input 
+                        type="text"
+                        placeholder="Auditor signature name..."
+                        value={auditorSignature}
+                        onChange={(e) => setAuditorSignature(e.target.value)}
+                        className="w-full bg-white border border-slate-200 focus:border-odoo-500 rounded-lg px-2 py-1 text-[10px] font-semibold focus:outline-none focus:bg-white transition-all text-slate-700"
+                      />
+                    </div>
+                  ) : null}
+
                   <button
                     onClick={handleCloseAuditCycle}
-                    disabled={activeStats.pending > 0}
+                    disabled={activeStats.pending > 0 || (activeStats.pending === 0 && (!isComplianceChecked || auditorSignature.trim() === ""))}
                     className="w-full bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed text-white py-3.5 rounded-xl font-bold text-xs shadow-md transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <Lock className="w-4 h-4" />
-                    Close Audit Cycle
+                    Close & Authorize Audit
                   </button>
                   {activeStats.pending > 0 && (
                     <span className="block text-[10px] text-slate-400 font-semibold mt-1.5 text-center">
