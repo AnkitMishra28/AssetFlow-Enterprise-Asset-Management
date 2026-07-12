@@ -53,6 +53,7 @@ export async function GET() {
       }
     }, { status: 200 });
   } catch (error: unknown) {
+    console.error("Dashboard API Error:", error);
     const err = error as { message?: string };
     return NextResponse.json({
       success: false,

@@ -105,9 +105,5 @@ const AssetSchema: Schema = new Schema(
   }
 );
 
-// Indexes
-AssetSchema.index({ assetTag: 1 }, { unique: true });
-AssetSchema.index({ serialNumber: 1 }, { unique: true });
-
 const Asset: Model<IAsset> = mongoose.models.Asset || mongoose.model<IAsset>("Asset", AssetSchema);
 export default Asset;

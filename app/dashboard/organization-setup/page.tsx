@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { 
   Plus, 
   Info, 
@@ -36,8 +36,14 @@ export function StatusBadge({ status }: StatusBadgeProps) {
 }
 
 interface Toast {
-  id: number;
+  id: string;
   message: string;
+}
+
+function makeToastId() {
+  return typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `toast-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
 export default function OrganizationSetupScreen() {
@@ -45,15 +51,10 @@ export default function OrganizationSetupScreen() {
   
   // Toasts state for showing success messages
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const toastIdRef = useRef(0);
 
   // Trigger toast notifications
   const showToast = (message: string) => {
-    const id = ++toastIdRef.current;
-    setToasts((prev) => [...prev, { id, message }]);
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3000);
+    const id = makeToastId();
   };
 
   // Helper to extract initials from a full name

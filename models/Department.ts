@@ -38,8 +38,5 @@ const DepartmentSchema: Schema = new Schema(
   }
 );
 
-// Indexes
-DepartmentSchema.index({ name: 1 }, { unique: true });
-
 const Department: Model<IDepartment> = mongoose.models.Department || mongoose.model<IDepartment>("Department", DepartmentSchema);
 export default Department;

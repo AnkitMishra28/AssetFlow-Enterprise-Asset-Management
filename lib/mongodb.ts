@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI!;
+const MONGODB_URI = process.env.MONGODB_URI;
+const DB_NAME = process.env.DB_NAME;
 
 if (!MONGODB_URI) {
   throw new Error(
@@ -27,6 +28,8 @@ if (!global.mongoose) {
 }
 
 async function dbConnect() {
+  const connectionString = MONGODB_URI as string;
+
   if (cached.conn) {
     return cached.conn;
   }
@@ -34,9 +37,11 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      dbName: DB_NAME || undefined,
+      serverSelectionTimeoutMS: 15000,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(connectionString, opts).then((mongoose) => {
       return mongoose;
     });
   }

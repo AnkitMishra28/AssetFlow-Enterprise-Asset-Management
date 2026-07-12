@@ -11,6 +11,7 @@ export async function GET() {
       data: notifications
     }, { status: 200 });
   } catch (error: unknown) {
+    console.error("Notifications API Error:", error);
     const err = error as { message?: string };
     return NextResponse.json({
       success: false,
@@ -28,6 +29,7 @@ export async function PUT() {
       message: "All notifications marked as read"
     }, { status: 200 });
   } catch (error: unknown) {
+    console.error("Notifications API Error:", error);
     const err = error as { message?: string };
     return NextResponse.json({
       success: false,
