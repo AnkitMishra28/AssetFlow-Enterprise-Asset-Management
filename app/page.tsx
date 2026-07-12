@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { Box, CheckCircle2, CalendarClock, Wrench, ShieldCheck, ArrowRightLeft, Users, FileText, BarChart3, ChevronDown, MessageSquare } from "lucide-react";
+import { Rocket, Box, CheckCircle2, CalendarClock, Wrench, ShieldCheck, ArrowRightLeft, Users, FileText, BarChart3, ChevronDown, MessageSquare } from "lucide-react";
 import StarfieldBackground from "@/components/StarfieldBackground";
 import AppleIntro from "@/components/AppleIntro";
 
@@ -65,8 +65,9 @@ export default function LandingPage() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="mb-8"
         >
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/5 border border-white/15 text-sm font-bold text-odoo-200 shadow-sm backdrop-blur-md">
-            🚀 The Modern standard for ERP
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/15 text-sm font-bold text-odoo-200 shadow-sm backdrop-blur-md">
+            <Rocket className="w-4 h-4 shrink-0" />
+            <span>The Modern standard for ERP</span>
           </span>
         </motion.div>
 

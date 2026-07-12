@@ -15,13 +15,10 @@ import {
   Activity,
   PackageCheck,
   AlertCircle,
-<<<<<<< HEAD
   Lock,
-=======
   Sparkles,
   X,
   Printer
->>>>>>> 1b75fc5f8719443f4da8700dac4f5567a7166ea5
 } from "lucide-react";
 import Sidebar from "../Sidebar";
 import { apiRequest } from "../../../lib/api";
