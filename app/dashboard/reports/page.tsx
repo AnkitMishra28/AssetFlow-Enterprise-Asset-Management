@@ -79,7 +79,7 @@ const HEAT: { day: string; cells: number[] }[] = [
   { day: "Fri", cells: [1, 2, 3, 1, 1, 4, 3, 2, 0] },
 ];
 // Full literal class strings so Tailwind's JIT keeps them.
-const HEAT_CLASS = ["bg-slate-100", "bg-emerald-100", "bg-emerald-200", "bg-emerald-300", "bg-emerald-400", "bg-emerald-500"];
+const HEAT_CLASS = ["bg-slate-100", "bg-odoo-100", "bg-odoo-200", "bg-odoo-300", "bg-odoo-400", "bg-odoo-500"];
 
 const PERIODS = ["This Month", "This Quarter", "This Year"];
 
@@ -109,7 +109,7 @@ function Panel({
     >
       <div className="px-5 sm:px-6 pt-5 pb-4 border-b border-slate-100">
         <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 tracking-tight">
-          <Icon className="w-4 h-4 text-emerald-600" />
+          <Icon className="w-4 h-4 text-odoo-600" />
           {title}
         </h2>
         {subtitle && <p className="text-xs text-slate-400 mt-1">{subtitle}</p>}
@@ -169,8 +169,8 @@ export default function ReportsScreen() {
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-                <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100">
-                  <BarChart3 className="w-5 h-5 text-emerald-600" />
+                <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-odoo-50 border border-odoo-100">
+                  <BarChart3 className="w-5 h-5 text-odoo-600" />
                 </span>
                 Reports &amp; Analytics
               </h1>
@@ -183,7 +183,7 @@ export default function ReportsScreen() {
               <select
                 value={period}
                 onChange={(e) => setPeriod(e.target.value)}
-                className="bg-white border border-slate-200 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-emerald-500 card-shadow cursor-pointer"
+                className="bg-white border border-slate-200 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-odoo-500 card-shadow cursor-pointer"
               >
                 {PERIODS.map((p) => (
                   <option key={p} value={p}>{p}</option>
@@ -191,7 +191,7 @@ export default function ReportsScreen() {
               </select>
               <button
                 onClick={exportCSV}
-                className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-emerald-700 transition-all shadow-md shadow-emerald-600/20 flex items-center gap-2"
+                className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center gap-2"
               >
                 <Download className="w-4 h-4" />
                 Export Report
@@ -214,12 +214,12 @@ export default function ReportsScreen() {
                   className="bg-white border border-slate-200 rounded-2xl p-5 card-shadow"
                 >
                   <div className="flex items-center justify-between mb-3">
-                    <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-100">
-                      <Icon className="w-4 h-4 text-emerald-600" />
+                    <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-odoo-50 border border-odoo-100">
+                      <Icon className="w-4 h-4 text-odoo-600" />
                     </span>
                     <span
                       className={`flex items-center gap-1 text-xs font-bold ${
-                        positive ? "text-emerald-600" : neutralIdle ? "text-emerald-600" : "text-red-600"
+                        positive ? "text-odoo-600" : neutralIdle ? "text-odoo-600" : "text-red-600"
                       }`}
                     >
                       {positive ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
@@ -245,7 +245,7 @@ export default function ReportsScreen() {
                         initial={{ height: "0%" }}
                         animate={{ height: `${d.value}%` }}
                         transition={{ duration: 0.7, delay: i * 0.06, ease: "easeOut" }}
-                        className="w-full max-w-[2.75rem] rounded-t-lg bg-gradient-to-t from-emerald-500 to-emerald-400 relative"
+                        className="w-full max-w-[2.75rem] rounded-t-lg bg-gradient-to-t from-odoo-500 to-odoo-400 relative"
                       >
                         <span className="absolute -top-5 left-0 right-0 text-center text-xs font-bold text-slate-600">
                           {d.value}
@@ -309,7 +309,7 @@ export default function ReportsScreen() {
               <ul className="space-y-1">
                 {MOST_USED.map((a, i) => (
                   <li key={a.tag} className="flex items-center gap-4 py-2.5">
-                    <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-50 border border-emerald-100 text-xs font-bold text-emerald-700 shrink-0">
+                    <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-odoo-50 border border-odoo-100 text-xs font-bold text-odoo-700 shrink-0">
                       {i + 1}
                     </span>
                     <div className="flex-1 min-w-0">
@@ -318,7 +318,7 @@ export default function ReportsScreen() {
                       </p>
                       <p className="text-xs text-slate-500">{a.meta}</p>
                     </div>
-                    <TrendingUp className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <TrendingUp className="w-4 h-4 text-odoo-500 shrink-0" />
                   </li>
                 ))}
               </ul>

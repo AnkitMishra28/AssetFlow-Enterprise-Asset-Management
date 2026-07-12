@@ -298,7 +298,7 @@ export default function AssetsScreen() {
   const getStatusStyle = (status: Asset["status"]) => {
     switch (status) {
       case "Available":
-        return "bg-emerald-50 text-emerald-700 border-emerald-100";
+        return "bg-odoo-50 text-odoo-700 border-odoo-100";
       case "Allocated":
         return "bg-blue-50 text-blue-700 border-blue-100";
       case "Reserved":
@@ -322,7 +322,7 @@ export default function AssetsScreen() {
       case "New":
         return "bg-sky-50 text-sky-700 border-sky-100";
       case "Good":
-        return "bg-emerald-50 text-emerald-700 border-emerald-100";
+        return "bg-odoo-50 text-odoo-700 border-odoo-100";
       case "Fair":
         return "bg-amber-50 text-amber-700 border-amber-100";
       case "Poor":
@@ -341,8 +341,8 @@ export default function AssetsScreen() {
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-                  <Box className="w-5 h-5 text-emerald-600" />
+                <div className="w-10 h-10 rounded-xl bg-odoo-50 border border-odoo-100 flex items-center justify-center">
+                  <Box className="w-5 h-5 text-odoo-600" />
                 </div>
                 Asset Directory &amp; Registry
               </h1>
@@ -353,7 +353,7 @@ export default function AssetsScreen() {
 
             <button
               onClick={() => setIsRegModalOpen(true)}
-              className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-emerald-700 transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer"
+              className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               Register Asset
@@ -372,7 +372,7 @@ export default function AssetsScreen() {
               </div>
             </div>
             <div className="bg-white border border-slate-200 rounded-2xl p-4 card-shadow flex items-center gap-4">
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-650 shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-odoo-50 border border-odoo-100 flex items-center justify-center text-odoo-650 shrink-0">
                 <CheckCircle2 className="w-5 h-5" />
               </div>
               <div>
@@ -412,7 +412,7 @@ export default function AssetsScreen() {
                   placeholder="Search assets by tag, serial, location, or name..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 pl-10 pr-4 py-2.5 rounded-xl text-sm font-semibold focus:outline-none focus:border-emerald-500 focus:bg-white text-slate-900 transition-all placeholder:text-slate-400"
+                  className="w-full bg-slate-50 border border-slate-200 pl-10 pr-4 py-2.5 rounded-xl text-sm font-semibold focus:outline-none focus:border-odoo-500 focus:bg-white text-slate-900 transition-all placeholder:text-slate-400"
                 />
               </div>
 
@@ -422,7 +422,7 @@ export default function AssetsScreen() {
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:border-odoo-500"
                   >
                     <option value="All">All Categories</option>
                     {CATEGORIES.map(c => (
@@ -434,7 +434,7 @@ export default function AssetsScreen() {
                   <select
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:border-odoo-500"
                   >
                     <option value="All">All Statuses</option>
                     {STATUSES.map(s => (
@@ -478,11 +478,11 @@ export default function AssetsScreen() {
                         {/* Info */}
                         <td className="py-4 px-6">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
+                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-odoo-50 group-hover:text-odoo-600 transition-colors">
                               <Box className="w-4 h-4" />
                             </div>
                             <div>
-                              <div className="font-bold text-sm text-slate-900 group-hover:text-emerald-650 transition-colors flex items-center gap-1.5">
+                              <div className="font-bold text-sm text-slate-900 group-hover:text-odoo-650 transition-colors flex items-center gap-1.5">
                                 {asset.name}
                                 {asset.isSharedBookable && (
                                   <span className="text-[9px] font-bold bg-sky-100 text-sky-700 px-1.5 py-0.5 rounded-full uppercase tracking-wider">Bookable</span>
@@ -531,7 +531,7 @@ export default function AssetsScreen() {
                               e.stopPropagation();
                               setSelectedAsset(asset);
                             }}
-                            className="bg-slate-100 hover:bg-emerald-50 text-slate-500 hover:text-emerald-605 p-2 rounded-xl text-xs font-bold transition-all inline-flex items-center gap-1 cursor-pointer border border-slate-200 hover:border-emerald-100"
+                            className="bg-slate-100 hover:bg-odoo-50 text-slate-500 hover:text-odoo-605 p-2 rounded-xl text-xs font-bold transition-all inline-flex items-center gap-1 cursor-pointer border border-slate-200 hover:border-odoo-100"
                           >
                             <History className="w-4 h-4" />
                             Timeline
@@ -570,7 +570,7 @@ export default function AssetsScreen() {
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-slate-100">
                 <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <Box className="w-5 h-5 text-emerald-600" />
+                  <Box className="w-5 h-5 text-odoo-600" />
                   Register New Enterprise Asset
                 </h3>
                 <button 
@@ -594,7 +594,7 @@ export default function AssetsScreen() {
                       value={regName}
                       onChange={(e) => setRegName(e.target.value)}
                       placeholder="e.g. Epson 4K Projector or Dell Latitude 5440"
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white text-slate-900 font-medium transition-colors"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white text-slate-900 font-medium transition-colors"
                     />
                   </div>
 
@@ -605,7 +605,7 @@ export default function AssetsScreen() {
                       <select
                         value={regCategory}
                         onChange={(e) => setRegCategory(e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 text-slate-900 font-semibold"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 text-slate-900 font-semibold"
                       >
                         {CATEGORIES.map(c => (
                           <option key={c} value={c}>{c}</option>
@@ -621,7 +621,7 @@ export default function AssetsScreen() {
                         value={regSerial}
                         onChange={(e) => setRegSerial(e.target.value)}
                         placeholder="e.g. SN-XXXX-XXXX"
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white text-slate-900 font-medium"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white text-slate-900 font-medium"
                       />
                     </div>
                   </div>
@@ -637,7 +637,7 @@ export default function AssetsScreen() {
                         value={regCost}
                         onChange={(e) => setRegCost(e.target.value)}
                         placeholder="e.g. 1200"
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white text-slate-900 font-medium"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white text-slate-900 font-medium"
                       />
                     </div>
 
@@ -650,7 +650,7 @@ export default function AssetsScreen() {
                         type="date"
                         value={regDate}
                         onChange={(e) => setRegDate(e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 text-slate-900 font-semibold"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 text-slate-900 font-semibold"
                       />
                     </div>
                   </div>
@@ -662,7 +662,7 @@ export default function AssetsScreen() {
                       <select
                         value={regCondition}
                         onChange={(e) => setRegCondition(e.target.value as any)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 text-slate-900 font-semibold"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 text-slate-900 font-semibold"
                       >
                         {CONDITIONS.map(c => (
                           <option key={c} value={c}>{c}</option>
@@ -680,7 +680,7 @@ export default function AssetsScreen() {
                         value={regLocation}
                         onChange={(e) => setRegLocation(e.target.value)}
                         placeholder="e.g. IT Storage or Floor 2"
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white text-slate-900 font-medium"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white text-slate-900 font-medium"
                       />
                     </div>
                   </div>
@@ -692,7 +692,7 @@ export default function AssetsScreen() {
                       id="shared-flag"
                       checked={regIsShared}
                       onChange={(e) => setRegIsShared(e.target.checked)}
-                      className="w-4.5 h-4.5 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500 focus:ring-offset-0 cursor-pointer"
+                      className="w-4.5 h-4.5 text-odoo-600 border-slate-300 rounded focus:ring-odoo-500 focus:ring-offset-0 cursor-pointer"
                     />
                     <div>
                       <label htmlFor="shared-flag" className="block text-sm font-bold text-slate-800 cursor-pointer">
@@ -717,7 +717,7 @@ export default function AssetsScreen() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-md shadow-emerald-600/10 cursor-pointer"
+                    className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-odoo-600 hover:bg-odoo-700 text-white transition-all shadow-md shadow-odoo-600/10 cursor-pointer"
                   >
                     Save Asset
                   </button>
@@ -752,7 +752,7 @@ export default function AssetsScreen() {
               {/* Header */}
               <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-650 shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-odoo-50 border border-odoo-100 flex items-center justify-center text-odoo-650 shrink-0">
                     <Box className="w-5 h-5" />
                   </div>
                   <div>
@@ -823,7 +823,7 @@ export default function AssetsScreen() {
                 {/* History Timeline */}
                 <div className="space-y-4">
                   <h4 className="font-extrabold text-sm text-slate-900 flex items-center gap-2">
-                    <History className="w-4 h-4 text-emerald-600" />
+                    <History className="w-4 h-4 text-odoo-600" />
                     Asset Activity &amp; Status Timeline
                   </h4>
 
@@ -833,7 +833,7 @@ export default function AssetsScreen() {
                       
                       switch (log.type) {
                         case "Registration":
-                          iconBg = "bg-emerald-50 text-emerald-600 border-emerald-100";
+                          iconBg = "bg-odoo-50 text-odoo-600 border-odoo-100";
                           break;
                         case "Allocation":
                           iconBg = "bg-blue-50 text-blue-600 border-blue-100";
