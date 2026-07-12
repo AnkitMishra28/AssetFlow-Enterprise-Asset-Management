@@ -14,6 +14,7 @@ type Message = {
 
 export default function TaraChatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showGreeting, setShowGreeting] = useState(true);
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "Hi! I'm Tara, your AssetFlow AI assistant. How can I help you today?" }
   ]);
@@ -177,16 +178,34 @@ export default function TaraChatbot() {
       <div className={`fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 transition-all ${isOpen ? 'scale-0 opacity-0 pointer-events-none' : 'scale-100 opacity-100'}`}>
         
         {/* Greeting Bubble */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 1.5, duration: 0.5, type: "spring" }}
-          className="bg-white px-5 py-3.5 rounded-2xl rounded-br-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-slate-200 cursor-pointer hover:shadow-2xl hover:-translate-y-1 transition-all origin-bottom-right"
-          onClick={() => setIsOpen(true)}
-        >
-          <p className="text-sm font-bold text-slate-800">Hi, I'm Tara! 👋</p>
-          <p className="text-xs font-medium text-slate-500 mt-0.5">How can I help you today?</p>
-        </motion.div>
+        <AnimatePresence>
+          {showGreeting && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8, y: 10 }}
+              transition={{ delay: 1.5, duration: 0.5, type: "spring" }}
+              className="bg-white pl-5 pr-10 py-3.5 rounded-2xl rounded-br-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-slate-200 cursor-pointer hover:shadow-2xl hover:-translate-y-1 transition-all origin-bottom-right relative group"
+              onClick={() => {
+                setIsOpen(true);
+                setShowGreeting(false);
+              }}
+            >
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowGreeting(false);
+                }}
+                className="absolute top-2 right-2 p-1 text-slate-300 hover:text-slate-500 hover:bg-slate-100 rounded-md transition-colors"
+                title="Dismiss"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              <p className="text-sm font-bold text-slate-800">Hi, I'm Tara! 👋</p>
+              <p className="text-xs font-medium text-slate-500 mt-0.5">How can I help you today?</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Floating Avatar Button */}
         <button
