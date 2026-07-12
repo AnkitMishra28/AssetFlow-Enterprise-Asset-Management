@@ -14,7 +14,8 @@ import {
   User,
   Info,
   Calendar,
-  AlertCircle
+  AlertCircle,
+  Search
 } from "lucide-react";
 import Sidebar from "../Sidebar";
 
@@ -369,11 +370,12 @@ export default function MaintenanceScreen() {
               <div className="relative">
                 <input 
                   type="text"
-                  placeholder="🔍 Search tickets..."
+                  placeholder="Search tickets..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-odoo-500 transition-all font-semibold w-full sm:w-64"
+                  className="bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-odoo-500 transition-all font-semibold w-full sm:w-64"
                 />
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
               </div>
 
               <button
@@ -904,10 +906,10 @@ function MaintenanceCard({ request, onAction, onReject, actionLabel, rejectLabel
         </div>
       )}
 
-      {/* AI Urgency Rating */}
+      {/* Calculated Urgency Rating */}
       <div className="flex items-center justify-between text-[10px] bg-slate-50 px-2 py-1 rounded-lg border border-slate-100 mt-1">
         <span className="text-slate-500 font-bold flex items-center gap-1">
-          🤖 AI Urgency Score
+          Urgency Rating
         </span>
         <span className={`font-extrabold ${
           urgencyScore > 80 ? "text-red-700" : urgencyScore > 50 ? "text-amber-600" : "text-blue-700"

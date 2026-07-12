@@ -20,7 +20,11 @@ import {
   Search,
   QrCode,
   Activity,
-  Sparkles
+  Laptop,
+  Monitor,
+  Tv,
+  Camera,
+  Package
 } from "lucide-react";
 import Sidebar from "../Sidebar";
 
@@ -77,6 +81,59 @@ const DEFAULT_AUDITS: AuditCycle[] = [
   }
 ];
 
+const DEFAULT_ASSETS: Asset[] = [
+  {
+    tag: "AF-0114",
+    name: "MacBook Pro M3",
+    category: "Electronics",
+    serialNumber: "AP-MBP-2026",
+    acquisitionDate: "2026-01-15",
+    acquisitionCost: 185000,
+    condition: "New",
+    location: "Desk E12",
+    status: "Allocated",
+    isSharedBookable: false,
+    history: [
+      { type: "Registration", date: "2026-01-15", details: "Registered new Macbook", actor: "Raj Verma" }
+    ],
+    allocatedTo: "Priya Shah",
+    allocatedToDept: "Engineering"
+  },
+  {
+    tag: "AF-0062",
+    name: "Epson 4K Projector",
+    category: "Electronics",
+    serialNumber: "EP-PROJ-662",
+    acquisitionDate: "2024-08-20",
+    acquisitionCost: 95000,
+    condition: "Fair",
+    location: "Conference Room B2",
+    status: "Available",
+    isSharedBookable: true,
+    history: [
+      { type: "Registration", date: "2024-08-20", details: "Registered shared projector", actor: "Raj Verma" }
+    ],
+    allocatedToDept: "Engineering"
+  },
+  {
+    tag: "AF-0012",
+    name: "ThinkPad X1 Carbon laptop",
+    category: "Electronics",
+    serialNumber: "TP-X1-0012",
+    acquisitionDate: "2025-03-10",
+    acquisitionCost: 120000,
+    condition: "Good",
+    location: "Desk F14",
+    status: "Allocated",
+    isSharedBookable: false,
+    history: [
+      { type: "Registration", date: "2025-03-10", details: "Registered corporate laptop", actor: "Raj Verma" }
+    ],
+    allocatedTo: "Rahul Sharma",
+    allocatedToDept: "Engineering"
+  }
+];
+
 export default function AuditScreen() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [audits, setAudits] = useState<AuditCycle[]>([]);
@@ -104,8 +161,19 @@ export default function AuditScreen() {
     const storedAssets = localStorage.getItem("assetflow_assets");
     if (storedAssets) {
       try {
-        setAssets(JSON.parse(storedAssets));
-      } catch (e) {}
+        const parsed = JSON.parse(storedAssets);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setAssets(parsed);
+        } else {
+          setAssets(DEFAULT_ASSETS);
+          localStorage.setItem("assetflow_assets", JSON.stringify(DEFAULT_ASSETS));
+        }
+      } catch (e) {
+        setAssets(DEFAULT_ASSETS);
+      }
+    } else {
+      setAssets(DEFAULT_ASSETS);
+      localStorage.setItem("assetflow_assets", JSON.stringify(DEFAULT_ASSETS));
     }
     
     // Audits
@@ -620,26 +688,24 @@ export default function AuditScreen() {
                               <td className="py-4 px-6">
                                 <div className="flex items-center gap-3">
                                   {/* Asset Thumbnail Icon */}
-                                  <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0 shadow-3xs">
-                                    <span className="text-lg">
-                                      {asset.name.toLowerCase().includes("laptop") || asset.name.toLowerCase().includes("macbook") ? "💻" :
-                                       asset.name.toLowerCase().includes("monitor") || asset.name.toLowerCase().includes("screen") ? "🖥️" :
-                                       asset.name.toLowerCase().includes("projector") ? "📹" :
-                                       asset.name.toLowerCase().includes("camera") ? "📷" :
-                                       asset.name.toLowerCase().includes("chair") ? "🪑" : "📦"}
-                                    </span>
+                                  <div className="w-10 h-10 rounded-xl bg-slate-55 border border-slate-200 flex items-center justify-center shrink-0 shadow-3xs">
+                                    {asset.name.toLowerCase().includes("laptop") || asset.name.toLowerCase().includes("macbook") ? <Laptop className="w-5 h-5 text-slate-500" /> :
+                                     asset.name.toLowerCase().includes("monitor") || asset.name.toLowerCase().includes("screen") ? <Monitor className="w-5 h-5 text-slate-500" /> :
+                                     asset.name.toLowerCase().includes("projector") ? <Tv className="w-5 h-5 text-slate-500" /> :
+                                     asset.name.toLowerCase().includes("camera") ? <Camera className="w-5 h-5 text-slate-500" /> :
+                                     <Package className="w-5 h-5 text-slate-500" />}
                                   </div>
 
                                   <div className="min-w-0">
                                     <div className="text-sm font-bold text-slate-905 flex items-center gap-1.5 flex-wrap">
                                       {asset.name}
-                                      {/* AI Risk Score Badges */}
+                                      {/* Risk Score Badges */}
                                       <span className={`text-[8px] font-extrabold px-1.5 py-0.5 rounded-md flex items-center gap-0.5 select-none ${
                                         riskScore > 80 ? "bg-red-50 text-red-750 border border-red-150" :
                                         riskScore > 50 ? "bg-amber-50 text-amber-755 border border-amber-150" :
                                         "bg-emerald-50 text-emerald-750 border border-emerald-150"
                                       }`}>
-                                        <Sparkles className="w-2.5 h-2.5 shrink-0" /> Risk: {riskScore}%
+                                        <Activity className="w-2.5 h-2.5 shrink-0" /> Risk Factor: {riskScore}%
                                       </span>
                                     </div>
                                     <div className="text-[11px] font-semibold text-slate-450 mt-0.5 flex items-center gap-1.5">
@@ -666,8 +732,8 @@ export default function AuditScreen() {
                               <td className="py-4 px-6 text-sm text-slate-600 font-semibold">
                                 <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-slate-450" /> {asset.location}</span>
                                 {asset.location.toLowerCase().includes("lobby") && (
-                                  <span className="mt-1 block w-fit text-[9px] font-extrabold text-amber-700 bg-amber-50 border border-amber-150 px-1.5 py-0.5 rounded-md uppercase tracking-wider">
-                                    ⚠️ Location Shifted
+                                  <span className="mt-1 block w-fit text-[9px] font-extrabold text-amber-700 bg-amber-50 border border-amber-150 px-1.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1">
+                                    <AlertTriangle className="w-3 h-3 text-amber-600" /> Location Discrepancy
                                   </span>
                                 )}
                               </td>

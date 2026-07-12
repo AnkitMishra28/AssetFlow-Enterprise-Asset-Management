@@ -197,6 +197,14 @@ export default function ResourceBookingScreen() {
     return dynamicResources.find(r => r.id === selectedResourceId) || dynamicResources[0];
   }, [dynamicResources, selectedResourceId]);
 
+  const activeResourceStatus = useMemo(() => {
+    const todayBookings = bookings.filter(b => b.resourceId === selectedResourceId && b.date === selectedDate && b.status !== "Cancelled");
+    if (todayBookings.length === 0) return { label: "Available All Day", color: "bg-emerald-50 text-emerald-700 border-emerald-250" };
+    const conflict = todayBookings.some(b => b.status === "Conflict");
+    if (conflict) return { label: "Conflicts Detected", color: "bg-red-50 text-red-700 border-red-250" };
+    return { label: `${todayBookings.length} Allocated Slot(s)`, color: "bg-blue-50 text-blue-700 border-blue-250" };
+  }, [bookings, selectedResourceId, selectedDate]);
+
   const activeBookings = useMemo(() => {
     return bookings.filter(b => {
       if (b.resourceId !== selectedResourceId || b.date !== selectedDate) return false;
@@ -426,7 +434,7 @@ export default function ResourceBookingScreen() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white border border-slate-200 rounded-2xl p-4 card-shadow flex items-center justify-between">
               <div>
-                <p className="text-[10px] font-bold text-slate-450 uppercase tracking-wider">Total Bookings</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Bookings</p>
                 <h3 className="text-2xl font-extrabold text-slate-900 mt-1">{stats.total}</h3>
               </div>
               <div className="w-10 h-10 bg-odoo-50 text-odoo-600 rounded-xl flex items-center justify-center border border-odoo-100">
@@ -435,7 +443,7 @@ export default function ResourceBookingScreen() {
             </div>
             <div className="bg-white border border-slate-200 rounded-2xl p-4 card-shadow flex items-center justify-between">
               <div>
-                <p className="text-[10px] font-bold text-slate-450 uppercase tracking-wider">Rooms Booked</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Rooms Booked</p>
                 <h3 className="text-2xl font-extrabold text-slate-900 mt-1">{stats.rooms}</h3>
               </div>
               <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center border border-blue-100">
@@ -444,19 +452,19 @@ export default function ResourceBookingScreen() {
             </div>
             <div className="bg-white border border-slate-200 rounded-2xl p-4 card-shadow flex items-center justify-between">
               <div>
-                <p className="text-[10px] font-bold text-slate-455 uppercase tracking-wider">Vehicles Booked</p>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Vehicles Booked</p>
                 <h3 className="text-2xl font-extrabold text-slate-900 mt-1">{stats.vehicles}</h3>
               </div>
-              <div className="w-10 h-10 bg-emerald-50 text-emerald-650 rounded-xl flex items-center justify-center border border-emerald-100">
+              <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center border border-emerald-100">
                 <Info className="w-5 h-5" />
               </div>
             </div>
             <div className="bg-white border border-slate-200 rounded-2xl p-4 card-shadow flex items-center justify-between">
               <div>
-                <p className="text-[10px] font-bold text-slate-450 uppercase tracking-wider">Equipment Booked</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Equipment Booked</p>
                 <h3 className="text-2xl font-extrabold text-slate-900 mt-1">{stats.equip}</h3>
               </div>
-              <div className="w-10 h-10 bg-purple-50 text-purple-655 rounded-xl flex items-center justify-center border border-purple-100">
+              <div className="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center border border-purple-100">
                 <Info className="w-5 h-5" />
               </div>
             </div>
@@ -467,11 +475,11 @@ export default function ResourceBookingScreen() {
             
             {/* Type Filter */}
             <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-450">Resource Type</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Resource Type</label>
               <select
                 value={selectedTypeFilter}
                 onChange={(e) => setSelectedTypeFilter(e.target.value as any)}
-                className="w-full bg-slate-55 border border-slate-200 px-3 py-2 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-odoo-500 transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-odoo-500 transition-colors"
               >
                 <option value="All">All Types</option>
                 <option value="Room">Rooms Only</option>
@@ -482,11 +490,11 @@ export default function ResourceBookingScreen() {
 
             {/* Resource Selector */}
             <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-450">Select Resource</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Select Resource</label>
               <select
                 value={selectedResourceId}
                 onChange={(e) => setSelectedResourceId(e.target.value)}
-                className="w-full bg-slate-55 border border-slate-200 px-3 py-2 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-odoo-500 transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-odoo-500 transition-colors"
               >
                 {filteredResources.map(r => (
                   <option key={r.id} value={r.id}>{r.name} ({r.type})</option>
@@ -496,14 +504,14 @@ export default function ResourceBookingScreen() {
 
             {/* Search Input */}
             <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-455">Search Bookings</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Search Bookings</label>
               <div className="relative">
                 <input
                   type="text"
                   placeholder="Search by title/requester/dept..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-55 border border-slate-200 pl-8 pr-3 py-2 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-odoo-500 transition-colors"
+                  className="w-full bg-slate-50 border border-slate-200 pl-8 pr-3 py-2 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-odoo-500 transition-colors"
                 />
                 <Search className="w-4 h-4 text-slate-400 absolute left-2.5 top-3" />
               </div>
@@ -519,7 +527,7 @@ export default function ResourceBookingScreen() {
                     prev.setDate(prev.getDate() - 1);
                     setSelectedDate(prev.toISOString().split('T')[0]);
                   }}
-                  className="p-2 border border-slate-200 rounded-lg hover:bg-slate-55 text-slate-600 transition-colors cursor-pointer"
+                  className="p-2 border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -527,7 +535,7 @@ export default function ResourceBookingScreen() {
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="flex-1 bg-slate-55 border border-slate-200 px-3 py-1.5 rounded-xl text-sm font-semibold text-slate-900 text-center focus:outline-none focus:border-odoo-500 transition-colors"
+                  className="flex-1 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-sm font-semibold text-slate-900 text-center focus:outline-none focus:border-odoo-500 transition-colors"
                 />
                 <button 
                   onClick={() => {
@@ -535,7 +543,7 @@ export default function ResourceBookingScreen() {
                     next.setDate(next.getDate() + 1);
                     setSelectedDate(next.toISOString().split('T')[0]);
                   }}
-                  className="p-2 border border-slate-200 rounded-lg hover:bg-slate-55 text-slate-600 transition-colors cursor-pointer"
+                  className="p-2 border border-slate-200 rounded-lg hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -545,16 +553,22 @@ export default function ResourceBookingScreen() {
           </div>
 
           {/* Active Resource Details Badge */}
-          <div className="flex items-center gap-3 p-4 bg-slate-100/50 rounded-2xl border border-slate-200 card-shadow">
-            <div className="w-10 h-10 bg-odoo-50 border border-odoo-100 rounded-xl flex items-center justify-center text-odoo-600 shrink-0">
-              <Info className="w-5 h-5" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white rounded-2xl border border-slate-200 card-shadow">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-10 h-10 bg-odoo-50 border border-odoo-100 rounded-xl flex items-center justify-center text-odoo-600 shrink-0">
+                <Info className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Active Resource Details</p>
+                <h4 className="text-sm font-bold text-slate-900 mt-0.5">{activeResource.name}</h4>
+                <p className="text-slate-500 text-xs font-semibold mt-0.5">
+                  {activeResource.info} · Capacity: {activeResource.capacity}
+                </p>
+              </div>
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-extrabold uppercase tracking-wider text-slate-450">Active Resource Details</p>
-              <h4 className="text-sm font-bold text-slate-900 mt-0.5">{activeResource.name}</h4>
-              <p className="text-slate-500 text-xs font-semibold mt-0.5">
-                {activeResource.info} · Capacity: {activeResource.capacity}
-              </p>
+            
+            <div className={`px-3.5 py-1.5 rounded-xl border text-xs font-bold text-center shrink-0 self-start sm:self-auto ${activeResourceStatus.color}`}>
+              {activeResourceStatus.label}
             </div>
           </div>
 
