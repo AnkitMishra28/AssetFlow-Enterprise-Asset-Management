@@ -294,8 +294,8 @@ export default function AllocationTransferScreen() {
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-                  <ArrowRightLeft className="w-5 h-5 text-emerald-600" />
+                <div className="w-10 h-10 rounded-xl bg-odoo-50 border border-odoo-100 flex items-center justify-center">
+                  <ArrowRightLeft className="w-5 h-5 text-odoo-600" />
                 </div>
                 Asset Allocation &amp; Transfer
               </h1>
@@ -321,7 +321,7 @@ export default function AllocationTransferScreen() {
                   setConflictingAsset(null);
                   setIsAllocateModalOpen(true);
                 }}
-                className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-emerald-700 transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 cursor-pointer"
+                className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Allocate Asset
@@ -371,7 +371,7 @@ export default function AllocationTransferScreen() {
             <div className="lg:col-span-2 space-y-4">
               <div className="bg-white border border-slate-200 rounded-2xl p-5 card-shadow">
                 <h3 className="font-extrabold text-slate-900 text-sm flex items-center gap-2 mb-4">
-                  <ClipboardList className="w-4 h-4 text-emerald-600" />
+                  <ClipboardList className="w-4 h-4 text-odoo-600" />
                   Active Allocations Directory
                 </h3>
 
@@ -446,7 +446,7 @@ export default function AllocationTransferScreen() {
               <div className="bg-white border border-slate-200 rounded-2xl p-5 card-shadow space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="font-extrabold text-slate-900 text-sm flex items-center gap-2">
-                    <ArrowRightLeft className="w-4 h-4 text-emerald-650" />
+                    <ArrowRightLeft className="w-4 h-4 text-odoo-650" />
                     Transfer Requests
                   </h3>
                   <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full text-2xs font-extrabold border border-slate-200">
@@ -467,7 +467,7 @@ export default function AllocationTransferScreen() {
                             isPending 
                               ? "bg-slate-50/50 border-slate-200/80" 
                               : tr.status === "Approved" 
-                              ? "bg-emerald-50/20 border-emerald-100 text-emerald-950" 
+                              ? "bg-odoo-50/20 border-odoo-100 text-odoo-950" 
                               : "bg-slate-100 border-slate-200 text-slate-500 opacity-60"
                           }`}
                         >
@@ -481,7 +481,7 @@ export default function AllocationTransferScreen() {
                               isPending
                                 ? "bg-amber-50 text-amber-700 border-amber-100"
                                 : tr.status === "Approved"
-                                ? "bg-emerald-100 text-emerald-800 border-emerald-200"
+                                ? "bg-odoo-100 text-odoo-800 border-odoo-200"
                                 : "bg-slate-200 text-slate-700 border-slate-300"
                             }`}>
                               {tr.status}
@@ -506,7 +506,7 @@ export default function AllocationTransferScreen() {
                             <div className="flex items-center gap-2 pt-1 border-t border-slate-150/60">
                               <button
                                 onClick={() => handleApproveTransfer(tr)}
-                                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-1 rounded-lg font-bold text-2xs shadow-sm transition-colors cursor-pointer"
+                                className="flex-1 bg-odoo-600 hover:bg-odoo-700 text-white py-1 rounded-lg font-bold text-2xs shadow-sm transition-colors cursor-pointer"
                               >
                                 Approve
                               </button>
@@ -552,7 +552,7 @@ export default function AllocationTransferScreen() {
             >
               <div className="flex items-center justify-between p-6 border-b border-slate-100">
                 <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <UserPlus className="w-5 h-5 text-emerald-650" />
+                  <UserPlus className="w-5 h-5 text-odoo-650" />
                   Allocate Company Asset
                 </h3>
                 <button onClick={() => setIsAllocateModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
@@ -574,7 +574,7 @@ export default function AllocationTransferScreen() {
                         setConflictingAsset(null);
                       }}
                       required
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white text-slate-900 font-semibold"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white text-slate-900 font-semibold"
                     >
                       <option value="">-- Choose an Asset --</option>
                       {assets.map(asset => (
@@ -615,7 +615,7 @@ export default function AllocationTransferScreen() {
                       value={assigneeName}
                       onChange={(e) => setAssigneeName(e.target.value)}
                       placeholder="e.g. Raj Verma or Siddharth Sen"
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white text-slate-900 font-semibold"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white text-slate-900 font-semibold"
                     />
                   </div>
 
@@ -626,7 +626,7 @@ export default function AllocationTransferScreen() {
                       <select
                         value={assigneeDept}
                         onChange={(e) => setAssigneeDept(e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 text-slate-900 font-semibold"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 text-slate-900 font-semibold"
                       >
                         <option value="Engineering">Engineering</option>
                         <option value="Marketing">Marketing</option>
@@ -644,7 +644,7 @@ export default function AllocationTransferScreen() {
                         type="date"
                         value={returnDate}
                         onChange={(e) => setReturnDate(e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 text-slate-900 font-semibold"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 text-slate-900 font-semibold"
                       />
                     </div>
                   </div>
@@ -661,7 +661,7 @@ export default function AllocationTransferScreen() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-md shadow-emerald-600/10 cursor-pointer"
+                    className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-odoo-600 hover:bg-odoo-700 text-white transition-all shadow-md shadow-odoo-600/10 cursor-pointer"
                   >
                     Allocate
                   </button>
@@ -693,7 +693,7 @@ export default function AllocationTransferScreen() {
             >
               <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                 <h3 className="font-bold text-slate-950 text-base flex items-center gap-2">
-                  <UserCheck className="w-5 h-5 text-emerald-600" />
+                  <UserCheck className="w-5 h-5 text-odoo-600" />
                   Check-in Returned Asset
                 </h3>
                 <button onClick={() => setIsReturnModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
@@ -710,7 +710,7 @@ export default function AllocationTransferScreen() {
                       value={returnAssetTag}
                       onChange={(e) => setReturnAssetTag(e.target.value)}
                       required
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white text-slate-900 font-semibold"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white text-slate-900 font-semibold"
                     >
                       <option value="">-- Choose an Allocated Asset --</option>
                       {allocatedAssets.map(asset => (
@@ -727,7 +727,7 @@ export default function AllocationTransferScreen() {
                     <select
                       value={returnCondition}
                       onChange={(e) => setRegCondition(e.target.value as any)}
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 text-slate-900 font-semibold"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 text-slate-900 font-semibold"
                     >
                       <option value="New">New</option>
                       <option value="Good">Good</option>
@@ -744,7 +744,7 @@ export default function AllocationTransferScreen() {
                       onChange={(e) => setReturnNotes(e.target.value)}
                       placeholder="e.g. Returned with original charger. Minor scratches on case."
                       rows={3}
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white resize-none font-medium text-slate-900"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white resize-none font-medium text-slate-900"
                     />
                   </div>
                 </div>
@@ -759,7 +759,7 @@ export default function AllocationTransferScreen() {
                   </button>
                   <button
                     type="submit"
-                    className="px-4.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
+                    className="px-4.5 py-2 rounded-xl text-xs font-bold bg-odoo-600 hover:bg-odoo-700 text-white cursor-pointer"
                   >
                     Check-in Return
                   </button>

@@ -510,7 +510,7 @@ export default function ResourceBookingScreen() {
                           }}
                           className={`absolute pointer-events-auto rounded-xl p-3 border transition-all duration-300 flex flex-col justify-between cursor-pointer select-none ${
                             isThisFocused 
-                              ? (isConflict ? "ring-2 ring-red-500 scale-[1.02] shadow-lg shadow-red-500/20" : "ring-2 ring-emerald-500 scale-[1.02] shadow-lg shadow-emerald-500/20") 
+                              ? (isConflict ? "ring-2 ring-red-500 scale-[1.02] shadow-lg shadow-red-500/20" : "ring-2 ring-odoo-500 scale-[1.02] shadow-lg shadow-odoo-500/20") 
                               : ""
                           } ${
                             isAnotherOverlappingFocused 

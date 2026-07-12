@@ -502,7 +502,7 @@ export default function OrganizationSetupScreen() {
               exit={{ opacity: 0, transition: { duration: 0.15 } }}
               className="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-2.5 text-sm font-semibold pointer-events-auto border border-slate-800"
             >
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-odoo-500 animate-pulse" />
               <span>{toast.message}</span>
             </motion.div>
           ))}

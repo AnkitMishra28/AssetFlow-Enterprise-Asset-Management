@@ -53,6 +53,7 @@ interface AuditCycle {
   auditors: string[];
   status: "Active" | "Closed";
   results: { [assetTag: string]: "Verified" | "Missing" | "Damaged" };
+  notes?: { [assetTag: string]: string };
 }
 
 const DEFAULT_AUDITS: AuditCycle[] = [
@@ -76,6 +77,7 @@ export default function AuditScreen() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [audits, setAudits] = useState<AuditCycle[]>([]);
   const [activeCycle, setActiveCycle] = useState<AuditCycle | null>(null);
+  const [filterChecklist, setFilterChecklist] = useState<"All" | "Pending" | "Discrepancy">("All");
   
   // Create Cycle Modal Form state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -141,6 +143,20 @@ export default function AuditScreen() {
     });
   }, [assets, activeCycle]);
 
+  // Filtered assets list for active audit cycle
+  const visibleChecklistAssets = useMemo(() => {
+    return scopedAssets.filter(asset => {
+      const result = activeCycle?.results[asset.tag];
+      if (filterChecklist === "Pending") {
+        return !result;
+      }
+      if (filterChecklist === "Discrepancy") {
+        return result === "Missing" || result === "Damaged";
+      }
+      return true;
+    });
+  }, [scopedAssets, activeCycle, filterChecklist]);
+
   // Handle Mark Asset status in active audit
   const handleMarkAsset = (tag: string, status: "Verified" | "Missing" | "Damaged") => {
     if (!activeCycle) return;
@@ -158,6 +174,73 @@ export default function AuditScreen() {
     // Update audits list
     const updatedAudits = audits.map(a => a.id === activeCycle.id ? updatedCycle : a);
     saveAudits(updatedAudits);
+  };
+
+  // Handle Mark Asset Note in active audit
+  const handleMarkAssetNote = (tag: string, noteText: string) => {
+    if (!activeCycle) return;
+
+    const updatedCycle: AuditCycle = {
+      ...activeCycle,
+      notes: {
+        ...activeCycle.notes,
+        [tag]: noteText
+      }
+    };
+
+    setActiveCycle(updatedCycle);
+    
+    // Update audits list
+    const updatedAudits = audits.map(a => a.id === activeCycle.id ? updatedCycle : a);
+    saveAudits(updatedAudits);
+  };
+
+  // Bulk mark unchecked items as Verified
+  const handleBulkVerify = () => {
+    if (!activeCycle) return;
+
+    const results = { ...activeCycle.results };
+    scopedAssets.forEach(asset => {
+      if (!results[asset.tag]) {
+        results[asset.tag] = "Verified";
+      }
+    });
+
+    const updatedCycle: AuditCycle = {
+      ...activeCycle,
+      results
+    };
+
+    setActiveCycle(updatedCycle);
+    const updatedAudits = audits.map(a => a.id === activeCycle.id ? updatedCycle : a);
+    saveAudits(updatedAudits);
+  };
+
+  // Export discrepancy report in CSV
+  const exportDiscrepancies = () => {
+    if (!activeCycle) return;
+    const rows = [["Asset Tag", "Asset Name", "Expected Location", "Status Found", "Auditor Notes"]];
+    
+    scopedAssets.forEach(asset => {
+      const res = activeCycle.results[asset.tag];
+      if (res === "Missing" || res === "Damaged") {
+        const note = activeCycle.notes?.[asset.tag] || "";
+        rows.push([asset.tag, asset.name, asset.location, res, note]);
+      }
+    });
+
+    const csvContent = rows
+      .map(r => r.map(c => `"${c.replace(/"/g, '""')}"`).join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `discrepancies-${activeCycle.id}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   // Initialize a new audit cycle
@@ -201,15 +284,16 @@ export default function AuditScreen() {
       let newCondition = asset.condition;
       let detailsText = "";
 
+      const noteText = activeCycle.notes?.[asset.tag] ? ` Note: ${activeCycle.notes[asset.tag]}` : "";
       if (auditResult === "Missing") {
         newStatus = "Lost";
-        detailsText = "Flipped to Lost state: confirmed missing during Audit Cycle";
+        detailsText = `Flipped to Lost state: confirmed missing during Audit Cycle.${noteText}`;
       } else if (auditResult === "Damaged") {
         newStatus = "Under Maintenance";
         newCondition = "Poor";
-        detailsText = "Flipped to Under Maintenance: marked damaged during Audit Cycle";
+        detailsText = `Flipped to Under Maintenance: marked damaged during Audit Cycle.${noteText}`;
       } else if (auditResult === "Verified") {
-        detailsText = "Verified location and status during Audit Cycle";
+        detailsText = `Verified location and status during Audit Cycle.${noteText}`;
       }
 
       const historyEntry: HistoryEntry = {
@@ -271,8 +355,8 @@ export default function AuditScreen() {
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                <div className="w-10 h-10 rounded-xl bg-odoo-50 border border-odoo-100 flex items-center justify-center">
+                  <ShieldCheck className="w-5 h-5 text-odoo-600" />
                 </div>
                 Structured Asset Audit
               </h1>
@@ -284,7 +368,7 @@ export default function AuditScreen() {
             {!activeCycle && (
               <button
                 onClick={() => setIsCreateModalOpen(true)}
-                className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-emerald-700 transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer"
+                className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Start Audit Cycle
@@ -302,7 +386,7 @@ export default function AuditScreen() {
               {/* Active Cycle Metadata Card */}
               <div className="bg-white border border-slate-200 rounded-2xl p-6 card-shadow grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
                 <div className="md:col-span-2 space-y-2">
-                  <span className="text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
+                  <span className="text-[10px] font-extrabold bg-odoo-50 text-odoo-700 border border-odoo-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
                     Active Audit Cycle
                   </span>
                   <h2 className="text-xl font-extrabold text-slate-900">{activeCycle.name}</h2>
@@ -316,7 +400,7 @@ export default function AuditScreen() {
                 {/* Audit checklist progress ring or card summary */}
                 <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 flex justify-between items-center text-xs font-bold text-slate-600">
                   <div className="space-y-1">
-                    <p className="text-slate-450 uppercase text-[9px]">Verified: <span className="text-emerald-600">{activeStats.verified}</span></p>
+                    <p className="text-slate-450 uppercase text-[9px]">Verified: <span className="text-odoo-600">{activeStats.verified}</span></p>
                     <p className="text-slate-455 uppercase text-[9px]">Missing: <span className="text-red-650">{activeStats.missing}</span></p>
                     <p className="text-slate-456 uppercase text-[9px]">Damaged: <span className="text-amber-600">{activeStats.damaged}</span></p>
                   </div>
@@ -345,18 +429,59 @@ export default function AuditScreen() {
 
               {/* Auto-generated discrepancy report banner if items are missing/damaged */}
               {(activeStats.missing > 0 || activeStats.damaged > 0) && (
-                <div className="bg-amber-50 border border-amber-250 rounded-2xl p-4 text-amber-900 flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="text-xs font-extrabold uppercase tracking-wider text-amber-850">
-                      {activeStats.missing + activeStats.damaged} Assets Flagged — Discrepancy Report Generated
-                    </h4>
-                    <p className="text-2xs font-semibold mt-0.5 leading-relaxed text-amber-705">
-                      Auto-updates will execute when cycle closes: Missing items transition to 'Lost' state; Damaged items trigger 'Under Maintenance' diagnostics.
-                    </p>
+                <div className="bg-amber-50 border border-amber-250 rounded-2xl p-4 text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-xs font-extrabold uppercase tracking-wider text-amber-850">
+                        {activeStats.missing + activeStats.damaged} Assets Flagged — Discrepancy Report Generated
+                      </h4>
+                      <p className="text-2xs font-semibold mt-0.5 leading-relaxed text-amber-705">
+                        Auto-updates will execute when cycle closes: Missing items transition to 'Lost' state; Damaged items trigger 'Under Maintenance' diagnostics.
+                      </p>
+                    </div>
                   </div>
+                  <button 
+                    onClick={exportDiscrepancies}
+                    className="bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-1.5 rounded-lg text-2xs font-extrabold flex items-center gap-1.5 shrink-0 cursor-pointer transition-colors shadow-2xs self-start sm:self-auto"
+                  >
+                    <FileSpreadsheet className="w-3.5 h-3.5" /> Export Discrepancies
+                  </button>
                 </div>
               )}
+
+              {/* Checklist Filters and Bulk Actions */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200 rounded-2xl p-4 card-shadow">
+                <div className="flex bg-slate-100 p-1 rounded-xl w-fit border border-slate-200">
+                  {(["All", "Pending", "Discrepancy"] as const).map((mode) => {
+                    const isActive = filterChecklist === mode;
+                    return (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => setFilterChecklist(mode)}
+                        className={`px-4 py-1.5 rounded-lg text-2xs font-bold transition-all cursor-pointer ${
+                          isActive
+                            ? "bg-white text-odoo-600 shadow-sm border border-slate-200"
+                            : "text-slate-500 hover:text-slate-800"
+                        }`}
+                      >
+                        {mode === "Discrepancy" ? "Discrepancies Only" : mode === "Pending" ? "Unchecked Only" : "All Items"}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {activeStats.pending > 0 && (
+                  <button
+                    onClick={handleBulkVerify}
+                    className="bg-odoo-50 hover:bg-odoo-100 text-odoo-700 border border-odoo-200 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
+                  >
+                    <CheckCircle className="w-4 h-4 text-odoo-600" />
+                    Mark Unchecked as Verified
+                  </button>
+                )}
+              </div>
 
               {/* Checklist Table */}
               <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden card-shadow">
@@ -371,14 +496,14 @@ export default function AuditScreen() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {scopedAssets.length === 0 ? (
+                      {visibleChecklistAssets.length === 0 ? (
                         <tr>
                           <td colSpan={4} className="py-12 text-center text-slate-400 font-semibold text-sm">
-                            No assets configured in the scope of this audit cycle.
+                            No assets found matching the checklist filters.
                           </td>
                         </tr>
                       ) : (
-                        scopedAssets.map(asset => {
+                        visibleChecklistAssets.map(asset => {
                           const result = activeCycle.results[asset.tag];
                           return (
                             <tr key={asset.tag} className="hover:bg-slate-50/20 transition-colors">
@@ -389,6 +514,16 @@ export default function AuditScreen() {
                                   <span className="font-extrabold text-slate-500">{asset.tag}</span>
                                   <span>·</span>
                                   <span>SN: {asset.serialNumber}</span>
+                                </div>
+                                {/* Audit Notes Input */}
+                                <div className="mt-2 max-w-xs relative">
+                                  <input 
+                                    type="text"
+                                    placeholder="Add audit notes..."
+                                    value={activeCycle.notes?.[asset.tag] || ""}
+                                    onChange={(e) => handleMarkAssetNote(asset.tag, e.target.value)}
+                                    className="w-full bg-slate-50 hover:bg-slate-100/50 border border-slate-200 focus:border-odoo-500 rounded-lg px-2.5 py-1 text-2xs font-medium focus:bg-white focus:outline-none transition-all placeholder:text-slate-450 text-slate-700"
+                                  />
                                 </div>
                               </td>
 
@@ -410,16 +545,18 @@ export default function AuditScreen() {
                               <td className="py-4 px-6">
                                 <div className="flex justify-center items-center gap-2">
                                   <button
+                                    type="button"
                                     onClick={() => handleMarkAsset(asset.tag, "Verified")}
                                     className={`px-3 py-1.5 rounded-lg text-2xs font-extrabold transition-all cursor-pointer border ${
                                       result === "Verified"
-                                        ? "bg-emerald-50 text-emerald-700 border-emerald-300 ring-2 ring-emerald-500/10"
+                                        ? "bg-odoo-50 text-odoo-700 border-odoo-300 ring-2 ring-odoo-500/10"
                                         : "bg-white hover:bg-slate-50 text-slate-600 border-slate-200"
                                     }`}
                                   >
                                     Verified
                                   </button>
                                   <button
+                                    type="button"
                                     onClick={() => handleMarkAsset(asset.tag, "Missing")}
                                     className={`px-3 py-1.5 rounded-lg text-2xs font-extrabold transition-all cursor-pointer border ${
                                       result === "Missing"
@@ -430,6 +567,7 @@ export default function AuditScreen() {
                                     Missing
                                   </button>
                                   <button
+                                    type="button"
                                     onClick={() => handleMarkAsset(asset.tag, "Damaged")}
                                     className={`px-3 py-1.5 rounded-lg text-2xs font-extrabold transition-all cursor-pointer border ${
                                       result === "Damaged"
@@ -458,7 +596,7 @@ export default function AuditScreen() {
               <div className="lg:col-span-2 space-y-4">
                 <div className="bg-white border border-slate-200 rounded-2xl p-5 card-shadow">
                   <h3 className="font-extrabold text-slate-900 text-sm flex items-center gap-2 mb-4">
-                    <History className="w-4 h-4 text-emerald-650" />
+                    <History className="w-4 h-4 text-odoo-650" />
                     Audit Cycle History Logs
                   </h3>
 
@@ -530,7 +668,7 @@ export default function AuditScreen() {
             >
               <div className="flex items-center justify-between p-6 border-b border-slate-100">
                 <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                  <ShieldCheck className="w-5 h-5 text-odoo-600" />
                   Initiate New Audit Cycle
                 </h3>
                 <button onClick={() => setIsCreateModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
@@ -550,7 +688,7 @@ export default function AuditScreen() {
                       value={cycleName}
                       onChange={(e) => setCycleName(e.target.value)}
                       placeholder="e.g. Q3 IT Assets Audit"
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white text-slate-900 font-semibold"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white text-slate-900 font-semibold"
                     />
                   </div>
 
@@ -560,7 +698,7 @@ export default function AuditScreen() {
                     <select
                       value={cycleDept}
                       onChange={(e) => setCycleDept(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 text-slate-900 font-semibold"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 text-slate-900 font-semibold"
                     >
                       <option value="Engineering">Engineering Department</option>
                       <option value="Logistics">Logistics Department</option>
@@ -581,7 +719,7 @@ export default function AuditScreen() {
                         required
                         value={cycleStart}
                         onChange={(e) => setCycleStart(e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 text-slate-900 font-semibold"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 text-slate-900 font-semibold"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -593,7 +731,7 @@ export default function AuditScreen() {
                         required
                         value={cycleEnd}
                         onChange={(e) => setCycleEnd(e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 text-slate-900 font-semibold"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 text-slate-900 font-semibold"
                       />
                     </div>
                   </div>
@@ -607,7 +745,7 @@ export default function AuditScreen() {
                       value={cycleAuditors}
                       onChange={(e) => setCycleAuditors(e.target.value)}
                       placeholder="e.g. A. Rao, S. Iqbal"
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white text-slate-900 font-semibold"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white text-slate-900 font-semibold"
                     />
                     <span className="block text-[10px] text-slate-400 font-semibold mt-0.5">
                       Separate names with commas.
@@ -626,7 +764,7 @@ export default function AuditScreen() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition-all shadow-md shadow-emerald-600/10 cursor-pointer"
+                    className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-odoo-600 hover:bg-odoo-700 text-white transition-all shadow-md shadow-odoo-600/10 cursor-pointer"
                   >
                     Start Cycle
                   </button>
