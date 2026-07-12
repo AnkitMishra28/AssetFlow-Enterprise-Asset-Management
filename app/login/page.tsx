@@ -3,19 +3,21 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogIn, Mail, Lock, User, EyeOff } from "lucide-react";
-import Image from "next/image";
+import StarfieldBackground from "@/components/StarfieldBackground";
 
 export default function LoginScreen() {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#fafafa]">
-      
-      {/* Subtle modern background gradient */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 w-full h-[400px] bg-gradient-to-b from-odoo-50 to-transparent" />
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-odoo-100/50 blur-3xl opacity-60" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-blue-100/50 blur-3xl opacity-60" />
+    <>
+    {/* Same fixed WebGL starfield used across the site, behind the auth card */}
+    <StarfieldBackground />
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden text-slate-100">
+
+      {/* Soft Odoo-purple glows layered over the stars */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#714B67]/25 blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-[#714B67]/15 blur-[120px]" />
       </div>
 
       <motion.div
@@ -24,19 +26,19 @@ export default function LoginScreen() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="w-full max-w-md z-10 p-4"
       >
-        <div className="bg-white p-8 sm:p-10 rounded-[2rem] shadow-[0_8px_40px_-12px_rgba(0,0,0,0.1)] border border-slate-100 relative overflow-hidden">
-          
+        <div className="bg-white/[0.04] backdrop-blur-2xl p-8 sm:p-10 rounded-[2rem] shadow-2xl shadow-black/50 border border-white/10 relative overflow-hidden">
+
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-8">
-            <div className="w-14 h-14 bg-odoo-50 rounded-2xl flex items-center justify-center mb-5">
-              <LogIn className="w-6 h-6 text-odoo-600" />
+            <div className="w-14 h-14 bg-white/10 border border-white/10 rounded-2xl flex items-center justify-center mb-5">
+              <LogIn className="w-6 h-6 text-odoo-300" />
             </div>
-            <h1 className="text-2xl font-extrabold text-slate-900 mb-2 tracking-tight">
+            <h1 className="text-2xl font-extrabold text-white mb-2 tracking-tight">
               {isLogin ? "Welcome back" : "Create an account"}
             </h1>
-            <p className="text-slate-500 text-sm px-2 font-medium leading-relaxed">
-              {isLogin 
-                ? "Manage your enterprise assets and resources seamlessly in one place." 
+            <p className="text-slate-300 text-sm px-2 font-medium leading-relaxed">
+              {isLogin
+                ? "Manage your enterprise assets and resources seamlessly in one place."
                 : "Register a new employee account to access the corporate directory."}
             </p>
           </div>
@@ -63,7 +65,7 @@ export default function LoginScreen() {
                   <input
                     type="text"
                     placeholder="Full Name"
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-odoo-500 focus:ring-4 focus:ring-odoo-500/10 pl-12 pr-4 py-3 rounded-xl text-sm font-medium text-slate-900 placeholder:text-slate-400 transition-all outline-none"
+                    className="w-full bg-white/5 border border-white/10 focus:border-odoo-400 focus:ring-4 focus:ring-odoo-400/20 pl-12 pr-4 py-3 rounded-xl text-sm font-medium text-white placeholder:text-slate-400 transition-all outline-none"
                     required
                   />
                 </div>
@@ -76,7 +78,7 @@ export default function LoginScreen() {
                 <input
                   type="email"
                   placeholder="Email address"
-                  className="w-full bg-slate-50 border border-slate-200 focus:border-odoo-500 focus:ring-4 focus:ring-odoo-500/10 pl-12 pr-4 py-3 rounded-xl text-sm font-medium text-slate-900 placeholder:text-slate-400 transition-all outline-none"
+                  className="w-full bg-white/5 border border-white/10 focus:border-odoo-400 focus:ring-4 focus:ring-odoo-400/20 pl-12 pr-4 py-3 rounded-xl text-sm font-medium text-white placeholder:text-slate-400 transition-all outline-none"
                   required
                 />
               </div>
@@ -88,17 +90,17 @@ export default function LoginScreen() {
                 <input
                   type="password"
                   placeholder="Password"
-                  className="w-full bg-slate-50 border border-slate-200 focus:border-odoo-500 focus:ring-4 focus:ring-odoo-500/10 pl-12 pr-12 py-3 rounded-xl text-sm font-medium text-slate-900 placeholder:text-slate-400 transition-all outline-none"
+                  className="w-full bg-white/5 border border-white/10 focus:border-odoo-400 focus:ring-4 focus:ring-odoo-400/20 pl-12 pr-12 py-3 rounded-xl text-sm font-medium text-white placeholder:text-slate-400 transition-all outline-none"
                   required
                 />
-                <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+                <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors">
                   <EyeOff className="w-5 h-5" />
                 </button>
               </div>
 
               {isLogin && (
                 <div className="flex justify-end pt-2 pb-1">
-                  <a href="#" className="text-sm font-semibold text-odoo-600 hover:text-odoo-700 transition-colors">
+                  <a href="#" className="text-sm font-semibold text-odoo-300 hover:text-odoo-200 transition-colors">
                     Forgot password?
                   </a>
                 </div>
@@ -106,7 +108,7 @@ export default function LoginScreen() {
 
               <button
                 type="submit"
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white py-3.5 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-slate-900/20 mt-6"
+                className="w-full bg-gradient-to-r from-[#714B67] to-[#5a3c52] hover:from-[#5a3c52] hover:to-[#714B67] text-white py-3.5 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-[#714B67]/30 mt-6"
               >
                 {isLogin ? "Sign in to AssetFlow" : "Create Account"}
               </button>
@@ -116,18 +118,18 @@ export default function LoginScreen() {
 
 
           {/* Toggle between login and signup */}
-          <div className="mt-8 text-center text-sm font-medium text-slate-500">
+          <div className="mt-8 text-center text-sm font-medium text-slate-300">
             {isLogin ? (
                <span>
                  New to AssetFlow?{" "}
-                 <button onClick={() => setIsLogin(false)} className="font-bold text-odoo-600 hover:text-odoo-700 transition-colors">
+                 <button onClick={() => setIsLogin(false)} className="font-bold text-odoo-300 hover:text-odoo-200 transition-colors">
                    Sign up
                  </button>
                </span>
             ) : (
                <span>
                  Already have an account?{" "}
-                 <button onClick={() => setIsLogin(true)} className="font-bold text-odoo-600 hover:text-odoo-700 transition-colors">
+                 <button onClick={() => setIsLogin(true)} className="font-bold text-odoo-300 hover:text-odoo-200 transition-colors">
                    Sign in
                  </button>
                </span>
@@ -137,5 +139,6 @@ export default function LoginScreen() {
         </div>
       </motion.div>
     </div>
+    </>
   );
 }
