@@ -162,7 +162,7 @@ export default function LoginScreen() {
           <div className="mt-8 text-center text-[13px] text-slate-500">
             {isLogin ? (
                <span>
-                 Don't have an account?{" "}
+                 Don&apos;t have an account?{" "}
                  <button onClick={() => setIsLogin(false)} className="font-medium text-slate-900 hover:underline">
                    Sign up
                  </button>

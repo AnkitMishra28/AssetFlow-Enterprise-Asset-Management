@@ -1,57 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import liquidGlass from "@/lib/liquidGlass";
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { 
-  LayoutDashboard, 
-  Settings, 
-  Box, 
-  ArrowRightLeft, 
-  CalendarClock, 
-  Wrench, 
-  ShieldCheck, 
-  BarChart3, 
-  Bell,
   Plus,
   CalendarPlus,
   AlertCircle,
   Sun,
-  Moon
+  Moon,
+  Wrench
 } from "lucide-react";
-
-// Wrapper for elements using liquidGlass to easily compose it
-function LiquidPanel({ children, className, ...props }: any) {
-  const ref = useRef(null);
-  
-  useEffect(() => {
-    if (!ref.current) return;
-    const glass = liquidGlass(ref.current, { 
-      scale: -112,
-      chroma: 6,
-      border: 0.07,
-      mapBlur: 12,
-      blur: 8,
-      saturate: 1.5
-    });
-    return () => glass.destroy();
-  }, []);
-
-  return <div ref={ref} className={`glass-panel bg-white/50 dark:bg-zinc-900/40 backdrop-blur-xl border border-white/40 dark:border-white/10 shadow-lg shadow-black/5 ${className || ""}`} {...props}>{children}</div>;
-}
-
-const SIDEBAR_ITEMS = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: Settings, label: "Organization Setup" },
-  { icon: Box, label: "Assets" },
-  { icon: ArrowRightLeft, label: "Allocation & Transfer" },
-  { icon: CalendarClock, label: "Resource Booking" },
-  { icon: Wrench, label: "Maintenance" },
-  { icon: ShieldCheck, label: "Audit" },
-  { icon: BarChart3, label: "Reports" },
-  { icon: Bell, label: "Notifications" },
-];
+import Sidebar, { LiquidPanel } from "./Sidebar";
 
 const METRICS = [
   { label: "Available", value: "128", trend: "+4" },
@@ -72,48 +32,16 @@ export default function DashboardScreen() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="min-h-screen flex bg-[#f0f4f8] dark:bg-[#09090b] text-slate-800 dark:text-zinc-100 transition-colors duration-300">
       
       {/* Sidebar */}
-      <LiquidPanel className="w-64 border-r border-slate-200 dark:border-zinc-800/50 flex flex-col p-6 hidden md:flex !rounded-none !border-y-0 !border-l-0">
-        <div className="flex items-center gap-3 mb-10">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-emerald-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-            <Box className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">AssetFlow</span>
-        </div>
-
-        <nav className="flex-1 space-y-1">
-          {SIDEBAR_ITEMS.map((item, idx) => (
-            <a
-              key={idx}
-              href="#"
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
-                item.active 
-                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium border border-emerald-500/20" 
-                  : "text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 hover:bg-black/5 dark:hover:bg-zinc-800/50"
-              }`}
-            >
-              <item.icon className="w-4 h-4" />
-              {item.label}
-            </a>
-          ))}
-        </nav>
-
-        {/* User profile snippet */}
-        <div className="pt-6 border-t border-slate-200 dark:border-zinc-800/50 mt-auto flex items-center gap-3 cursor-pointer">
-          <div className="w-9 h-9 rounded-full bg-slate-200 dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 flex items-center justify-center text-sm font-medium text-slate-700 dark:text-white">
-            JD
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-slate-900 dark:text-white truncate">Jane Doe</p>
-            <p className="text-xs text-slate-500 dark:text-zinc-500 truncate">Employee</p>
-          </div>
-        </div>
-      </LiquidPanel>
+      <Sidebar activeItem="Dashboard" />
 
       {/* Main Content */}
       <main className="flex-1 p-8 lg:p-10 overflow-y-auto">
@@ -121,8 +49,8 @@ export default function DashboardScreen() {
           
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Today's Overview</h1>
-              <p className="text-slate-500 dark:text-zinc-400 text-sm mt-1">Here is what's happening with your assets today.</p>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Today&apos;s Overview</h1>
+              <p className="text-slate-500 dark:text-zinc-400 text-sm mt-1">Here is what&apos;s happening with your assets today.</p>
             </div>
             
             {/* Quick Actions */}
