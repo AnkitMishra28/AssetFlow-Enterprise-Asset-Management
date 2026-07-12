@@ -11,9 +11,7 @@
   --color-odoo-700: #6a4060;
   --color-odoo-800: #593551;
   --color-odoo-900: #4b3045;
-}
 
-@theme inline {
   --color-primary-500: #10b981; /* Emerald 500 */
   --color-primary-600: #059669; /* Emerald 600 */
   

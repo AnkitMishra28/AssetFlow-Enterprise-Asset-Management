@@ -20,6 +20,20 @@ const INITIAL_DEPARTMENTS_DATA = [
   { id: 3, name: "Field Ops (East)", head: "Sana Iqbal", headInitials: "SI", parent: "Field Ops", status: "Inactive" as const },
 ];
 
+// Mock data representing the categories exactly as requested in specifications
+const INITIAL_CATEGORIES_DATA = [
+  { id: 1, name: "Electronics", description: "Laptops, desktops, printers and monitors", warranty: 24, status: "Active" as const },
+  { id: 2, name: "Furniture", description: "Office furniture", warranty: 12, status: "Active" as const },
+  { id: 3, name: "Vehicles", description: "Cars and transport", warranty: 36, status: "Inactive" as const },
+];
+
+// Mock data representing the employees exactly as requested in specifications
+const INITIAL_EMPLOYEES_DATA = [
+  { id: 1, name: "Ankit Mishra", email: "ankit@example.com", department: "Engineering", role: "Employee", status: "Active" as const },
+  { id: 2, name: "Priya Shah", email: "priya@example.com", department: "Facilities", role: "Department Head", status: "Active" as const },
+  { id: 3, name: "Rahul Patel", email: "rahul@example.com", department: "Finance", role: "Asset Manager", status: "Inactive" as const },
+];
+
 interface StatusBadgeProps {
   status: "Active" | "Inactive";
 }
@@ -51,12 +65,29 @@ export default function OrganizationSetupScreen() {
   
   // 1. Departments stored in React State
   const [departments, setDepartments] = useState(INITIAL_DEPARTMENTS_DATA);
+
+  // 2. Categories stored in React State
+  const [categories, setCategories] = useState(INITIAL_CATEGORIES_DATA);
+
+  // 3. Employees stored in React State
+  const [employees, setEmployees] = useState(INITIAL_EMPLOYEES_DATA);
   
+  // Department Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
   const [editingId, setEditingId] = useState<number | null>(null);
 
-  // Modal form states
+  // Category Modal State
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [categoryModalMode, setCategoryModalMode] = useState<"add" | "edit">("add");
+  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
+
+  // Employee Modal State
+  const [isEmployeeModalOpen, setIsEmployeeModalOpen] = useState(false);
+  const [employeeModalMode, setEmployeeModalMode] = useState<"add" | "edit">("add");
+  const [editingEmployeeId, setEditingEmployeeId] = useState<number | null>(null);
+
+  // Department Modal Form States
   const [formData, setFormData] = useState({
     name: "",
     head: "",
@@ -64,10 +95,42 @@ export default function OrganizationSetupScreen() {
     status: "Active" as "Active" | "Inactive"
   });
 
-  // Touch states for inline validation display
+  // Category Modal Form States
+  const [categoryFormData, setCategoryFormData] = useState({
+    name: "",
+    description: "",
+    warranty: "",
+    status: "Active" as "Active" | "Inactive"
+  });
+
+  // Employee Modal Form States
+  const [employeeFormData, setEmployeeFormData] = useState({
+    name: "",
+    email: "",
+    department: "",
+    role: "",
+    status: "Active" as "Active" | "Inactive"
+  });
+
+  // Touch states for Department inline validation display
   const [touched, setTouched] = useState({
     name: false,
     head: false
+  });
+
+  // Touch states for Category inline validation display
+  const [categoryTouched, setCategoryTouched] = useState({
+    name: false,
+    description: false,
+    warranty: false
+  });
+
+  // Touch states for Employee inline validation display
+  const [employeeTouched, setEmployeeTouched] = useState({
+    name: false,
+    email: false,
+    department: false,
+    role: false
   });
 
   // Toasts state for showing success messages
@@ -82,7 +145,7 @@ export default function OrganizationSetupScreen() {
     }, 3000);
   };
 
-  // Helper to extract initials from head name
+  // Helper to extract initials from a full name
   const getInitials = (name: string) => {
     return name
       .trim()
@@ -93,7 +156,7 @@ export default function OrganizationSetupScreen() {
       .slice(0, 2);
   };
 
-  // Frontend-only validation rules
+  // Department validation rules
   const nameError = useMemo(() => {
     const val = formData.name.trim();
     if (!val) {
@@ -119,6 +182,89 @@ export default function OrganizationSetupScreen() {
 
   const isValid = !nameError && !headError;
 
+  // Category validation rules
+  const categoryNameError = useMemo(() => {
+    const val = categoryFormData.name.trim();
+    if (!val) {
+      return "Category Name cannot be empty.";
+    }
+    const isDuplicate = categories.some((c) => {
+      if (categoryModalMode === "edit" && c.id === editingCategoryId) return false;
+      return c.name.toLowerCase().trim() === val.toLowerCase();
+    });
+    if (isDuplicate) {
+      return "Category Name already exists (duplicate names not allowed).";
+    }
+    return "";
+  }, [categoryFormData.name, categories, categoryModalMode, editingCategoryId]);
+
+  const categoryDescriptionError = useMemo(() => {
+    const val = categoryFormData.description.trim();
+    if (!val) {
+      return "Description cannot be empty.";
+    }
+    return "";
+  }, [categoryFormData.description]);
+
+  const categoryWarrantyError = useMemo(() => {
+    const val = categoryFormData.warranty.trim();
+    if (!val) {
+      return "Warranty Period is required.";
+    }
+    const num = Number(val);
+    if (isNaN(num) || num <= 0 || !Number.isInteger(num)) {
+      return "Warranty Period must be a positive integer.";
+    }
+    return "";
+  }, [categoryFormData.warranty]);
+
+  const isCategoryValid = !categoryNameError && !categoryDescriptionError && !categoryWarrantyError;
+
+  // Employee validation rules
+  const employeeNameError = useMemo(() => {
+    const val = employeeFormData.name.trim();
+    if (!val) {
+      return "Name is required.";
+    }
+    return "";
+  }, [employeeFormData.name]);
+
+  const employeeEmailError = useMemo(() => {
+    const val = employeeFormData.email.trim();
+    if (!val) {
+      return "Email is required.";
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(val)) {
+      return "Invalid email format.";
+    }
+    const isDuplicate = employees.some((emp) => {
+      if (employeeModalMode === "edit" && emp.id === editingEmployeeId) return false;
+      return emp.email.toLowerCase().trim() === val.toLowerCase();
+    });
+    if (isDuplicate) {
+      return "Email already exists in the employee directory.";
+    }
+    return "";
+  }, [employeeFormData.email, employees, employeeModalMode, editingEmployeeId]);
+
+  const employeeDepartmentError = useMemo(() => {
+    if (!employeeFormData.department) {
+      return "Department is required.";
+    }
+    return "";
+  }, [employeeFormData.department]);
+
+  const employeeRoleError = useMemo(() => {
+    if (!employeeFormData.role) {
+      return "Role is required.";
+    }
+    return "";
+  }, [employeeFormData.role]);
+
+  const isEmployeeValid = !employeeNameError && !employeeEmailError && !employeeDepartmentError && !employeeRoleError;
+
+  // Department action handlers
   const handleAdd = () => {
     setModalMode("add");
     setEditingId(null);
@@ -151,7 +297,6 @@ export default function OrganizationSetupScreen() {
     setIsModalOpen(true);
   };
 
-  // Add / Edit Department Save handler
   const handleSave = () => {
     if (!isValid) return;
 
@@ -187,7 +332,6 @@ export default function OrganizationSetupScreen() {
     setIsModalOpen(false);
   };
 
-  // Deactivate Department handler
   const handleDeactivate = (id: number) => {
     setDepartments((prev) =>
       prev.map((d) => {
@@ -198,6 +342,172 @@ export default function OrganizationSetupScreen() {
       })
     );
     showToast("Department deactivated");
+  };
+
+  // Category action handlers
+  const handleCategoryAdd = () => {
+    setCategoryModalMode("add");
+    setEditingCategoryId(null);
+    setCategoryFormData({
+      name: "",
+      description: "",
+      warranty: "",
+      status: "Active"
+    });
+    setCategoryTouched({
+      name: false,
+      description: false,
+      warranty: false
+    });
+    setIsCategoryModalOpen(true);
+  };
+
+  const handleCategoryEdit = (cat: typeof INITIAL_CATEGORIES_DATA[0]) => {
+    setCategoryModalMode("edit");
+    setEditingCategoryId(cat.id);
+    setCategoryFormData({
+      name: cat.name,
+      description: cat.description,
+      warranty: String(cat.warranty),
+      status: cat.status
+    });
+    setCategoryTouched({
+      name: false,
+      description: false,
+      warranty: false
+    });
+    setIsCategoryModalOpen(true);
+  };
+
+  const handleCategorySave = () => {
+    if (!isCategoryValid) return;
+
+    if (categoryModalMode === "add") {
+      const newCat = {
+        id: Date.now(),
+        name: categoryFormData.name.trim(),
+        description: categoryFormData.description.trim(),
+        warranty: Number(categoryFormData.warranty),
+        status: categoryFormData.status
+      };
+      setCategories((prev) => [...prev, newCat]);
+      showToast("Category created successfully");
+    } else {
+      setCategories((prev) =>
+        prev.map((c) => {
+          if (c.id === editingCategoryId) {
+            return {
+              ...c,
+              name: categoryFormData.name.trim(),
+              description: categoryFormData.description.trim(),
+              warranty: Number(categoryFormData.warranty),
+              status: categoryFormData.status
+            };
+          }
+          return c;
+        })
+      );
+      showToast("Category updated successfully");
+    }
+    setIsCategoryModalOpen(false);
+  };
+
+  const handleCategoryDeactivate = (id: number) => {
+    setCategories((prev) =>
+      prev.map((c) => {
+        if (c.id === id) {
+          return { ...c, status: "Inactive" as const };
+        }
+        return c;
+      })
+    );
+    showToast("Category deactivated successfully");
+  };
+
+  // Employee action handlers
+  const handleEmployeeAdd = () => {
+    setEmployeeModalMode("add");
+    setEditingEmployeeId(null);
+    setEmployeeFormData({
+      name: "",
+      email: "",
+      department: "",
+      role: "",
+      status: "Active"
+    });
+    setEmployeeTouched({
+      name: false,
+      email: false,
+      department: false,
+      role: false
+    });
+    setIsEmployeeModalOpen(true);
+  };
+
+  const handleEmployeeEdit = (emp: typeof INITIAL_EMPLOYEES_DATA[0]) => {
+    setEmployeeModalMode("edit");
+    setEditingEmployeeId(emp.id);
+    setEmployeeFormData({
+      name: emp.name,
+      email: emp.email,
+      department: emp.department,
+      role: emp.role,
+      status: emp.status
+    });
+    setEmployeeTouched({
+      name: false,
+      email: false,
+      department: false,
+      role: false
+    });
+    setIsEmployeeModalOpen(true);
+  };
+
+  const handleEmployeeSave = () => {
+    if (!isEmployeeValid) return;
+
+    if (employeeModalMode === "add") {
+      const newEmp = {
+        id: Date.now(),
+        name: employeeFormData.name.trim(),
+        email: employeeFormData.email.trim(),
+        department: employeeFormData.department,
+        role: employeeFormData.role,
+        status: employeeFormData.status
+      };
+      setEmployees((prev) => [...prev, newEmp]);
+      showToast("Employee created successfully");
+    } else {
+      setEmployees((prev) =>
+        prev.map((emp) => {
+          if (emp.id === editingEmployeeId) {
+            return {
+              ...emp,
+              name: employeeFormData.name.trim(),
+              email: employeeFormData.email.trim(),
+              department: employeeFormData.department,
+              role: employeeFormData.role,
+              status: employeeFormData.status
+            };
+          }
+          return emp;
+        })
+      );
+      showToast("Employee updated successfully");
+    }
+    setIsEmployeeModalOpen(false);
+  };
+
+  const handleEmployeeDeactivate = (id: number) => {
+    setEmployees((prev) =>
+      prev.map((emp) => {
+        if (emp.id === id) {
+          return { ...emp, status: "Inactive" as const };
+        }
+        return emp;
+      })
+    );
+    showToast("Employee deactivated successfully");
   };
 
   return (
@@ -264,17 +574,37 @@ export default function OrganizationSetupScreen() {
             </div>
 
             {/* Add Button */}
-            <button 
-              onClick={handleAdd}
-              className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center justify-center gap-2 self-start sm:self-auto"
-            >
-              <Plus className="w-4 h-4" />
-              Add Department
-            </button>
+            {activeTab === "Departments" && (
+              <button 
+                onClick={handleAdd}
+                className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center justify-center gap-2 self-start sm:self-auto"
+              >
+                <Plus className="w-4 h-4" />
+                Add Department
+              </button>
+            )}
+            {activeTab === "Categories" && (
+              <button 
+                onClick={handleCategoryAdd}
+                className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center justify-center gap-2 self-start sm:self-auto"
+              >
+                <Plus className="w-4 h-4" />
+                Add Category
+              </button>
+            )}
+            {activeTab === "Employee" && (
+              <button 
+                onClick={handleEmployeeAdd}
+                className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center justify-center gap-2 self-start sm:self-auto"
+              >
+                <Plus className="w-4 h-4" />
+                Add Employee
+              </button>
+            )}
           </div>
 
           {/* Department Management UI */}
-          {activeTab === "Departments" ? (
+          {activeTab === "Departments" && (
             <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden card-shadow">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
@@ -352,9 +682,160 @@ export default function OrganizationSetupScreen() {
                 </table>
               </div>
             </div>
-          ) : (
-            <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-500 card-shadow">
-              Select the Departments tab to manage company departments.
+          )}
+
+          {/* Category Management UI */}
+          {activeTab === "Categories" && (
+            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden card-shadow">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-200 bg-slate-50">
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Category Name
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Description
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Warranty Period
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Status
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {categories.map((cat) => (
+                      <tr 
+                        key={cat.id} 
+                        className="hover:bg-slate-50 transition-colors"
+                      >
+                        <td className="px-6 py-4 text-sm font-bold text-slate-900">
+                          {cat.name}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-slate-700 max-w-xs truncate">
+                          {cat.description}
+                        </td>
+                        <td className="px-6 py-4 text-sm font-medium text-slate-500">
+                          {cat.warranty} Months
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <StatusBadge status={cat.status} />
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <div className="flex items-center gap-3">
+                            <button
+                              onClick={() => handleCategoryEdit(cat)}
+                              className="text-xs font-semibold text-odoo-600 hover:text-odoo-700 transition-colors"
+                            >
+                              Edit
+                            </button>
+                            {cat.status === "Active" ? (
+                              <button
+                                onClick={() => handleCategoryDeactivate(cat.id)}
+                                className="text-xs font-semibold text-rose-600 hover:text-rose-700 transition-colors"
+                              >
+                                Deactivate
+                              </button>
+                            ) : (
+                              <span className="text-xs font-semibold text-slate-300 select-none">
+                                Deactivated
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Employee Management UI */}
+          {activeTab === "Employee" && (
+            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden card-shadow">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-200 bg-slate-50">
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Name
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Email
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Department
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Role
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Status
+                      </th>
+                      <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {employees.map((emp) => (
+                      <tr 
+                        key={emp.id} 
+                        className="hover:bg-slate-50 transition-colors"
+                      >
+                        <td className="px-6 py-4 text-sm font-bold text-slate-900">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-odoo-50 border border-odoo-100 flex items-center justify-center text-xs font-bold text-odoo-700 animate-fade-in shrink-0">
+                              {getInitials(emp.name)}
+                            </div>
+                            <span className="font-semibold">{emp.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-slate-700">
+                          {emp.email}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-slate-700 font-medium">
+                          {emp.department}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-slate-700">
+                          {emp.role}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <StatusBadge status={emp.status} />
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <div className="flex items-center gap-3">
+                            <button
+                              onClick={() => handleEmployeeEdit(emp)}
+                              className="text-xs font-semibold text-odoo-600 hover:text-odoo-700 transition-colors"
+                            >
+                              Edit
+                            </button>
+                            {emp.status === "Active" ? (
+                              <button
+                                onClick={() => handleEmployeeDeactivate(emp.id)}
+                                className="text-xs font-semibold text-rose-600 hover:text-rose-700 transition-colors"
+                              >
+                                Deactivate
+                              </button>
+                            ) : (
+                              <span className="text-xs font-semibold text-slate-300 select-none">
+                                Deactivated
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
@@ -414,7 +895,10 @@ export default function OrganizationSetupScreen() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors"
+                    onBlur={() => setTouched((prev) => ({ ...prev, name: true }))}
+                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors ${
+                      touched.name && nameError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
+                    }`}
                     placeholder="e.g. Engineering"
                   />
                   {touched.name && nameError && (
@@ -431,7 +915,10 @@ export default function OrganizationSetupScreen() {
                     type="text"
                     value={formData.head}
                     onChange={(e) => setFormData({ ...formData, head: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors"
+                    onBlur={() => setTouched((prev) => ({ ...prev, head: true }))}
+                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors ${
+                      touched.head && headError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
+                    }`}
                     placeholder="e.g. Aditi Rao"
                   />
                   {touched.head && headError && (
@@ -480,8 +967,318 @@ export default function OrganizationSetupScreen() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl text-sm font-semibold bg-odoo-600 hover:bg-odoo-700 text-white transition-colors"
+                  disabled={!isValid}
+                  onClick={handleSave}
+                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+                    isValid
+                      ? "bg-odoo-600 hover:bg-odoo-700 text-white cursor-pointer"
+                      : "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-200"
+                  }`}
+                >
+                  Save
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Add / Edit Category Modal */}
+      <AnimatePresence>
+        {isCategoryModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCategoryModalOpen(false)}
+              className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm shadow-inner"
+            />
+
+            {/* Modal Body */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-md w-full overflow-hidden z-50 relative"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-slate-100">
+                <h3 className="text-lg font-bold text-slate-900">
+                  {categoryModalMode === "add" ? "Add Category" : "Edit Category"}
+                </h3>
+                <button 
+                  onClick={() => setIsCategoryModalOpen(false)}
+                  className="text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Form fields */}
+              <div className="p-6 space-y-4">
+                {/* Category Name */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Category Name
+                  </label>
+                  <input
+                    type="text"
+                    value={categoryFormData.name}
+                    onChange={(e) => setCategoryFormData({ ...categoryFormData, name: e.target.value })}
+                    onBlur={() => setCategoryTouched((prev) => ({ ...prev, name: true }))}
+                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors ${
+                      categoryTouched.name && categoryNameError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
+                    }`}
+                    placeholder="e.g. Electronics"
+                  />
+                  {categoryTouched.name && categoryNameError && (
+                    <p className="text-rose-500 text-xs font-semibold mt-1">{categoryNameError}</p>
+                  )}
+                </div>
+
+                {/* Description */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Description
+                  </label>
+                  <textarea
+                    value={categoryFormData.description}
+                    onChange={(e) => setCategoryFormData({ ...categoryFormData, description: e.target.value })}
+                    onBlur={() => setCategoryTouched((prev) => ({ ...prev, description: true }))}
+                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors min-h-[80px] ${
+                      categoryTouched.description && categoryDescriptionError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
+                    }`}
+                    placeholder="e.g. Laptops, desktops, printers and monitors"
+                  />
+                  {categoryTouched.description && categoryDescriptionError && (
+                    <p className="text-rose-500 text-xs font-semibold mt-1">{categoryDescriptionError}</p>
+                  )}
+                </div>
+
+                {/* Warranty Period */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Warranty Period (Months)
+                  </label>
+                  <input
+                    type="text"
+                    value={categoryFormData.warranty}
+                    onChange={(e) => setCategoryFormData({ ...categoryFormData, warranty: e.target.value })}
+                    onBlur={() => setCategoryTouched((prev) => ({ ...prev, warranty: true }))}
+                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors ${
+                      categoryTouched.warranty && categoryWarrantyError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
+                    }`}
+                    placeholder="e.g. 24"
+                  />
+                  {categoryTouched.warranty && categoryWarrantyError && (
+                    <p className="text-rose-500 text-xs font-semibold mt-1">{categoryWarrantyError}</p>
+                  )}
+                </div>
+
+                {/* Status */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Status
+                  </label>
+                  <select
+                    value={categoryFormData.status}
+                    onChange={(e) => setCategoryFormData({ ...categoryFormData, status: e.target.value as "Active" | "Inactive" })}
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:border-odoo-500 transition-colors"
+                  >
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-end gap-3 px-6 py-4 bg-slate-50 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setIsCategoryModalOpen(false)}
+                  className="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={!isCategoryValid}
+                  onClick={handleCategorySave}
+                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+                    isCategoryValid
+                      ? "bg-odoo-600 hover:bg-odoo-700 text-white cursor-pointer"
+                      : "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-200"
+                  }`}
+                >
+                  Save
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Add / Edit Employee Modal */}
+      <AnimatePresence>
+        {isEmployeeModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsEmployeeModalOpen(false)}
+              className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm shadow-inner"
+            />
+
+            {/* Modal Body */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-md w-full overflow-hidden z-50 relative"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-slate-100">
+                <h3 className="text-lg font-bold text-slate-900">
+                  {employeeModalMode === "add" ? "Add Employee" : "Edit Employee"}
+                </h3>
+                <button 
+                  onClick={() => setIsEmployeeModalOpen(false)}
+                  className="text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Form fields */}
+              <div className="p-6 space-y-4">
+                {/* Employee Name */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    value={employeeFormData.name}
+                    onChange={(e) => setEmployeeFormData({ ...employeeFormData, name: e.target.value })}
+                    onBlur={() => setEmployeeTouched((prev) => ({ ...prev, name: true }))}
+                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors ${
+                      employeeTouched.name && employeeNameError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
+                    }`}
+                    placeholder="e.g. Ankit Mishra"
+                  />
+                  {employeeTouched.name && employeeNameError && (
+                    <p className="text-rose-500 text-xs font-semibold mt-1">{employeeNameError}</p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={employeeFormData.email}
+                    onChange={(e) => setEmployeeFormData({ ...employeeFormData, email: e.target.value })}
+                    onBlur={() => setEmployeeTouched((prev) => ({ ...prev, email: true }))}
+                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors ${
+                      employeeTouched.email && employeeEmailError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
+                    }`}
+                    placeholder="e.g. ankit@example.com"
+                  />
+                  {employeeTouched.email && employeeEmailError && (
+                    <p className="text-rose-500 text-xs font-semibold mt-1">{employeeEmailError}</p>
+                  )}
+                </div>
+
+                {/* Department */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Department
+                  </label>
+                  <select
+                    value={employeeFormData.department}
+                    onChange={(e) => setEmployeeFormData({ ...employeeFormData, department: e.target.value })}
+                    onBlur={() => setEmployeeTouched((prev) => ({ ...prev, department: true }))}
+                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors ${
+                      employeeTouched.department && employeeDepartmentError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
+                    }`}
+                  >
+                    <option value="">Select Department</option>
+                    {departments.map((dept) => (
+                      <option key={dept.id} value={dept.name}>
+                        {dept.name}
+                      </option>
+                    ))}
+                  </select>
+                  {employeeTouched.department && employeeDepartmentError && (
+                    <p className="text-rose-500 text-xs font-semibold mt-1">{employeeDepartmentError}</p>
+                  )}
+                </div>
+
+                {/* Role */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Role
+                  </label>
+                  <select
+                    value={employeeFormData.role}
+                    onChange={(e) => setEmployeeFormData({ ...employeeFormData, role: e.target.value })}
+                    onBlur={() => setEmployeeTouched((prev) => ({ ...prev, role: true }))}
+                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors ${
+                      employeeTouched.role && employeeRoleError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
+                    }`}
+                  >
+                    <option value="">Select Role</option>
+                    <option value="Employee">Employee</option>
+                    <option value="Department Head">Department Head</option>
+                    <option value="Asset Manager">Asset Manager</option>
+                  </select>
+                  {employeeTouched.role && employeeRoleError && (
+                    <p className="text-rose-500 text-xs font-semibold mt-1">{employeeRoleError}</p>
+                  )}
+                </div>
+
+                {/* Status */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                    Status
+                  </label>
+                  <select
+                    value={employeeFormData.status}
+                    onChange={(e) => setEmployeeFormData({ ...employeeFormData, status: e.target.value as "Active" | "Inactive" })}
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:border-odoo-500 transition-colors"
+                  >
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-end gap-3 px-6 py-4 bg-slate-50 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setIsEmployeeModalOpen(false)}
+                  className="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={!isEmployeeValid}
+                  onClick={handleEmployeeSave}
+                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
+                    isEmployeeValid
+                      ? "bg-odoo-600 hover:bg-odoo-700 text-white cursor-pointer"
+                      : "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-200"
+                  }`}
                 >
                   Save
                 </button>
@@ -502,7 +1299,7 @@ export default function OrganizationSetupScreen() {
               exit={{ opacity: 0, transition: { duration: 0.15 } }}
               className="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-2.5 text-sm font-semibold pointer-events-auto border border-slate-800"
             >
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-odoo-500 animate-pulse" />
               <span>{toast.message}</span>
             </motion.div>
           ))}
