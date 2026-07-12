@@ -214,8 +214,8 @@ export default function MaintenanceScreen() {
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 shrink-0">
             <div>
               <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-                  <Wrench className="w-5 h-5 text-emerald-600" />
+                <div className="w-10 h-10 rounded-xl bg-odoo-50 border border-odoo-100 flex items-center justify-center">
+                  <Wrench className="w-5 h-5 text-odoo-600" />
                 </div>
                 Maintenance Management
               </h1>
@@ -226,7 +226,7 @@ export default function MaintenanceScreen() {
 
             <button
               onClick={() => setIsRequestModalOpen(true)}
-              className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-emerald-700 transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer"
+              className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               Raise Request
@@ -320,7 +320,7 @@ export default function MaintenanceScreen() {
             <div className="w-80 shrink-0 flex flex-col bg-slate-100/75 border border-slate-200/60 rounded-2xl p-4 space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="font-bold text-slate-700 text-sm flex items-center gap-2">
-                  <Play className="w-4 h-4 text-emerald-500 fill-emerald-500" />
+                  <Play className="w-4 h-4 text-odoo-500 fill-odoo-500" />
                   In Progress
                 </h3>
                 <span className="bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full text-xs font-bold">
@@ -346,10 +346,10 @@ export default function MaintenanceScreen() {
             <div className="w-80 shrink-0 flex flex-col bg-slate-100/75 border border-slate-200/60 rounded-2xl p-4 space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="font-bold text-slate-700 text-sm flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <CheckCircle2 className="w-4 h-4 text-odoo-600" />
                   Resolved
                 </h3>
-                <span className="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-xs font-bold border border-emerald-200">
+                <span className="bg-odoo-100 text-odoo-800 px-2 py-0.5 rounded-full text-xs font-bold border border-odoo-200">
                   {resolvedRequests.length}
                 </span>
               </div>
@@ -369,8 +369,8 @@ export default function MaintenanceScreen() {
           </div>
 
           {/* Workflow Rule Note (bottom right spec) */}
-          <div className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl text-emerald-900 shrink-0 card-shadow">
-            <Info className="w-5 h-5 text-emerald-600 shrink-0" />
+          <div className="flex items-center gap-3 p-4 bg-odoo-50 border border-odoo-100 rounded-2xl text-odoo-900 shrink-0 card-shadow">
+            <Info className="w-5 h-5 text-odoo-600 shrink-0" />
             <p className="text-xs font-bold leading-relaxed">
               Workflow Note: Approving a card moves the asset to 'Under Maintenance', and resolving the card returns it to 'Available'.
             </p>
@@ -400,7 +400,7 @@ export default function MaintenanceScreen() {
             >
               <div className="flex items-center justify-between p-6 border-b border-slate-100">
                 <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <Wrench className="w-5 h-5 text-emerald-600" />
+                  <Wrench className="w-5 h-5 text-odoo-600" />
                   Raise Maintenance Request
                 </h3>
                 <button onClick={() => setIsRequestModalOpen(false)} className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer">
@@ -419,7 +419,7 @@ export default function MaintenanceScreen() {
                     <select
                       value={formAssetTag}
                       onChange={(e) => setFormAssetTag(e.target.value)}
-                      className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors font-semibold text-slate-900"
+                      className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors font-semibold text-slate-900"
                     >
                       {PRESET_ASSETS.map(asset => (
                         <option key={asset.tag} value={asset.tag}>
@@ -440,7 +440,7 @@ export default function MaintenanceScreen() {
                       onChange={(e) => setFormDesc(e.target.value)}
                       placeholder="e.g. AC fan makes a grinding noise or screen flickers constantly."
                       rows={3}
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors font-medium text-slate-900 resize-none"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors font-medium text-slate-900 resize-none"
                     />
                   </div>
 
@@ -479,7 +479,7 @@ export default function MaintenanceScreen() {
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
                       Attach photo of defect (Optional)
                     </label>
-                    <div className="border-2 border-dashed border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/10 rounded-xl p-4 text-center cursor-pointer transition-all">
+                    <div className="border-2 border-dashed border-slate-200 hover:border-odoo-500 hover:bg-odoo-50/10 rounded-xl p-4 text-center cursor-pointer transition-all">
                       <p className="text-xs text-slate-500 font-medium">Click to select files or drag-and-drop</p>
                       <p className="text-[10px] text-slate-400 font-medium mt-0.5">PNG, JPG up to 5MB</p>
                     </div>
@@ -497,7 +497,7 @@ export default function MaintenanceScreen() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 rounded-xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition-colors shadow-sm cursor-pointer"
+                    className="px-5 py-2 rounded-xl text-sm font-semibold bg-odoo-600 hover:bg-odoo-700 text-white transition-colors shadow-sm cursor-pointer"
                   >
                     Submit Request
                   </button>
@@ -529,7 +529,7 @@ export default function MaintenanceScreen() {
             >
               <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                 <h3 className="font-bold text-slate-950 text-base flex items-center gap-2">
-                  <UserCheck className="w-5 h-5 text-emerald-600" />
+                  <UserCheck className="w-5 h-5 text-odoo-600" />
                   Assign Technician
                 </h3>
                 <button onClick={() => setIsAssignModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
@@ -545,7 +545,7 @@ export default function MaintenanceScreen() {
                   <select
                     value={selectedTech}
                     onChange={(e) => setSelectedTech(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white font-semibold text-slate-900"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white font-semibold text-slate-900"
                   >
                     {TECHNICIANS.map(tech => (
                       <option key={tech} value={tech}>{tech}</option>
@@ -565,7 +565,7 @@ export default function MaintenanceScreen() {
                 <button
                   type="button"
                   onClick={handleAssignTechnician}
-                  className="px-4.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
+                  className="px-4.5 py-2 rounded-xl text-xs font-bold bg-odoo-600 hover:bg-odoo-700 text-white cursor-pointer"
                 >
                   Confirm Assignment
                 </button>
@@ -596,7 +596,7 @@ export default function MaintenanceScreen() {
             >
               <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                 <h3 className="font-bold text-slate-950 text-base flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                  <CheckCircle2 className="w-5 h-5 text-odoo-600" />
                   Mark Repair Resolved
                 </h3>
                 <button onClick={() => setIsResolveModalOpen(false)} className="text-slate-400 hover:text-slate-600 cursor-pointer">
@@ -614,7 +614,7 @@ export default function MaintenanceScreen() {
                     onChange={(e) => setResolutionNotes(e.target.value)}
                     placeholder="e.g. Replaced faulty capacitor on the motherboard. Tested okay."
                     rows={3}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white resize-none font-medium text-slate-900"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white resize-none font-medium text-slate-900"
                   />
                 </div>
               </div>
@@ -630,7 +630,7 @@ export default function MaintenanceScreen() {
                 <button
                   type="button"
                   onClick={handleResolve}
-                  className="px-4.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
+                  className="px-4.5 py-2 rounded-xl text-xs font-bold bg-odoo-600 hover:bg-odoo-700 text-white cursor-pointer"
                 >
                   Confirm Resolved
                 </button>
@@ -678,7 +678,7 @@ function MaintenanceCard({ request, onAction, onReject, actionLabel, rejectLabel
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.2 }}
       className={`p-4 rounded-xl border card-shadow bg-white flex flex-col gap-3 group relative overflow-hidden transition-all ${
-        isResolved ? "border-emerald-250 bg-emerald-50/20 hover:border-emerald-300" : "border-slate-200 hover:border-slate-300"
+        isResolved ? "border-odoo-250 bg-odoo-50/20 hover:border-odoo-300" : "border-slate-200 hover:border-slate-300"
       }`}
     >
       {/* Top Details */}
@@ -707,8 +707,8 @@ function MaintenanceCard({ request, onAction, onReject, actionLabel, rejectLabel
 
       {/* Custom Resolved Meta info */}
       {isResolved && (
-        <div className="flex items-center gap-1.5 justify-between text-[10px] pt-1.5 border-t border-emerald-100/50 mt-1">
-          <span className="text-emerald-700 font-extrabold flex items-center gap-1">
+        <div className="flex items-center gap-1.5 justify-between text-[10px] pt-1.5 border-t border-odoo-100/50 mt-1">
+          <span className="text-odoo-700 font-extrabold flex items-center gap-1">
             <CheckCircle2 className="w-3.5 h-3.5" /> Resolved
           </span>
           <span className="text-slate-400 font-semibold flex items-center gap-0.5">
@@ -722,7 +722,7 @@ function MaintenanceCard({ request, onAction, onReject, actionLabel, rejectLabel
         <div className="flex items-center gap-2 pt-2 border-t border-slate-100 mt-1">
           <button
             onClick={onAction}
-            className={`flex-1 py-1.5 px-3 rounded-lg text-[10px] font-bold text-center text-white bg-emerald-600 hover:bg-emerald-700 cursor-pointer shadow-sm shadow-emerald-600/10 transition-colors`}
+            className={`flex-1 py-1.5 px-3 rounded-lg text-[10px] font-bold text-center text-white bg-odoo-600 hover:bg-odoo-700 cursor-pointer shadow-sm shadow-odoo-600/10 transition-colors`}
           >
             {actionLabel}
           </button>

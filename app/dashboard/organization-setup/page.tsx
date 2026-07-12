@@ -30,11 +30,11 @@ export function StatusBadge({ status }: StatusBadgeProps) {
   return (
     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border ${
       isActive
-        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+        ? "bg-odoo-50 text-odoo-700 border-odoo-200"
         : "bg-rose-50 text-rose-700 border-rose-200"
     }`}>
       <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
-        isActive ? "bg-emerald-500" : "bg-rose-500"
+        isActive ? "bg-odoo-500" : "bg-rose-500"
       }`} />
       {status}
     </span>
@@ -213,8 +213,8 @@ export default function OrganizationSetupScreen() {
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-                  <Briefcase className="w-5 h-5 text-emerald-600" />
+                <div className="w-10 h-10 rounded-xl bg-odoo-50 border border-odoo-100 flex items-center justify-center">
+                  <Briefcase className="w-5 h-5 text-odoo-600" />
                 </div>
                 Organization Setup
               </h1>
@@ -232,7 +232,7 @@ export default function OrganizationSetupScreen() {
                 onClick={() => setActiveTab("Departments")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                   activeTab === "Departments"
-                    ? "bg-white text-emerald-600 shadow-sm border border-slate-200"
+                    ? "bg-white text-odoo-600 shadow-sm border border-slate-200"
                     : "text-slate-500 hover:text-slate-800 hover:bg-slate-200/50"
                 }`}
               >
@@ -243,7 +243,7 @@ export default function OrganizationSetupScreen() {
                 onClick={() => setActiveTab("Categories")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                   activeTab === "Categories"
-                    ? "bg-white text-emerald-600 shadow-sm border border-slate-200"
+                    ? "bg-white text-odoo-600 shadow-sm border border-slate-200"
                     : "text-slate-500 hover:text-slate-800 hover:bg-slate-200/50"
                 }`}
               >
@@ -254,7 +254,7 @@ export default function OrganizationSetupScreen() {
                 onClick={() => setActiveTab("Employee")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                   activeTab === "Employee"
-                    ? "bg-white text-emerald-600 shadow-sm border border-slate-200"
+                    ? "bg-white text-odoo-600 shadow-sm border border-slate-200"
                     : "text-slate-500 hover:text-slate-800 hover:bg-slate-200/50"
                 }`}
               >
@@ -266,7 +266,7 @@ export default function OrganizationSetupScreen() {
             {/* Add Button */}
             <button 
               onClick={handleAdd}
-              className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-emerald-700 transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 self-start sm:self-auto"
+              className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center justify-center gap-2 self-start sm:self-auto"
             >
               <Plus className="w-4 h-4" />
               Add Department
@@ -308,7 +308,7 @@ export default function OrganizationSetupScreen() {
                         </td>
                         <td className="px-6 py-4 text-sm text-slate-700">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-xs font-bold text-emerald-700">
+                            <div className="w-8 h-8 rounded-full bg-odoo-50 border border-odoo-100 flex items-center justify-center text-xs font-bold text-odoo-700">
                               {dept.headInitials}
                             </div>
                             <span className="font-medium">{dept.head}</span>
@@ -328,7 +328,7 @@ export default function OrganizationSetupScreen() {
                           <div className="flex items-center gap-3">
                             <button
                               onClick={() => handleEdit(dept)}
-                              className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+                              className="text-xs font-semibold text-odoo-600 hover:text-odoo-700 transition-colors"
                             >
                               Edit
                             </button>
@@ -414,10 +414,7 @@ export default function OrganizationSetupScreen() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    onBlur={() => setTouched((prev) => ({ ...prev, name: true }))}
-                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors ${
-                      touched.name && nameError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
-                    }`}
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors"
                     placeholder="e.g. Engineering"
                   />
                   {touched.name && nameError && (
@@ -434,10 +431,7 @@ export default function OrganizationSetupScreen() {
                     type="text"
                     value={formData.head}
                     onChange={(e) => setFormData({ ...formData, head: e.target.value })}
-                    onBlur={() => setTouched((prev) => ({ ...prev, head: true }))}
-                    className={`w-full px-3 py-2 border rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors ${
-                      touched.head && headError ? "border-rose-300 focus:border-rose-500" : "border-slate-200"
-                    }`}
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors"
                     placeholder="e.g. Aditi Rao"
                   />
                   {touched.head && headError && (
@@ -454,7 +448,7 @@ export default function OrganizationSetupScreen() {
                     type="text"
                     value={formData.parent}
                     onChange={(e) => setFormData({ ...formData, parent: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors"
                     placeholder="e.g. Operations (optional)"
                   />
                 </div>
@@ -467,7 +461,7 @@ export default function OrganizationSetupScreen() {
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as "Active" | "Inactive" })}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:border-emerald-500 transition-colors"
+                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:border-odoo-500 transition-colors"
                   >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
@@ -486,13 +480,8 @@ export default function OrganizationSetupScreen() {
                 </button>
                 <button
                   type="button"
-                  disabled={!isValid}
-                  onClick={handleSave}
-                  className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
-                    isValid
-                      ? "bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer"
-                      : "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-200"
-                  }`}
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 rounded-xl text-sm font-semibold bg-odoo-600 hover:bg-odoo-700 text-white transition-colors"
                 >
                   Save
                 </button>

@@ -53,7 +53,7 @@ export default function DashboardScreen() {
                 <Wrench className="w-4 h-4 text-slate-400" />
                 Raise Request
               </button>
-              <button className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-emerald-700 transition-all shadow-md shadow-emerald-600/20 flex items-center gap-2">
+              <button className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center gap-2">
                 <Plus className="w-4 h-4" />
                 Register Asset
               </button>
@@ -88,7 +88,7 @@ export default function DashboardScreen() {
                   </div>
                   <div className="flex items-end justify-between">
                     <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">{metric.value}</h2>
-                    <div className={`flex items-center gap-1 text-sm font-medium ${metric.trend.startsWith('+') ? 'text-emerald-600' : metric.trend === '0' ? 'text-slate-400' : 'text-red-600'}`}>
+                    <div className={`flex items-center gap-1 text-sm font-medium ${metric.trend.startsWith('+') ? 'text-odoo-600' : metric.trend === '0' ? 'text-slate-400' : 'text-red-600'}`}>
                       {metric.trend !== '0' && (metric.trend.startsWith('+') ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />)}
                       {metric.trend !== '0' ? metric.trend : '-'}
                     </div>
@@ -105,7 +105,7 @@ export default function DashboardScreen() {
                 {RECENT_ACTIVITY.map((activity) => (
                   <div key={activity.id} className="p-5 flex items-center justify-between hover:bg-slate-50 transition-colors">
                     <div className="flex items-center gap-4">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                      <div className="w-2 h-2 rounded-full bg-odoo-500"></div>
                       <p className="text-sm font-medium text-slate-700">{activity.text}</p>
                     </div>
                     <span className="text-sm text-slate-400 font-medium whitespace-nowrap ml-4">{activity.time}</span>

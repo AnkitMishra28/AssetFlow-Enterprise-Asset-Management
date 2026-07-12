@@ -307,8 +307,8 @@ export default function ResourceBookingScreen() {
           <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
-                  <CalendarClock className="w-5 h-5 text-emerald-600" />
+                <div className="w-10 h-10 rounded-xl bg-odoo-50 border border-odoo-100 flex items-center justify-center">
+                  <CalendarClock className="w-5 h-5 text-odoo-600" />
                 </div>
                 Resource Booking
               </h1>
@@ -322,7 +322,7 @@ export default function ResourceBookingScreen() {
                 setValidationError(null);
                 setIsModalOpen(true);
               }}
-              className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-emerald-700 transition-all shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer"
+              className="bg-odoo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-odoo-700 transition-all shadow-md shadow-odoo-600/20 flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               Book a slot
@@ -337,7 +337,7 @@ export default function ResourceBookingScreen() {
               <select
                 value={selectedResourceId}
                 onChange={(e) => setSelectedResourceId(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-emerald-500 transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-odoo-500 transition-colors"
               >
                 {RESOURCES.map(r => (
                   <option key={r.id} value={r.id}>{r.name} ({r.type})</option>
@@ -363,7 +363,7 @@ export default function ResourceBookingScreen() {
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="flex-1 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-sm font-semibold text-slate-900 text-center focus:outline-none focus:border-emerald-500 transition-colors"
+                  className="flex-1 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl text-sm font-semibold text-slate-900 text-center focus:outline-none focus:border-odoo-500 transition-colors"
                 />
                 <button 
                   onClick={() => {
@@ -380,7 +380,7 @@ export default function ResourceBookingScreen() {
 
             {/* Resource Info Card */}
             <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100 h-full">
-              <div className="w-9 h-9 bg-emerald-50 border border-emerald-100 rounded-lg flex items-center justify-center text-emerald-600 shrink-0">
+              <div className="w-9 h-9 bg-odoo-50 border border-odoo-100 rounded-lg flex items-center justify-center text-odoo-600 shrink-0">
                 <Info className="w-4 h-4" />
               </div>
               <div className="min-w-0 text-xs">
@@ -399,7 +399,7 @@ export default function ResourceBookingScreen() {
             <div className="lg:col-span-3 bg-white border border-slate-200 rounded-2xl overflow-hidden card-shadow p-6">
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
                 <h3 className="font-bold text-slate-900 flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-emerald-600" />
+                  <Calendar className="w-4 h-4 text-odoo-600" />
                   Schedule Timeline
                 </h3>
                 <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
@@ -644,7 +644,7 @@ export default function ResourceBookingScreen() {
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-slate-100">
                 <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <CalendarClock className="w-5 h-5 text-emerald-600" />
+                  <CalendarClock className="w-5 h-5 text-odoo-600" />
                   New Resource Booking
                 </h3>
                 <button 
@@ -665,7 +665,7 @@ export default function ResourceBookingScreen() {
                       <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Booking Resource</p>
                       <p className="text-sm font-bold text-slate-900 mt-0.5">{activeResource.name}</p>
                     </div>
-                    <span className="bg-emerald-50 text-emerald-700 border border-emerald-100 text-xs font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    <span className="bg-odoo-50 text-odoo-700 border border-odoo-100 text-xs font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
                       {activeResource.type}
                     </span>
                   </div>
@@ -689,7 +689,7 @@ export default function ResourceBookingScreen() {
                       value={formTitle}
                       onChange={(e) => setFormTitle(e.target.value)}
                       placeholder="e.g. Weekly Scrum Meeting"
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors font-medium text-slate-900"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors font-medium text-slate-900"
                     />
                   </div>
 
@@ -703,7 +703,7 @@ export default function ResourceBookingScreen() {
                       required
                       value={selectedDate}
                       onChange={(e) => setSelectedDate(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors font-medium text-slate-900 font-semibold"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors font-medium text-slate-900 font-semibold"
                     />
                   </div>
 
@@ -718,7 +718,7 @@ export default function ResourceBookingScreen() {
                         required
                         value={formStart}
                         onChange={(e) => setFormStart(e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors font-semibold text-slate-900"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors font-semibold text-slate-900"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -730,7 +730,7 @@ export default function ResourceBookingScreen() {
                         required
                         value={formEnd}
                         onChange={(e) => setFormEnd(e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors font-semibold text-slate-900"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors font-semibold text-slate-900"
                       />
                     </div>
                   </div>
@@ -744,7 +744,7 @@ export default function ResourceBookingScreen() {
                       <select
                         value={formDept}
                         onChange={(e) => setFormDept(e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors font-medium text-slate-900"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors font-medium text-slate-900"
                       >
                         <option value="Engineering">Engineering</option>
                         <option value="Marketing">Marketing</option>
@@ -762,7 +762,7 @@ export default function ResourceBookingScreen() {
                         required
                         value={formRequestor}
                         onChange={(e) => setFormRequestor(e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500 bg-slate-50 focus:bg-white transition-colors font-medium text-slate-900"
+                        className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-odoo-500 bg-slate-50 focus:bg-white transition-colors font-medium text-slate-900"
                       />
                     </div>
                   </div>
@@ -780,7 +780,7 @@ export default function ResourceBookingScreen() {
                   </button>
                   <button
                     type="submit"
-                    className="px-5 py-2 rounded-xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition-colors shadow-sm cursor-pointer"
+                    className="px-5 py-2 rounded-xl text-sm font-semibold bg-odoo-600 hover:bg-odoo-700 text-white transition-colors shadow-sm cursor-pointer"
                   >
                     Request Slot
                   </button>

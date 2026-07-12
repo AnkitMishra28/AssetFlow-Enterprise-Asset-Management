@@ -24,12 +24,12 @@ type View = "notifications" | "activity";
 type Category = "alerts" | "approvals" | "bookings";
 type Filter = "All" | "Alerts" | "Approvals" | "Bookings";
 
-type Tone = "sky" | "emerald" | "rose" | "amber" | "red";
+type Tone = "sky" | "odoo" | "rose" | "amber" | "red";
 
 // Full literal class strings so Tailwind's JIT can detect them.
 const TONES: Record<Tone, { dot: string; chip: string }> = {
   sky: { dot: "bg-sky-500", chip: "bg-sky-50 text-sky-600 border-sky-100" },
-  emerald: { dot: "bg-emerald-500", chip: "bg-emerald-50 text-emerald-600 border-emerald-100" },
+  odoo: { dot: "bg-odoo-500", chip: "bg-odoo-50 text-odoo-600 border-odoo-100" },
   rose: { dot: "bg-rose-500", chip: "bg-rose-50 text-rose-600 border-rose-100" },
   amber: { dot: "bg-amber-500", chip: "bg-amber-50 text-amber-600 border-amber-100" },
   red: { dot: "bg-red-500", chip: "bg-red-50 text-red-600 border-red-100" },
@@ -47,7 +47,7 @@ interface NotificationItem {
 
 const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   { id: 1, text: "Laptop AF-0014 assigned to Priya Shah", time: "2m ago", category: "alerts", tone: "sky", icon: UserCheck, read: false },
-  { id: 2, text: "Maintenance request AF-0055 approved", time: "18m ago", category: "approvals", tone: "emerald", icon: Wrench, read: false },
+  { id: 2, text: "Maintenance request AF-0055 approved", time: "18m ago", category: "approvals", tone: "odoo", icon: Wrench, read: false },
   { id: 3, text: "Booking confirmed : Room B2 : 2:00 to 3:00 PM", time: "1h ago", category: "bookings", tone: "sky", icon: CalendarClock, read: false },
   { id: 4, text: "Transfer approved : AF-0033 to facilities dept", time: "3h ago", category: "approvals", tone: "rose", icon: ArrowRightLeft, read: true },
   { id: 5, text: "Overdue return : AF-0021 was due 3 days ago", time: "1d ago", category: "alerts", tone: "amber", icon: Clock, read: true },
@@ -64,7 +64,7 @@ const ACTIVITY_META: Record<
   { label: string; icon: React.ElementType; chip: string; badge: string }
 > = {
   assets: { label: "Asset", icon: Box, chip: "bg-sky-50 text-sky-600 border-sky-100", badge: "bg-sky-50 text-sky-700 border-sky-200" },
-  bookings: { label: "Booking", icon: CalendarClock, chip: "bg-emerald-50 text-emerald-600 border-emerald-100", badge: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  bookings: { label: "Booking", icon: CalendarClock, chip: "bg-odoo-50 text-odoo-600 border-odoo-100", badge: "bg-odoo-50 text-odoo-700 border-odoo-200" },
   maintenance: { label: "Maintenance", icon: Wrench, chip: "bg-amber-50 text-amber-600 border-amber-100", badge: "bg-amber-50 text-amber-700 border-amber-200" },
   transfers: { label: "Transfer", icon: ArrowRightLeft, chip: "bg-rose-50 text-rose-600 border-rose-100", badge: "bg-rose-50 text-rose-700 border-rose-200" },
   audit: { label: "Audit", icon: ShieldCheck, chip: "bg-red-50 text-red-600 border-red-100", badge: "bg-red-50 text-red-700 border-red-200" },
@@ -163,10 +163,10 @@ export default function NotificationsScreen() {
             {view === "notifications" ? (
               <div>
                 <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-                  <span className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100">
-                    <Bell className="w-5 h-5 text-emerald-600" />
+                  <span className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-odoo-50 border border-odoo-100">
+                    <Bell className="w-5 h-5 text-odoo-600" />
                     {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white" />
+                      <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-odoo-500 ring-2 ring-white" />
                     )}
                   </span>
                   Notifications
@@ -180,8 +180,8 @@ export default function NotificationsScreen() {
             ) : (
               <div>
                 <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-                  <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100">
-                    <History className="w-5 h-5 text-emerald-600" />
+                  <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-odoo-50 border border-odoo-100">
+                    <History className="w-5 h-5 text-odoo-600" />
                   </span>
                   Activity Log
                 </h1>
@@ -198,7 +198,7 @@ export default function NotificationsScreen() {
                   disabled={unreadCount === 0}
                   className="bg-white border border-slate-200 px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all card-shadow disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  <CheckCheck className="w-4 h-4 text-emerald-500" />
+                  <CheckCheck className="w-4 h-4 text-odoo-500" />
                   Mark all as read
                 </button>
               </div>
@@ -211,7 +211,7 @@ export default function NotificationsScreen() {
               onClick={() => setView("notifications")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 view === "notifications"
-                  ? "bg-white text-emerald-600 shadow-sm border border-slate-200"
+                  ? "bg-white text-odoo-600 shadow-sm border border-slate-200"
                   : "text-slate-500 hover:text-slate-800 hover:bg-slate-200/50"
               }`}
             >
@@ -222,7 +222,7 @@ export default function NotificationsScreen() {
               onClick={() => setView("activity")}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 view === "activity"
-                  ? "bg-white text-emerald-600 shadow-sm border border-slate-200"
+                  ? "bg-white text-odoo-600 shadow-sm border border-slate-200"
                   : "text-slate-500 hover:text-slate-800 hover:bg-slate-200/50"
               }`}
             >
@@ -243,7 +243,7 @@ export default function NotificationsScreen() {
                       onClick={() => setActiveFilter(filter)}
                       className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border transition-all shadow-sm ${
                         isActive
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                          ? "bg-odoo-50 text-odoo-700 border-odoo-200"
                           : "bg-white text-slate-600 border-slate-200 hover:text-slate-900 hover:bg-slate-50"
                       }`}
                     >
@@ -251,7 +251,7 @@ export default function NotificationsScreen() {
                       <span
                         className={`text-xs px-2 py-0.5 rounded-full min-w-[1.25rem] font-bold ${
                           isActive
-                            ? "bg-emerald-100 text-emerald-700"
+                            ? "bg-odoo-100 text-odoo-700"
                             : "bg-slate-100 text-slate-500"
                         }`}
                       >
@@ -334,7 +334,7 @@ export default function NotificationsScreen() {
                       onClick={() => setActivityFilter(f.value)}
                       className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border transition-all shadow-sm ${
                         isActive
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                          ? "bg-odoo-50 text-odoo-700 border-odoo-200"
                           : "bg-white text-slate-600 border-slate-200 hover:text-slate-900 hover:bg-slate-50"
                       }`}
                     >
@@ -342,7 +342,7 @@ export default function NotificationsScreen() {
                       <span
                         className={`text-xs px-2 py-0.5 rounded-full min-w-[1.25rem] font-bold ${
                           isActive
-                            ? "bg-emerald-100 text-emerald-700"
+                            ? "bg-odoo-100 text-odoo-700"
                             : "bg-slate-100 text-slate-500"
                         }`}
                       >

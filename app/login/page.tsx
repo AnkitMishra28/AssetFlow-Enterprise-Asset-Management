@@ -13,8 +13,8 @@ export default function LoginScreen() {
       
       {/* Subtle modern background gradient */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 w-full h-[400px] bg-gradient-to-b from-emerald-50 to-transparent" />
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-100/50 blur-3xl opacity-60" />
+        <div className="absolute top-0 w-full h-[400px] bg-gradient-to-b from-odoo-50 to-transparent" />
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-odoo-100/50 blur-3xl opacity-60" />
         <div className="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-blue-100/50 blur-3xl opacity-60" />
       </div>
 
@@ -28,8 +28,8 @@ export default function LoginScreen() {
           
           {/* Header */}
           <div className="flex flex-col items-center text-center mb-8">
-            <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-5">
-              <LogIn className="w-6 h-6 text-emerald-600" />
+            <div className="w-14 h-14 bg-odoo-50 rounded-2xl flex items-center justify-center mb-5">
+              <LogIn className="w-6 h-6 text-odoo-600" />
             </div>
             <h1 className="text-2xl font-extrabold text-slate-900 mb-2 tracking-tight">
               {isLogin ? "Welcome back" : "Create an account"}
@@ -63,7 +63,7 @@ export default function LoginScreen() {
                   <input
                     type="text"
                     placeholder="Full Name"
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 pl-12 pr-4 py-3 rounded-xl text-sm font-medium text-slate-900 placeholder:text-slate-400 transition-all outline-none"
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-odoo-500 focus:ring-4 focus:ring-odoo-500/10 pl-12 pr-4 py-3 rounded-xl text-sm font-medium text-slate-900 placeholder:text-slate-400 transition-all outline-none"
                     required
                   />
                 </div>
@@ -76,7 +76,7 @@ export default function LoginScreen() {
                 <input
                   type="email"
                   placeholder="Email address"
-                  className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 pl-12 pr-4 py-3 rounded-xl text-sm font-medium text-slate-900 placeholder:text-slate-400 transition-all outline-none"
+                  className="w-full bg-slate-50 border border-slate-200 focus:border-odoo-500 focus:ring-4 focus:ring-odoo-500/10 pl-12 pr-4 py-3 rounded-xl text-sm font-medium text-slate-900 placeholder:text-slate-400 transition-all outline-none"
                   required
                 />
               </div>
@@ -88,7 +88,7 @@ export default function LoginScreen() {
                 <input
                   type="password"
                   placeholder="Password"
-                  className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 pl-12 pr-12 py-3 rounded-xl text-sm font-medium text-slate-900 placeholder:text-slate-400 transition-all outline-none"
+                  className="w-full bg-slate-50 border border-slate-200 focus:border-odoo-500 focus:ring-4 focus:ring-odoo-500/10 pl-12 pr-12 py-3 rounded-xl text-sm font-medium text-slate-900 placeholder:text-slate-400 transition-all outline-none"
                   required
                 />
                 <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
@@ -98,7 +98,7 @@ export default function LoginScreen() {
 
               {isLogin && (
                 <div className="flex justify-end pt-1 pb-3">
-                  <a href="#" className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                  <a href="#" className="text-sm font-semibold text-odoo-600 hover:text-odoo-700 transition-colors">
                     Forgot password?
                   </a>
                 </div>
@@ -138,14 +138,14 @@ export default function LoginScreen() {
             {isLogin ? (
                <span>
                  New to AssetFlow?{" "}
-                 <button onClick={() => setIsLogin(false)} className="font-bold text-emerald-600 hover:text-emerald-700 transition-colors">
+                 <button onClick={() => setIsLogin(false)} className="font-bold text-odoo-600 hover:text-odoo-700 transition-colors">
                    Sign up
                  </button>
                </span>
             ) : (
                <span>
                  Already have an account?{" "}
-                 <button onClick={() => setIsLogin(true)} className="font-bold text-emerald-600 hover:text-emerald-700 transition-colors">
+                 <button onClick={() => setIsLogin(true)} className="font-bold text-odoo-600 hover:text-odoo-700 transition-colors">
                    Sign in
                  </button>
                </span>

@@ -33,7 +33,7 @@ export default function Sidebar({ activeItem }: SidebarProps) {
   return (
     <aside className="w-64 bg-[#f8fafc] border-r border-slate-200 flex flex-col p-6 hidden md:flex shrink-0">
       <div className="flex items-center gap-3 mb-10">
-        <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center shadow-sm">
+        <div className="w-8 h-8 rounded-lg bg-odoo-600 flex items-center justify-center shadow-sm">
           <Box className="w-5 h-5 text-white" />
         </div>
         <span className="text-xl font-bold tracking-tight text-slate-900">AssetFlow</span>
@@ -48,7 +48,7 @@ export default function Sidebar({ activeItem }: SidebarProps) {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                 isActive 
-                  ? "bg-white text-emerald-600 shadow-sm border border-slate-200" 
+                  ? "bg-white text-odoo-600 shadow-sm border border-slate-200" 
                   : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
@@ -65,7 +65,7 @@ export default function Sidebar({ activeItem }: SidebarProps) {
           JD
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-slate-900 truncate group-hover:text-emerald-600 transition-colors">Jane Doe</p>
+          <p className="text-sm font-semibold text-slate-900 truncate group-hover:text-odoo-600 transition-colors">Jane Doe</p>
           <p className="text-xs text-slate-500 truncate">Employee</p>
         </div>
       </div>
