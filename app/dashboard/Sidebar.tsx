@@ -9,12 +9,14 @@ import {
   Wrench, 
   ShieldCheck, 
   BarChart3, 
-  Bell
+  Bell,
+  QrCode
 } from "lucide-react";
 import Link from "next/link";
 
 const SIDEBAR_ITEMS = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+  { icon: QrCode, label: "Scan Asset", href: "/dashboard/scanner" },
   { icon: Settings, label: "Organization Setup", href: "/dashboard/organization-setup" },
   { icon: Box, label: "Assets", href: "/dashboard/assets" },
   { icon: ArrowRightLeft, label: "Allocation & Transfer", href: "/dashboard/allocation-transfer" },
