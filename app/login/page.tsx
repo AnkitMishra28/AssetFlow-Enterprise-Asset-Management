@@ -2,21 +2,17 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-<<<<<<< HEAD
-import { LogIn, Mail, Lock, User, EyeOff, Eye } from "lucide-react";
-=======
 import { LogIn, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
->>>>>>> 1b75fc5f8719443f4da8700dac4f5567a7166ea5
 import StarfieldBackground from "@/components/StarfieldBackground";
 import { apiRequest } from "../../lib/api";
 
 export default function LoginScreen() {
   const [isLogin, setIsLogin] = useState(true);
-<<<<<<< HEAD
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
@@ -24,6 +20,7 @@ export default function LoginScreen() {
     e.preventDefault();
     setErrorMsg(null);
     setSuccessMsg(null);
+    setIsLoading(true);
 
     if (isLogin) {
       // 1. Admin login override
@@ -54,9 +51,11 @@ export default function LoginScreen() {
           }, 800);
         } else {
           setErrorMsg("Login failed: email address not found in the employee directory.");
+          setIsLoading(false);
         }
       } catch (err: any) {
         setErrorMsg(err.message || "Failed to contact database directory.");
+        setIsLoading(false);
       }
     } else {
       // Signup flow: Create dynamic employee account
@@ -66,6 +65,7 @@ export default function LoginScreen() {
         const depts = deptRes.data || deptRes || [];
         if (depts.length === 0) {
           setErrorMsg("Error: Please seed/create departments before signing up employees.");
+          setIsLoading(false);
           return;
         }
 
@@ -93,12 +93,10 @@ export default function LoginScreen() {
         }, 800);
       } catch (err: any) {
         setErrorMsg(err.message || "Registration failed. Try again.");
+        setIsLoading(false);
       }
     }
   };
-=======
-  const [showPassword, setShowPassword] = useState(false);
->>>>>>> 1b75fc5f8719443f4da8700dac4f5567a7166ea5
 
   return (
     <>
@@ -200,35 +198,28 @@ export default function LoginScreen() {
                   className="w-full bg-white/5 border border-white/10 focus:border-odoo-400 focus:ring-4 focus:ring-odoo-400/20 pl-12 pr-12 py-3 rounded-xl text-sm font-medium text-white placeholder:text-slate-400 transition-all outline-none"
                   required
                 />
-<<<<<<< HEAD
-                <button 
-                  type="button" 
-                  onClick={() => setShowPassword(!showPassword)}
-=======
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
->>>>>>> 1b75fc5f8719443f4da8700dac4f5567a7166ea5
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors"
                 >
                   {showPassword ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
                 </button>
               </div>
 
-              {isLogin && (
-                <div className="flex justify-end pt-1 pb-1">
-                  <a href="#" className="text-xs font-semibold text-odoo-300 hover:text-odoo-200 transition-colors">
-                    Forgot password?
-                  </a>
-                </div>
-              )}
-
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-[#714B67] to-[#5a3c52] hover:from-[#5a3c52] hover:to-[#714B67] text-white py-3.5 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-[#714B67]/30 mt-6 cursor-pointer"
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-[#714B67] to-[#5a3c52] hover:from-[#5a3c52] hover:to-[#714B67] disabled:opacity-70 text-white py-3.5 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-[#714B67]/30 mt-6 flex items-center justify-center cursor-pointer"
               >
-                {isLogin ? "Sign in to AssetFlow" : "Create Account"}
+                {isLoading ? (
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : isLogin ? (
+                  "Sign in to AssetFlow"
+                ) : (
+                  "Create Account"
+                )}
               </button>
             </motion.form>
           </AnimatePresence>
@@ -238,14 +229,20 @@ export default function LoginScreen() {
             {isLogin ? (
                <span>
                  New to AssetFlow?{" "}
-                 <button onClick={() => { setIsLogin(false); setErrorMsg(null); setSuccessMsg(null); }} className="font-bold text-odoo-300 hover:text-odoo-200 transition-colors cursor-pointer bg-transparent border-none">
+                 <button 
+                   type="button"
+                   onClick={() => { setIsLogin(false); setErrorMsg(null); setSuccessMsg(null); }} 
+                   className="font-bold text-odoo-300 hover:text-odoo-200 transition-colors cursor-pointer bg-transparent border-none">
                    Sign up
                  </button>
                </span>
             ) : (
                <span>
                  Already have an account?{" "}
-                 <button onClick={() => { setIsLogin(true); setErrorMsg(null); setSuccessMsg(null); }} className="font-bold text-odoo-300 hover:text-odoo-200 transition-colors cursor-pointer bg-transparent border-none">
+                 <button 
+                   type="button"
+                   onClick={() => { setIsLogin(true); setErrorMsg(null); setSuccessMsg(null); }} 
+                   className="font-bold text-odoo-300 hover:text-odoo-200 transition-colors cursor-pointer bg-transparent border-none">
                    Sign in
                  </button>
                </span>

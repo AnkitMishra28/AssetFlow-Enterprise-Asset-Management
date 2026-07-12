@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { Box, CheckCircle2, CalendarClock, Wrench, ShieldCheck, ArrowRightLeft, Users, FileText, BarChart3, ChevronDown, MessageSquare } from "lucide-react";
 import StarfieldBackground from "@/components/StarfieldBackground";
+import AppleIntro from "@/components/AppleIntro";
 
 export default function LandingPage() {
   const targetRef = useRef<HTMLDivElement | null>(null);
@@ -16,6 +17,7 @@ export default function LandingPage() {
 
   return (
     <>
+    <AppleIntro />
     {/* Site starfield: fixed, dark, WebGL background shown behind the ENTIRE page.
         Every section below is transparent / translucent dark glass so the stars
         flow continuously behind the content as you scroll. */}
