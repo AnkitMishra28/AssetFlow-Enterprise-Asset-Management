@@ -97,7 +97,7 @@ export default function LoginScreen() {
               </div>
 
               {isLogin && (
-                <div className="flex justify-end pt-1 pb-3">
+                <div className="flex justify-end pt-2 pb-1">
                   <a href="#" className="text-sm font-semibold text-odoo-600 hover:text-odoo-700 transition-colors">
                     Forgot password?
                   </a>
@@ -106,32 +106,14 @@ export default function LoginScreen() {
 
               <button
                 type="submit"
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white py-3.5 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-slate-900/20 mt-4"
+                className="w-full bg-slate-900 hover:bg-slate-800 text-white py-3.5 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-slate-900/20 mt-6"
               >
                 {isLogin ? "Sign in to AssetFlow" : "Create Account"}
               </button>
             </motion.form>
           </AnimatePresence>
 
-          {/* Social Logins */}
-          {isLogin && (
-            <div className="mt-8">
-              <div className="relative flex items-center py-2">
-                <div className="flex-grow border-t border-slate-100"></div>
-                <span className="flex-shrink-0 mx-4 text-xs font-semibold uppercase tracking-wider text-slate-400">Or continue with</span>
-                <div className="flex-grow border-t border-slate-100"></div>
-              </div>
 
-              <div className="flex justify-center gap-4 mt-6">
-                <button className="w-full h-11 bg-white border border-slate-200 rounded-xl flex items-center justify-center hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
-                  <span className="font-bold text-slate-700 text-sm">Google</span>
-                </button>
-                <button className="w-full h-11 bg-white border border-slate-200 rounded-xl flex items-center justify-center hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
-                  <span className="font-bold text-slate-700 text-sm">Apple</span>
-                </button>
-              </div>
-            </div>
-          )}
 
           {/* Toggle between login and signup */}
           <div className="mt-8 text-center text-sm font-medium text-slate-500">
