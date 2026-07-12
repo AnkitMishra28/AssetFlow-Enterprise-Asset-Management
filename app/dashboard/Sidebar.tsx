@@ -22,7 +22,7 @@ const SIDEBAR_ITEMS = [
   { icon: Wrench, label: "Maintenance", href: "/dashboard/maintenance" },
   { icon: ShieldCheck, label: "Audit", href: "/dashboard/audit" },
   { icon: BarChart3, label: "Reports", href: "/dashboard/reports" },
-  { icon: Bell, label: "Notifications", href: "/dashboard/notifications" },
+  { icon: Bell, label: "Notifications & Activity log", href: "/dashboard/notifications" },
 ];
 
 interface SidebarProps {
