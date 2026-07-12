@@ -21,7 +21,7 @@ const SIDEBAR_ITEMS = [
   { icon: CalendarClock, label: "Resource Booking", href: "/dashboard/resource-booking" },
   { icon: Wrench, label: "Maintenance", href: "/dashboard/maintenance" },
   { icon: ShieldCheck, label: "Audit", href: "#" },
-  { icon: BarChart3, label: "Reports", href: "#" },
+  { icon: BarChart3, label: "Reports", href: "/dashboard/reports" },
   { icon: Bell, label: "Notifications", href: "/dashboard/notifications" },
 ];
 
