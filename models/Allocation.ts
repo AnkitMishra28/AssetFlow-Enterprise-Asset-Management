@@ -8,7 +8,7 @@ export interface IAllocation extends Document {
   expectedReturnDate?: Date;
   returnedDate?: Date;
   conditionOnReturn?: "New" | "Good" | "Fair" | "Poor";
-  status: "Active" | "Returned" | "Overdue";
+  status: "Active" | "Returned" | "Overdue" | "Inactive";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -47,7 +47,7 @@ const AllocationSchema: Schema = new Schema(
     },
     status: {
       type: String,
-      enum: ["Active", "Returned", "Overdue"],
+      enum: ["Active", "Returned", "Overdue", "Inactive"],
       default: "Active",
       required: true,
     },
