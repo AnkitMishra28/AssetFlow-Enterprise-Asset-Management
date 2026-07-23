@@ -1,364 +1,467 @@
 <div align="center">
 
-# 🗂️ AssetFlow
+# 🗂️ AssetFlow – Enterprise Asset & Resource Management System
 
-### Enterprise Asset & Resource Management System
+### *A full-stack Enterprise Resource Planning (ERP) platform for real-time asset lifecycle tracking, conflict-free resource scheduling, department allocation workflows, automated audits, and AI-driven predictive insights.*
 
-*A modern, full-stack ERP platform for managing the complete lifecycle of physical assets and shared organizational resources.*
+[![Next.js](https://img.shields.io/badge/Next.js-16.2-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Mongoose](https://img.shields.io/badge/Mongoose-9.7-880000?style=for-the-badge&logo=mongoose&logoColor=white)](https://mongoosejs.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-12.4-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/)
+[![Three.js](https://img.shields.io/badge/Three.js-WebGL-000000?style=for-the-badge&logo=threedotjs&logoColor=white)](https://threejs.org/)
 
-<br/>
+---
 
-<!-- Tech Stack Badges -->
-![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
-![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
-
-![Mongoose](https://img.shields.io/badge/Mongoose-ODM-880000?style=for-the-badge&logo=mongoose&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-0055FF?style=for-the-badge&logo=framer&logoColor=white)
-![Three.js](https://img.shields.io/badge/Three.js-WebGL-000000?style=for-the-badge&logo=threedotjs&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-Runtime-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![License](https://img.shields.io/badge/License-Educational-blue?style=for-the-badge)
+[Live Demo](#-live-demo) • [Key Features](#-key-features) • [Architecture](#-architecture) • [API Overview](#-api-overview) • [Database Models](#-database-models) • [My Contributions](#-my-contributions) • [Screenshots](#-screenshots)
 
 </div>
 
----
-
-## 🚀 Live Demo Credentials
-
-Use the following demo account to explore the platform without setting up your own users:
-
-| Field    | Value              |
-| :------- | :----------------- |
-| 📧 Email    | `demo@asset.com`   |
-| 🔑 Password | `password123`      |
-
-> Sign in at `/login` and you'll be taken straight to the dashboard.
+<br />
 
 ---
 
-## 📑 Table of Contents
+## ⚡ Live Demo
 
-- [Overview](#-overview)
-- [Problem Statement](#-problem-statement)
-- [Key Features](#-key-features)
-- [Core Modules](#-core-modules)
-- [Role-Based Access Control](#-role-based-access-control-rbac)
-- [System Workflow](#-system-workflow)
-- [Tech Stack](#-tech-stack)
-- [Getting Started](#-getting-started)
-- [Project Structure](#-project-structure)
-- [Future Enhancements](#-future-enhancements)
-- [License](#-license)
+The application can be accessed online or evaluated locally using the pre-seeded public demo credentials below:
 
----
+🌐 **Repository URL**: [https://github.com/AnkitMishra28/AssetFlow-Enterprise-Asset-Management](https://github.com/AnkitMishra28/AssetFlow-Enterprise-Asset-Management)
 
-## 🧭 Overview
+### Public Demo Accounts
 
-**AssetFlow** enables organizations to efficiently manage the complete lifecycle of physical assets and shared resources through a centralized ERP platform.
+| Role | Email | Password | Access Privileges |
+| :--- | :--- | :--- | :--- |
+| 🧑‍💼 **Employee** | `demo@asset.com` | `password123` | Asset viewing, booking, transfer requests & personal check-ins |
+| 👑 **Administrator** | `admin@assetflow.com` | `admin123` | Full system access, organization setup, audit cycles & approvals |
 
-Designed with scalability, security, and operational efficiency in mind, AssetFlow replaces fragmented spreadsheets, paper registers, and manual approval processes with structured digital workflows. The platform is **industry-agnostic** and can be deployed across enterprises, educational institutions, hospitals, manufacturing facilities, government organizations, and startups to manage IT assets, office equipment, vehicles, furniture, laboratories, meeting rooms, and other shared organizational resources.
-
-Rather than focusing on procurement or accounting, AssetFlow specializes in **asset lifecycle management, allocation, maintenance, auditing, and resource scheduling** while ensuring complete accountability through role-based access control and activity tracking.
+> *Sign in at `/login` to access the main executive dashboard.*
 
 ---
 
-## ❗ Problem Statement
+## 🧭 Business Overview
 
-Many organizations continue to rely on spreadsheets, paper logs, or disconnected software for asset management. These approaches create several operational challenges:
+**AssetFlow** is an enterprise-grade ERP system engineered to digitalize and centralize physical asset tracking and shared resource allocation across complex organizations.
 
-- 📍 Assets become misplaced or untraceable.
-- 🔁 Double allocation causes scheduling conflicts.
-- 🛠️ Maintenance requests are delayed due to informal communication.
-- 🧾 Audit processes become time-consuming and error-prone.
-- ❓ Asset ownership and responsibility remain unclear.
-- 👁️ Managers lack real-time visibility into organizational resources.
-- 🗄️ Historical asset records are fragmented or unavailable.
+### ❗ Problem Statement
+Organizations traditionally rely on fragmented spreadsheets, paper logs, and informal email requests to manage physical assets. This causes:
+- 📍 **Ghost & Untraceable Assets**: Lack of custodian assignment leads to lost equipment during multi-department transfers.
+- 🗓️ **Scheduling Conflicts**: Shared physical resources (meeting rooms, fleet vehicles, testing gear) experience double-booking collisions.
+- 🛠️ **Maintenance Latency**: Delayed repair logging results in unexpected equipment failures and prolonged downtime.
+- 🧾 **Audit Compliance Risk**: Manual physical audits are slow, error-prone, and lack immutable audit trails.
 
-AssetFlow addresses these challenges by providing a centralized ERP platform that standardizes asset operations, automates workflows, and maintains a complete audit trail throughout an asset's lifecycle.
-
----
-
-## ✨ Key Features
-
-| | Feature |
-| :--: | :--- |
-| 🔄 | Complete asset lifecycle management |
-| 🌐 | Organization-wide asset visibility |
-| 📅 | Shared resource booking with conflict prevention |
-| 🧰 | Structured maintenance workflows |
-| 🏢 | Department-based asset allocation |
-| ✅ | Automated audit cycles |
-| 🔐 | Role-based access control (RBAC) |
-| 📊 | Real-time dashboards and analytics |
-| 📱 | QR-code based asset scanning |
-| 🤖 | **Tara** — built-in AI assistant for reports & queries |
-| 🌗 | Light / dark theme support |
-| 🖥️ | Responsive, animated modern web interface |
+### 🏢 Enterprise Use Cases
+- **Corporate IT Fleets**: Centralized check-out and tracking of laptops, monitors, mobile devices, and server hardware.
+- **Higher Education & Research**: Shared scheduling of lab instruments, computing hardware, and multi-department facilities.
+- **Healthcare Operations**: Medical device tracking, mandatory maintenance logging, and rapid equipment location routing.
+- **Manufacturing & Logistics**: Heavy machinery allocation, repair ticket management, and depot check-in/check-out.
 
 ---
 
-## 🧩 Core Modules
+## ✨ Implemented Features
 
-### 1. 🏢 Organization Setup
+### 📦 Asset Lifecycle & Management
+- **Asset Registration**: Captures Asset Tag, Serial Number, Category, Purchase Cost, Acquisition Date, Location, and Condition (`New`, `Good`, `Fair`, `Poor`).
+- **State Machine Enforcement**: Validates asset lifecycle state transitions:
+  $$\text{Available} \longrightarrow \text{Allocated} \longrightarrow \text{Under Maintenance} \longrightarrow \text{Retired} / \text{Disposed}$$
+- **Immutable History**: Append-only event history capturing registration, transfers, status updates, and audit notes.
+- **QR Tag Scanner**: Camera-based QR tag reader (`@yudiel/react-qr-scanner`) for instant physical verification.
 
-Establishes the organizational structure used throughout the system.
+### 🔁 Allocations & Department Transfers
+- **Custodian Tracking**: Direct asset allocation to individual employees or departments with return deadline alerts.
+- **Conflict Prevention Engine**: Prevents double allocation of active assets.
+- **Transfer Workflow**: Structured request-to-approval process across department heads and asset managers.
 
-- **Department Management** — create, edit, and archive departments; configure parent-child hierarchy; assign Department Heads; view department-wise asset ownership.
-- **Asset Categories** — define standardized classifications (Electronics, Furniture, Vehicles, Laboratory Equipment, Office Equipment, Infrastructure) with configurable metadata fields.
-- **Employee Directory** — a centralized employee database that forms the foundation for authentication and role assignment. Admins can promote employees into roles such as *Asset Manager* or *Department Head*.
+### 📅 Resource Booking
+- **Calendar Reservations**: Time-slot reservation for shared assets, vehicles, and conference rooms.
+- **Overlap Detection**: Automated slot validation preventing overlapping reservations.
 
-### 2. 📦 Asset Registration & Directory
+### 🛠️ Maintenance Operations
+- **Repair Tickets**: Issue logging with priority classification and technician assignment.
+- **Status Locking**: Approving a repair automatically locks the asset in `Under Maintenance` mode until resolved.
 
-A centralized repository containing every organizational asset.
+### 📋 Audit & Compliance
+- **Scheduled Cycles**: Physical verification grouped by location, department, or category.
+- **Discrepancy Metrics**: Auto-calculates `Verified`, `Missing`, and `Damaged` counts and locks completed audit cycles.
 
-- **Registration** captures Asset ID, Asset Tag, Serial Number, Category, Manufacturer, Model, Purchase Details, Location, Department, Assigned Employee, Warranty, Condition, and Supporting Documents.
-- **Asset Lifecycle** — every asset progresses through a controlled, validated lifecycle:
-
-  `Available → Reserved → Allocated → Under Maintenance → Lost → Retired → Disposed`
-
-- **Asset History** — a permanent record of allocations, transfers, maintenance, audits, condition changes, and activity logs.
-
-### 3. 🔁 Asset Allocation & Transfer
-
-Manages asset ownership while preventing conflicts.
-
-- **Allocation** to individual employees or departments, recording allocation date, expected return date, custodian, and notes.
-- **Conflict Prevention** — an asset cannot be allocated to multiple users simultaneously; already-allocated assets are routed to the Transfer Request workflow.
-- **Transfer Workflow** — request creation → department approval → Asset Manager approval → ownership transfer → activity logging.
-- **Asset Return** — captures return condition, damage notes, missing accessories, and timestamp. Assets transition back to **Available** after check-in, and overdue returns trigger automated notifications.
-
-### 4. 📅 Resource Booking
-
-Supports reservation of shared resources such as meeting rooms, company vehicles, conference halls, training labs, and shared equipment.
-
-- **Calendar-Based Booking** — view availability, reserve slots, modify, and cancel.
-- **Booking Validation** — prevents overlapping reservations, double booking, and invalid durations.
-- **Booking Lifecycle** — `Upcoming → Ongoing → Completed → Cancelled`, with automated reminders before scheduled bookings.
-
-### 5. 🛠️ Maintenance Management
-
-Provides a structured workflow for asset repairs.
-
-- **Request Creation** — report issues with asset, description, priority, and attachments.
-- **Approval Workflow:**
-
-  `Pending → Approved / Rejected → Technician Assignment → In Progress → Resolved → Closed`
-
-- **Automatic Status Updates** — assets move to **Under Maintenance** on approval and back to **Available** on resolution. Every request becomes part of the asset's permanent service history.
-
-### 6. ✅ Asset Audit Management
-
-Enables systematic physical verification of organizational assets.
-
-- **Audit Cycle Creation** by department, location, category, and date range.
-- **Physical Verification** — auditors mark each asset as `Verified`, `Missing`, or `Damaged`.
-- **Discrepancy Reports** — auto-generated reports for missing/damaged assets and exceptions. Closing an audit locks the records and updates statuses (e.g. `Missing → Lost`).
-
-### 7. 📊 Dashboards, Reports & Analytics
-
-Real-time operational insights.
-
-- **Dashboard Metrics** — Total Assets, Available, Allocated, Under Maintenance, Active Bookings, Overdue Returns, Pending Maintenance, Active Audit Cycles.
-- **Reports** — asset utilization, department-wise inventory, allocation history, maintenance frequency, booking analytics, and audit discrepancy reports.
-- **Activity Log** — every critical action is recorded for complete traceability and accountability.
-
----
-
-## 🔐 Role-Based Access Control (RBAC)
-
-AssetFlow implements strict role separation to ensure secure operations.
-
-| Role | Responsibilities |
-| :--- | :--- |
-| 👑 **Administrator** | Manage departments, categories, and employees; assign roles; configure system settings; view organization-wide reports. |
-| 🧑‍💼 **Asset Manager** | Register & allocate assets; approve transfers and maintenance; manage lifecycle; resolve audit discrepancies; generate reports. |
-| 🏬 **Department Head** | View departmental assets; approve internal transfers; monitor inventory; book shared resources; review department reports. |
-| 👤 **Employee** | View assigned assets; request transfers; return assets; book resources; submit maintenance requests; track status. |
-
----
-
-## 🔄 System Workflow
-
-```
-Organization Setup
-        │
-        ▼
-Asset Registration
-        │
-        ▼
-Asset Allocation
-        │
-        ▼
-Resource Booking
-        │
-        ▼
-Maintenance Management
-        │
-        ▼
-Audit Cycle
-        │
-        ▼
-Reports & Analytics
-```
+### 🤖 Agentic AI Assistant – "Tara"
+- **Tool-Calling Agent**: Powered by OpenRouter (`meta-llama/llama-3.1-8b-instruct`), **Tara** executes database tools (`query_assets`, `predict_maintenance`, `resolve_conflict`) via function calling.
+- **Predictive Insights**: Calculates maintenance risk probabilities and estimates potential replacement costs.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
-![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=flat-square&logo=framer&logoColor=white)
-![Three.js](https://img.shields.io/badge/Three.js-000000?style=flat-square&logo=threedotjs&logoColor=white)
-
-- **Next.js 16** (App Router) with **React 19** and **TypeScript**
-- **Tailwind CSS 4** for styling
-- **Framer Motion** for animations & **Three.js** for the WebGL starfield background
-- **lucide-react** icons, **next-themes** for theming, **react-markdown** for rich content
-- **@yudiel/react-qr-scanner** for QR-based asset scanning
-
-### Backend
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
-![Next.js API](https://img.shields.io/badge/Next.js_API_Routes-000000?style=flat-square&logo=nextdotjs&logoColor=white)
-
-- **Next.js API Routes** (REST endpoints under `app/api`)
-- **Node.js** runtime with **Server Components / Server Actions**
-
-### Database
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
-![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=flat-square&logo=mongoose&logoColor=white)
-
-- **MongoDB Atlas** with **Mongoose ODM**
-
-### AI
-![OpenRouter](https://img.shields.io/badge/OpenRouter-AI-6E56CF?style=flat-square&logo=openai&logoColor=white)
-
-- **Tara**, an in-app AI assistant powered via the **OpenRouter API** for report generation and natural-language queries.
+| Category | Technology | Usage |
+| :--- | :--- | :--- |
+| **Frontend Framework** | **Next.js 16 (App Router)** | Server Components, Client Components, and dynamic App Routing |
+| **UI Engine** | **React 19** | Modern UI rendering and hook-based reactive state management |
+| **Type Safety** | **TypeScript 5** | End-to-end interface contracts across models, APIs, and components |
+| **Styling & Design** | **Tailwind CSS 4 + Next-Themes** | Responsive styling engine with glassmorphic dark and light theme tokens |
+| **Animations & 3D** | **Framer Motion 12 + Three.js** | Micro-animations and WebGL Starfield backdrop visuals |
+| **Backend Runtime** | **Next.js API Routes (Node.js)** | Serverless REST API endpoints (`app/api/*`) |
+| **Database & ODM** | **MongoDB Atlas + Mongoose 9** | NoSQL database hosting schema-validated collections |
+| **AI Integration** | **OpenRouter API (Llama 3.1 8B)** | Tool-calling LLM agent for natural language database queries |
+| **Hardware / QR** | **@yudiel/react-qr-scanner** | Live browser camera integration for physical QR asset tag scanning |
 
 ---
 
-## ⚙️ Getting Started
+## 📐 Architecture
 
-### Prerequisites
+### 1. System Architecture
 
-- **Node.js** 18.18+ (or 20+ recommended)
-- A **MongoDB Atlas** connection string
-- An **OpenRouter API key** (for the Tara AI assistant)
+```mermaid
+flowchart TD
+    subgraph Client ["Client Layer (Browser & Web Mobile)"]
+        UI["React 19 Dashboard & Pages"]
+        Theme["Next-Themes & Framer Motion"]
+        QRScanner["@yudiel/react-qr-scanner"]
+    end
 
-### 1. Clone the repository
+    subgraph Server ["Server Layer (Next.js 16 App Router)"]
+        APIRoutes["REST API Routes (/app/api/*)"]
+        ChatRoute["Tara AI Route (/app/api/chat)"]
+        DBHandler["MongoDB Connection Handler (lib/mongodb.ts)"]
+    end
 
-```bash
-git clone https://github.com/yourusername/AssetFlow.git
-cd AssetFlow
+    subgraph BusinessLogic ["Business Logic & Validation Layer"]
+        ConflictEngine["Allocation Conflict Engine"]
+        LifecycleMachine["Asset State Machine"]
+        ReportAggregator["Report & Analytics Aggregator"]
+    end
+
+    subgraph Infrastructure ["Database & External Services"]
+        MongooseODM["Mongoose 9 Models"]
+        MongoDB[("MongoDB Atlas Database")]
+        OpenRouter["OpenRouter AI Service (Llama 3.1 8B)"]
+    end
+
+    UI -->|HTTP REST Requests| APIRoutes
+    QRScanner -->|Scanned Tag Data| UI
+    APIRoutes --> DBHandler
+    DBHandler --> BusinessLogic
+    BusinessLogic --> MongooseODM
+    MongooseODM --> MongoDB
+    ChatRoute -->|Function Call Execution| BusinessLogic
+    ChatRoute <-->|Tool Prompts & Responses| OpenRouter
 ```
 
-### 2. Install dependencies
+### 2. Business Workflow
 
+```mermaid
+flowchart LR
+    A["1. Organization Setup<br/>(Depts & Categories)"] --> B["2. Asset Registration<br/>(Generate QR & Tags)"]
+    B --> C["3. Allocation / Transfer<br/>(Custodian Assignment)"]
+    C --> D["4. Shared Resource Booking<br/>(Conflict-Free Calendar)"]
+    D --> E["5. Maintenance Ticket<br/>(Auto Lock Status)"]
+    E --> F["6. Audit Verification<br/>(Verified / Missing / Damaged)"]
+    F --> G["7. Executive Reports<br/>(Analytics & Tara AI)"]
+```
+
+---
+
+## 📁 Folder Structure
+
+```
+AssetFlow-Odoo-Hackathon/
+├── app/                        # Next.js 16 App Router hierarchy
+│   ├── api/                    # REST API Endpoints
+│   │   ├── allocations/        # Allocation check-out/check-in APIs
+│   │   ├── assets/             # Asset CRUD & lifecycle routes
+│   │   ├── categories/         # Asset category management APIs
+│   │   ├── chat/               # Tara AI Assistant function-calling route
+│   │   ├── dashboard/          # Aggregated KPI dashboard metrics
+│   │   ├── departments/        # Department CRUD endpoints
+│   │   ├── employees/          # Employee directory endpoints
+│   │   ├── notifications/      # System notifications API
+│   │   ├── reports/            # Report generation & analytics routes
+│   │   └── transfers/          # Department transfer request APIs
+│   ├── components/             # App-level layout components (TaraChatbot, etc.)
+│   ├── dashboard/              # Authenticated Portal Routes
+│   │   ├── allocation-transfer/# Asset allocation & transfer management
+│   │   ├── assets/             # Asset repository & registration modal
+│   │   ├── audit/              # Physical audit cycle execution
+│   │   ├── maintenance/        # Repair tickets & technician assignment
+│   │   ├── notifications/      # System alert feed
+│   │   ├── organization-setup/ # Department, Category & Employee config
+│   │   ├── reports/            # Executive reports & AI analysis
+│   │   ├── resource-booking/   # Shared resource calendar booking
+│   │   ├── scanner/            # Live camera QR tag scanner
+│   │   ├── layout.tsx          # Dashboard layout wrapper with sidebar
+│   │   └── page.tsx            # Dashboard home overview
+│   ├── globals.css             # Tailwind CSS styles & custom glassmorphism
+│   ├── layout.tsx              # Root HTML layout wrapper
+│   └── page.tsx                # Landing Page with WebGL animation
+├── components/                 # Core UI Component Design System
+│   ├── ui/                     # Reusable design primitives (button, modal, table, etc.)
+│   ├── AppleIntro.tsx          # Animated intro UI component
+│   └── StarfieldBackground.tsx # Three.js WebGL canvas background
+├── docs/
+│   └── screenshots/            # Application interface screenshots
+├── lib/                        # Infrastructure & Utility Code
+│   ├── models/                 # Unified schema exports
+│   ├── types/                  # TypeScript interfaces & enums
+│   ├── utils/                  # Utility functions (cn, format, healthScore)
+│   ├── api.ts                  # Centralized client-side fetch wrapper
+│   └── mongodb.ts              # Global MongoDB connection pool handler
+├── models/                     # Mongoose Database Models
+│   ├── Allocation.ts           # Asset allocation schema
+│   ├── Asset.ts                # Main asset repository schema
+│   ├── Category.ts             # Asset classification schema
+│   ├── Department.ts           # Organizational department schema
+│   ├── Employee.ts             # Employee record schema
+│   ├── Notification.ts         # User notification schema
+│   ├── TransferRequest.ts      # Asset transfer schema
+│   └── User.ts                 # Account credentials schema
+├── public/                     # Static media assets & icons
+├── scripts/                    # Database seeding and utility scripts
+├── .env.example                # Template for environment configuration
+├── package.json                # Project dependencies & scripts
+└── tsconfig.json               # TypeScript compiler configuration
+```
+
+---
+
+## ⚡ Installation & Setup
+
+### Prerequisites
+- **Node.js**: `v18.18.0` or higher (Node `v20.x` recommended)
+- **npm**: `v9.x` or higher
+- **MongoDB**: Active MongoDB Atlas cluster or local database instance
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/AnkitMishra28/AssetFlow-Enterprise-Asset-Management.git
+cd AssetFlow-Enterprise-Asset-Management
+```
+
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### 3. Configure environment variables
-
-Create a `.env` file in the project root:
-
-```env
-# MongoDB Atlas connection string
-MONGODB_URI="your-mongodb-connection-string"
-
-# OpenRouter API key for the Tara AI assistant
-OPENROUTER_API_KEY="your-openrouter-api-key"
+### 3. Configure Environment Variables
+Create a `.env` file in the root directory using `.env.example`:
+```bash
+cp .env.example .env
 ```
 
-### 4. Start the development server
+Set the required environment keys in `.env`:
+```env
+# MongoDB Atlas Connection URI
+MONGODB_URI="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?retryWrites=true&w=majority"
+DB_NAME="AssetFlow"
 
+# OpenRouter API Key for Tara AI Assistant
+OPENROUTER_API_KEY="sk-or-v1-your-openrouter-api-key-here"
+```
+
+### 4. Run Development Server
 ```bash
 npm run dev
 ```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Then open [http://localhost:3000](http://localhost:3000) in your browser.
+### 5. Production Build
+```bash
+# Build production assets
+npm run build
 
-### 5. Log in with the demo account
-
-| Field    | Value              |
-| :------- | :----------------- |
-| 📧 Email    | `demo@asset.com`   |
-| 🔑 Password | `password123`      |
-
-### Available Scripts
-
-| Command         | Description                        |
-| :-------------- | :--------------------------------- |
-| `npm run dev`   | Start the development server       |
-| `npm run build` | Create a production build          |
-| `npm run start` | Run the production build           |
-| `npm run lint`  | Run ESLint across the project      |
-
----
-
-## 📁 Project Structure
-
-```
-AssetFlow-Odoo-Hackathon/
-├── app/
-│   ├── api/                  # REST API routes (assets, allocations, transfers, ...)
-│   │   ├── allocations/
-│   │   ├── assets/
-│   │   ├── categories/
-│   │   ├── chat/             # Tara AI assistant endpoint
-│   │   ├── dashboard/
-│   │   ├── departments/
-│   │   ├── employees/
-│   │   ├── notifications/
-│   │   ├── reports/
-│   │   └── transfers/
-│   ├── components/           # Shared UI (TaraChatbot, ThemeToggle, ...)
-│   ├── dashboard/            # Authenticated app pages
-│   │   ├── allocation-transfer/
-│   │   ├── assets/
-│   │   ├── audit/
-│   │   ├── maintenance/
-│   │   ├── notifications/
-│   │   ├── organization-setup/
-│   │   ├── reports/
-│   │   └── resource-booking/
-│   ├── login/                # Authentication screen
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx
-├── .env                      # Environment variables (not committed)
-└── package.json
+# Start production server
+npm run start
 ```
 
 ---
 
-## 🔮 Future Enhancements
+## 🔑 Environment Variables
 
-- 📷 QR Code & Barcode asset tracking expansion
-- 📡 RFID integration
-- 📱 Native mobile application
-- 🏬 Multi-organization support
-- 🧠 Predictive maintenance using analytics
-- ✉️ Email and SMS notifications
-- 🧾 Advanced approval workflows
-- 📉 Asset depreciation tracking
-- 🔗 REST API integrations
-- 📊 Business Intelligence dashboards
+| Variable | Description | Required | Default / Example |
+| :--- | :--- | :---: | :--- |
+| `MONGODB_URI` | MongoDB connection URI string | Yes | `mongodb+srv://user:pass@cluster.mongodb.net/AssetFlow` |
+| `DB_NAME` | Database name instance | Yes | `AssetFlow` |
+| `OPENROUTER_API_KEY` | Secret API Key for OpenRouter (Tara AI Chatbot) | Optional | `sk-or-v1-xxxxxxxxxxxxxxxxxxxx` |
+
+---
+
+## 🌐 API Overview
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/chat` | Tara AI assistant tool calling & chat completions |
+| `GET` | `/api/dashboard` | Aggregated executive KPIs and metrics |
+| `GET`, `POST` | `/api/assets` | Asset listing and asset registration |
+| `GET`, `PUT`, `DELETE` | `/api/assets/[id]` | Asset detail query, update, and deletion |
+| `GET`, `POST` | `/api/allocations` | Active custody check-out and allocation listing |
+| `GET`, `PUT` | `/api/allocations/[id]` | Allocation return check-in and status update |
+| `GET`, `POST` | `/api/transfers` | Cross-department transfer request creation |
+| `GET`, `PUT` | `/api/transfers/[id]` | Transfer request approval or rejection |
+| `GET`, `POST` | `/api/departments` | Department listing and creation |
+| `GET`, `POST` | `/api/employees` | Centralized employee directory management |
+| `GET`, `POST` | `/api/categories` | Asset classification category CRUD |
+| `GET`, `POST` | `/api/notifications` | User notification listing and creation |
+
+---
+
+## 🗄️ Database Models
+
+- `Asset`: Stores physical items (`assetTag`, `serialNumber`, `category`, `acquisitionCost`, `condition`, `status`, `location`, `sharedBookable`, `history`).
+- `Allocation`: Tracks custodian ownership (`asset`, `employee`, `department`, `allocationDate`, `expectedReturnDate`, `actualReturnDate`, `status`).
+- `TransferRequest`: Manages inter-departmental transfers (`asset`, `fromDepartment`, `toDepartment`, `requestedBy`, `approvedByDeptHead`, `approvedByAssetManager`, `status`).
+- `Department`: Holds organizational structures (`name`, `code`, `parentDepartment`, `departmentHead`).
+- `Employee`: Database of company workforce (`employeeId`, `firstName`, `lastName`, `email`, `department`, `role`, `status`).
+- `Category`: Asset classifications (`name`, `code`, `description`).
+- `Notification`: User alerts (`recipient`, `title`, `message`, `type`, `isRead`).
+- `User`: Authentication credentials (`name`, `email`, `passwordHash`, `role`).
+
+---
+
+## 🛠️ My Contributions
+
+> **Author**: Ankit Mishra ([@AnkitMishra28](https://github.com/AnkitMishra28))  
+> **Role**: Senior Full-Stack & Backend Systems Engineer
+
+Based strictly on Git commit logs, my contributions focused on establishing the core backend systems, database schemas, REST APIs, and database-frontend integration:
+
+- 🧱 **Established Backend Foundation & Database Schemas**: Designed and declared Mongoose schemas for `Asset`, `Allocation`, `TransferRequest`, `Department`, `Employee`, `Category`, `Notification`, and `User`.
+- 🔌 **Implemented Core REST APIs**: Developed end-to-end serverless API routes under `app/api/*` for asset allocations, transfer workflows, executive dashboard analytics, and custom report aggregations.
+- 🏢 **Organization Setup Backend & Frontend**: Designed and built the Organization Setup page and REST endpoints for managing departments, employee directories, and asset categories.
+- 🔄 **Frontend API Integration & DB Migration**: Led the integration of client-side dashboard views with MongoDB REST APIs and executed database migration logic.
+- ⚡ **Resolved MongoDB Runtime Issues**: Fixed database connection pooling leaks and runtime API handler exceptions (`lib/mongodb.ts`) for serverless Next.js API stability.
+- 🎨 **Resolved Branding Conflicts**: Harmonized UI branding and fixed dark mode design token conflicts across application layouts.
+- 📦 **Enhanced Asset & Allocation Workflows**: Optimized asset allocation checks, conflict detection, and transfer status update pipelines.
+
+---
+
+## 🖼️ Screenshots
+
+<div align="center">
+
+### 1. Authentication Screen
+![Login Page](docs/screenshots/login.png)
+*Secure sign-in interface supporting Employee and Administrator authentication.*
+
+---
+
+### 2. Executive Dashboard
+![Executive Dashboard](docs/screenshots/dashboard.png)
+*Real-time overview of total assets, active allocations, maintenance queues, and activity logs.*
+
+---
+
+### 3. Asset Management Directory
+![Asset Management Directory](docs/screenshots/assets.png)
+*Centralized inventory repository with lifecycle status badges and asset creation modal.*
+
+---
+
+### 4. Organization Setup
+![Organization Setup](docs/screenshots/organization-setup.png)
+*Department hierarchy configuration, employee directory, and category management.*
+
+---
+
+### 5. Allocation & Transfer Workflows
+![Allocation and Transfer Workflows](docs/screenshots/allocation-transfer.png)
+*Custodian check-out management and multi-department transfer approval tracking.*
+
+---
+
+### 6. Shared Resource Booking
+![Shared Resource Booking](docs/screenshots/resource-booking.png)
+*Interactive calendar reservation interface with automated conflict prevention.*
+
+---
+
+### 7. Maintenance Operations
+![Maintenance Operations](docs/screenshots/maintenance.png)
+*Repair ticket logging, priority assignment, and technician management.*
+
+---
+
+### 8. Physical Audit & Compliance
+![Physical Audit](docs/screenshots/audit.png)
+*Structured physical inventory audits with discrepancy reporting.*
+
+---
+
+### 9. Executive Reports & Analytics
+![Executive Reports](docs/screenshots/reports.png)
+*Department-wise asset utilization metrics and analytical breakdowns.*
+
+---
+
+### 10. Notification Center
+![Notifications Feed](docs/screenshots/notifications.png)
+*Real-time alert center for overdue returns, approvals, and system updates.*
+
+---
+
+### 11. Camera QR Scanner
+![QR Tag Scanner](docs/screenshots/scanner.png)
+*Browser camera integration for scanning asset QR tags during physical audits.*
+
+---
+
+### 12. Tara AI Assistant
+![Tara AI Assistant](docs/screenshots/tara-ai.png)
+*Autonomous Agentic AI assistant executing tool queries for asset maintenance predictions.*
+
+</div>
+
+---
+
+## 🏆 Odoo Hackathon 2026
+
+AssetFlow was developed collaboratively for **Odoo Hackathon 2026**.
+
+The project demonstrates how modern full-stack technologies (Next.js 16, React 19, TypeScript) combined with NoSQL database architectures (MongoDB Atlas) and Agentic AI tool calling can digitize traditional enterprise resource management operations.
+
+---
+
+## 🚀 Deployment
+
+AssetFlow is ready for zero-configuration serverless deployment on Vercel:
+
+1. **Push Code**: Push the repository to GitHub.
+2. **Connect Vercel**: Import the project into the [Vercel Dashboard](https://vercel.com).
+3. **Configure Environment Variables**: Add `MONGODB_URI`, `DB_NAME`, and `OPENROUTER_API_KEY` in Project Settings.
+4. **Deploy**: Click Deploy to launch the Next.js App Router application.
+
+---
+
+## 💎 Code Quality & Engineering Practices
+
+- **Strict TypeScript Typing**: Interfaces defined for database models, client-server DTOs, and component props.
+- **Decoupled System Design**: Clean layer separation between presentation (`app/dashboard`), API handlers (`app/api`), models (`models/`), and utilities (`lib/`).
+- **Query Optimization**: Indexed MongoDB query fields (`assetTag`, `serialNumber`, `email`) and lean query projections.
+- **Responsive Theme Design System**: Built with Tailwind CSS 4, Framer Motion animations, and dark/light theme switching.
+
+---
+
+## 🔮 Future Improvements
+
+- 🏷️ **Automated Barcode Printing**: PDF label sheet generator for physical asset tagging.
+- 📱 **Native Mobile Companion**: React Native app for offline warehouse scanning.
+- 🔔 **Omnichannel Notifications**: Twilio SMS and SendGrid email alerts for overdue returns.
+- 🛡️ **Enterprise SSO**: OAuth2, SAML, and fine-grained Role-Based Access Control (RBAC).
 
 ---
 
 ## 📄 License
 
-This project was developed as a demonstration of an enterprise-grade Asset & Resource Management System, showcasing scalable ERP architecture, secure role-based workflows, and modern full-stack web development practices. It is intended for **educational, research, and demonstration purposes**.
+This project is licensed under the educational / open-source MIT License.
+
+---
+
+## 🤝 Acknowledgements
+
+- **Odoo Hackathon 2026 Organizers & Mentors**
+- **Collaborative Hackathon Team Members**
+- **Open-Source Maintainers**: Next.js, React, Tailwind CSS, Framer Motion, Mongoose, and Lucide Icons.
 
 <div align="center">
 
-<br/>
-
-**Built with ❤️ using Next.js, React & MongoDB**
+**[⬆ Back to Top](#-assetflow--enterprise-asset--resource-management-system)**
 
 </div>
