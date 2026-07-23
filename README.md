@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🗂️ AssetFlow – Enterprise Asset & Resource Management System
+# AssetFlow – Enterprise Asset & Resource Management System
 
 ### *A full-stack Enterprise Resource Planning (ERP) platform for real-time asset lifecycle tracking, conflict-free resource scheduling, department allocation workflows, automated audits, and AI-driven predictive insights.*
 
@@ -23,7 +23,7 @@
 
 ---
 
-## ⚡ Live Demo
+## Live Demo
 
 The application can be accessed online or evaluated locally using the pre-seeded public demo credentials below:
 
@@ -33,25 +33,25 @@ The application can be accessed online or evaluated locally using the pre-seeded
 
 | Role | Email | Password | Access Privileges |
 | :--- | :--- | :--- | :--- |
-| 🧑‍💼 **Employee** | `demo@asset.com` | `password123` | Asset viewing, booking, transfer requests & personal check-ins |
-| 👑 **Administrator** | `admin@assetflow.com` | `admin123` | Full system access, organization setup, audit cycles & approvals |
+| **Employee** | `demo@asset.com` | `password123` | Asset viewing, booking, transfer requests & personal check-ins |
+| **Administrator** | `admin@assetflow.com` | `admin123` | Full system access, organization setup, audit cycles & approvals |
 
 > *Sign in at `/login` to access the main executive dashboard.*
 
 ---
 
-## 🧭 Business Overview
+## Business Overview
 
 **AssetFlow** is an enterprise-grade ERP system engineered to digitalize and centralize physical asset tracking and shared resource allocation across complex organizations.
 
-### ❗ Problem Statement
+### Problem Statement
 Organizations traditionally rely on fragmented spreadsheets, paper logs, and informal email requests to manage physical assets. This causes:
-- 📍 **Ghost & Untraceable Assets**: Lack of custodian assignment leads to lost equipment during multi-department transfers.
-- 🗓️ **Scheduling Conflicts**: Shared physical resources (meeting rooms, fleet vehicles, testing gear) experience double-booking collisions.
-- 🛠️ **Maintenance Latency**: Delayed repair logging results in unexpected equipment failures and prolonged downtime.
-- 🧾 **Audit Compliance Risk**: Manual physical audits are slow, error-prone, and lack immutable audit trails.
+- **Ghost & Untraceable Assets**: Lack of custodian assignment leads to lost equipment during multi-department transfers.
+- **Scheduling Conflicts**: Shared physical resources (meeting rooms, fleet vehicles, testing gear) experience double-booking collisions.
+- **Maintenance Latency**: Delayed repair logging results in unexpected equipment failures and prolonged downtime.
+- **Audit Compliance Risk**: Manual physical audits are slow, error-prone, and lack immutable audit trails.
 
-### 🏢 Enterprise Use Cases
+### Enterprise Use Cases
 - **Corporate IT Fleets**: Centralized check-out and tracking of laptops, monitors, mobile devices, and server hardware.
 - **Higher Education & Research**: Shared scheduling of lab instruments, computing hardware, and multi-department facilities.
 - **Healthcare Operations**: Medical device tracking, mandatory maintenance logging, and rapid equipment location routing.
@@ -59,39 +59,39 @@ Organizations traditionally rely on fragmented spreadsheets, paper logs, and inf
 
 ---
 
-## ✨ Implemented Features
+## Implemented Features
 
-### 📦 Asset Lifecycle & Management
+### Asset Lifecycle & Management
 - **Asset Registration**: Captures Asset Tag, Serial Number, Category, Purchase Cost, Acquisition Date, Location, and Condition (`New`, `Good`, `Fair`, `Poor`).
 - **State Machine Enforcement**: Validates asset lifecycle state transitions:
   $$\text{Available} \longrightarrow \text{Allocated} \longrightarrow \text{Under Maintenance} \longrightarrow \text{Retired} / \text{Disposed}$$
 - **Immutable History**: Append-only event history capturing registration, transfers, status updates, and audit notes.
 - **QR Tag Scanner**: Camera-based QR tag reader (`@yudiel/react-qr-scanner`) for instant physical verification.
 
-### 🔁 Allocations & Department Transfers
+### Allocations & Department Transfers
 - **Custodian Tracking**: Direct asset allocation to individual employees or departments with return deadline alerts.
 - **Conflict Prevention Engine**: Prevents double allocation of active assets.
 - **Transfer Workflow**: Structured request-to-approval process across department heads and asset managers.
 
-### 📅 Resource Booking
+### Resource Booking
 - **Calendar Reservations**: Time-slot reservation for shared assets, vehicles, and conference rooms.
 - **Overlap Detection**: Automated slot validation preventing overlapping reservations.
 
-### 🛠️ Maintenance Operations
+### Maintenance Operations
 - **Repair Tickets**: Issue logging with priority classification and technician assignment.
 - **Status Locking**: Approving a repair automatically locks the asset in `Under Maintenance` mode until resolved.
 
-### 📋 Audit & Compliance
+### Audit & Compliance
 - **Scheduled Cycles**: Physical verification grouped by location, department, or category.
 - **Discrepancy Metrics**: Auto-calculates `Verified`, `Missing`, and `Damaged` counts and locks completed audit cycles.
 
-### 🤖 Agentic AI Assistant – "Tara"
+### Agentic AI Assistant – "Tara"
 - **Tool-Calling Agent**: Powered by OpenRouter (`meta-llama/llama-3.1-8b-instruct`), **Tara** executes database tools (`query_assets`, `predict_maintenance`, `resolve_conflict`) via function calling.
 - **Predictive Insights**: Calculates maintenance risk probabilities and estimates potential replacement costs.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Category | Technology | Usage |
 | :--- | :--- | :--- |
@@ -107,7 +107,7 @@ Organizations traditionally rely on fragmented spreadsheets, paper logs, and inf
 
 ---
 
-## 📐 Architecture
+## Architecture
 
 ### 1. System Architecture
 
@@ -161,7 +161,7 @@ flowchart LR
 
 ---
 
-## 📁 Folder Structure
+## Folder Structure
 
 ```
 AssetFlow-Odoo-Hackathon/
@@ -223,7 +223,7 @@ AssetFlow-Odoo-Hackathon/
 
 ---
 
-## ⚡ Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - **Node.js**: `v18.18.0` or higher (Node `v20.x` recommended)
@@ -274,7 +274,7 @@ npm run start
 
 ---
 
-## 🔑 Environment Variables
+## Environment Variables
 
 | Variable | Description | Required | Default / Example |
 | :--- | :--- | :---: | :--- |
@@ -284,7 +284,7 @@ npm run start
 
 ---
 
-## 🌐 API Overview
+## API Overview
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
@@ -303,7 +303,7 @@ npm run start
 
 ---
 
-## 🗄️ Database Models
+## Database Models
 
 - `Asset`: Stores physical items (`assetTag`, `serialNumber`, `category`, `acquisitionCost`, `condition`, `status`, `location`, `sharedBookable`, `history`).
 - `Allocation`: Tracks custodian ownership (`asset`, `employee`, `department`, `allocationDate`, `expectedReturnDate`, `actualReturnDate`, `status`).
@@ -316,24 +316,24 @@ npm run start
 
 ---
 
-## 🛠️ My Contributions
+## My Contributions
 
 > **Author**: Ankit Mishra ([@AnkitMishra28](https://github.com/AnkitMishra28))  
 > **Role**: Senior Full-Stack & Backend Systems Engineer
 
 Based strictly on Git commit logs, my contributions focused on establishing the core backend systems, database schemas, REST APIs, and database-frontend integration:
 
-- 🧱 **Established Backend Foundation & Database Schemas**: Designed and declared Mongoose schemas for `Asset`, `Allocation`, `TransferRequest`, `Department`, `Employee`, `Category`, `Notification`, and `User`.
+- **Established Backend Foundation & Database Schemas**: Designed and declared Mongoose schemas for `Asset`, `Allocation`, `TransferRequest`, `Department`, `Employee`, `Category`, `Notification`, and `User`.
 - 🔌 **Implemented Core REST APIs**: Developed end-to-end serverless API routes under `app/api/*` for asset allocations, transfer workflows, executive dashboard analytics, and custom report aggregations.
-- 🏢 **Organization Setup Backend & Frontend**: Designed and built the Organization Setup page and REST endpoints for managing departments, employee directories, and asset categories.
-- 🔄 **Frontend API Integration & DB Migration**: Led the integration of client-side dashboard views with MongoDB REST APIs and executed database migration logic.
-- ⚡ **Resolved MongoDB Runtime Issues**: Fixed database connection pooling leaks and runtime API handler exceptions (`lib/mongodb.ts`) for serverless Next.js API stability.
-- 🎨 **Resolved Branding Conflicts**: Harmonized UI branding and fixed dark mode design token conflicts across application layouts.
-- 📦 **Enhanced Asset & Allocation Workflows**: Optimized asset allocation checks, conflict detection, and transfer status update pipelines.
+- **Organization Setup Backend & Frontend**: Designed and built the Organization Setup page and REST endpoints for managing departments, employee directories, and asset categories.
+- **Frontend API Integration & DB Migration**: Led the integration of client-side dashboard views with MongoDB REST APIs and executed database migration logic.
+- **Resolved MongoDB Runtime Issues**: Fixed database connection pooling leaks and runtime API handler exceptions (`lib/mongodb.ts`) for serverless Next.js API stability.
+- **Resolved Branding Conflicts**: Harmonized UI branding and fixed dark mode design token conflicts across application layouts.
+- **Enhanced Asset & Allocation Workflows**: Optimized asset allocation checks, conflict detection, and transfer status update pipelines.
 
 ---
 
-## 🖼️ Screenshots
+## Screenshots
 
 <div align="center">
 
@@ -419,7 +419,7 @@ The project demonstrates how modern full-stack technologies (Next.js 16, React 1
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 AssetFlow is ready for zero-configuration serverless deployment on Vercel:
 
@@ -430,7 +430,7 @@ AssetFlow is ready for zero-configuration serverless deployment on Vercel:
 
 ---
 
-## 💎 Code Quality & Engineering Practices
+## Code Quality & Engineering Practices
 
 - **Strict TypeScript Typing**: Interfaces defined for database models, client-server DTOs, and component props.
 - **Decoupled System Design**: Clean layer separation between presentation (`app/dashboard`), API handlers (`app/api`), models (`models/`), and utilities (`lib/`).
@@ -439,22 +439,22 @@ AssetFlow is ready for zero-configuration serverless deployment on Vercel:
 
 ---
 
-## 🔮 Future Improvements
+## Future Improvements
 
-- 🏷️ **Automated Barcode Printing**: PDF label sheet generator for physical asset tagging.
-- 📱 **Native Mobile Companion**: React Native app for offline warehouse scanning.
-- 🔔 **Omnichannel Notifications**: Twilio SMS and SendGrid email alerts for overdue returns.
-- 🛡️ **Enterprise SSO**: OAuth2, SAML, and fine-grained Role-Based Access Control (RBAC).
+- **Automated Barcode Printing**: PDF label sheet generator for physical asset tagging.
+- **Native Mobile Companion**: React Native app for offline warehouse scanning.
+- **Omnichannel Notifications**: Twilio SMS and SendGrid email alerts for overdue returns.
+- **Enterprise SSO**: OAuth2, SAML, and fine-grained Role-Based Access Control (RBAC).
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the educational / open-source MIT License.
 
 ---
 
-## 🤝 Acknowledgements
+## Acknowledgements
 
 - **Odoo Hackathon 2026 Organizers & Mentors**
 - **Collaborative Hackathon Team Members**
