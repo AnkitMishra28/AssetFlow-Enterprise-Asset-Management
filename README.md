@@ -319,12 +319,12 @@ npm run start
 ## My Contributions
 
 > **Author**: Ankit Mishra ([@AnkitMishra28](https://github.com/AnkitMishra28))  
-> **Role**: Senior Full-Stack & Backend Systems Engineer
+> **Role**: Full-Stack & Backend Systems Engineer
 
 Based strictly on Git commit logs, my contributions focused on establishing the core backend systems, database schemas, REST APIs, and database-frontend integration:
 
 - **Established Backend Foundation & Database Schemas**: Designed and declared Mongoose schemas for `Asset`, `Allocation`, `TransferRequest`, `Department`, `Employee`, `Category`, `Notification`, and `User`.
-- 🔌 **Implemented Core REST APIs**: Developed end-to-end serverless API routes under `app/api/*` for asset allocations, transfer workflows, executive dashboard analytics, and custom report aggregations.
+- **Implemented Core REST APIs**: Developed end-to-end serverless API routes under `app/api/*` for asset allocations, transfer workflows, executive dashboard analytics, and custom report aggregations.
 - **Organization Setup Backend & Frontend**: Designed and built the Organization Setup page and REST endpoints for managing departments, employee directories, and asset categories.
 - **Frontend API Integration & DB Migration**: Led the integration of client-side dashboard views with MongoDB REST APIs and executed database migration logic.
 - **Resolved MongoDB Runtime Issues**: Fixed database connection pooling leaks and runtime API handler exceptions (`lib/mongodb.ts`) for serverless Next.js API stability.
